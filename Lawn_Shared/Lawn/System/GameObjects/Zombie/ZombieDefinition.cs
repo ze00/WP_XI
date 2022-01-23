@@ -10,7 +10,7 @@ namespace Lawn
             mZombieType = aZombieType;
             mReanimationType = aReanimationType;
             mZombieValue = aZombieValue;
-            mStartingLevel = aStartingLevel;
+            mStartingLevel = 1;
             mFirstAllowedWave = aFirstAllowedWave;
             mPickWeight = aPickWeight;
             mZombieName = aZombieName;

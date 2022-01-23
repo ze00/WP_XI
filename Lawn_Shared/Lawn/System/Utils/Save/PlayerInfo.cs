@@ -48,7 +48,7 @@ namespace Lawn
         public void Reset()
         {
             mLevel = 1;
-            mCoins = 0;
+            mCoins = 99999;
             mFinishedAdventure = 0;
             mPottedPlant = new PottedPlant[200];
             for (int i = 0; i < mPottedPlant.Length; i++)
@@ -79,13 +79,13 @@ namespace Lawn
             mLastStinkyChocolateTime = DateTime.MinValue;
             mStinkyPosX = 0;
             mStinkyPosY = 0;
-            mHasUnlockedMinigames = false;
-            mHasUnlockedPuzzleMode = false;
-            mHasNewMiniGame = false;
-            mHasNewVasebreaker = false;
-            mHasNewIZombie = false;
-            mHasNewSurvival = false;
-            mHasUnlockedSurvivalMode = false;
+            mHasUnlockedMinigames = true;
+            mHasUnlockedPuzzleMode = true;
+            mHasNewMiniGame = true;
+            mHasNewVasebreaker = true;
+            mHasNewIZombie = true;
+            mHasNewSurvival = true;
+            mHasUnlockedSurvivalMode = true;
             mNeedsMessageOnGameSelector = false;
             mNeedsMagicTacoReward = false;
             mNeedsMagicBaconReward = false;
@@ -110,10 +110,10 @@ namespace Lawn
             {
                 mPlantTypesUsed[n] = false;
             }
-            mMiniGamesUnlocked = 0;
-            mMiniGamesUnlockable = 0;
-            mVasebreakerUnlocked = 0;
-            mIZombieUnlocked = 0;
+            mMiniGamesUnlocked = 19;
+            mMiniGamesUnlockable = 19;
+            mVasebreakerUnlocked = 5;
+            mIZombieUnlocked = 5;
             FirstRun = true;
             mZenTutorialMessage = -1;
             mZenGardenTutorialComplete = false;

@@ -1184,7 +1184,7 @@ namespace Lawn
                 num = (int)Constants.InvertAndScale(125f);
             }
             int num2 = AtlasResources.IMAGE_DIALOG_TOPLEFT.mWidth + num + AtlasResources.IMAGE_DIALOG_TOPRIGHT.mWidth;
-            lawnDialog.mReanimation.AddReanimation(num2 / 2 - Constants.InvertAndScale(85f), Constants.InvertAndScale(30f), ReanimationType.ZombieNewspaper);
+            lawnDialog.mReanimation.AddReanimation(num2 / 2 - Constants.InvertAndScale(85f), Constants.InvertAndScale(30f), ReanimationType.Tallnut);
             lawnDialog.mSpaceAfterHeader = (int)Constants.InvertAndScale(65f);
             lawnDialog.CalcSize((int)Constants.InvertAndScale(20f), (int)Constants.InvertAndScale(10f), num);
             LawnApp.CenterDialog(lawnDialog, lawnDialog.mWidth, lawnDialog.mHeight);
@@ -3393,7 +3393,7 @@ namespace Lawn
             if (IsAdventureMode())
             {
                 int level = mBoard.mLevel;
-                if (level == 50)
+                if (level == 60)
                 {
                     if (mPlayerInfo.mIZombieUnlocked == 3 && HasBeatenChallenge(GameMode.PuzzleIZombie3))
                     {

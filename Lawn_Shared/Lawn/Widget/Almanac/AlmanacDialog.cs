@@ -262,7 +262,7 @@ namespace Lawn
                 mPlant = Plant.GetNewPlant();
                 mPlant.mBoard = null;
                 mPlant.mIsOnBoard = false;
-                mPlant.PlantInitialize(0, 0, SeedType.Sunflower, SeedType.None);
+                mPlant.PlantInitialize(0, 0, SeedType.Tallnut, SeedType.None);
                 mPlant.mX = Constants.Almanac_IndexPlantPos.X;
                 mPlant.mY = Constants.Almanac_IndexPlantPos.Y;
                 if (mZombie != null)
@@ -271,7 +271,7 @@ namespace Lawn
                 }
                 mZombie = Zombie.GetNewZombie();
                 mZombie.mBoard = null;
-                mZombie.ZombieInitialize(0, ZombieType.Normal, false, null, GameConstants.ZOMBIE_WAVE_UI);
+                mZombie.ZombieInitialize(0, ZombieType.TallnutHead, false, null, GameConstants.ZOMBIE_WAVE_UI);
                 mZombie.mPosX = Constants.Almanac_IndexZombiePos.X;
                 mZombie.mPosY = Constants.Almanac_IndexZombiePos.Y;
                 mIndexButton.mBtnNoDraw = true;

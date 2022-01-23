@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Zip;
+using Android.Widget;
 
 namespace Lawn_Android
 {
@@ -37,6 +38,14 @@ namespace Lawn_Android
             try
             {
 #endif
+                var aDialog = new AlertDialog.Builder(this);
+                aDialog.SetTitle("提示");
+                aDialog.SetMessage("此版本为测试版本,它不应该被外传,亦不代表游戏的最终品质.\n作者：AS魇梦蚀\n鸣谢：WP版移植团队\nQQ群:1065027371");
+                aDialog.SetPositiveButton("OK", delegate { });
+                aDialog.SetNegativeButton("查看更新日志", delegate {
+                    Toast.MakeText(this, "UNIMPLEMENT", ToastLength.Short);
+                });
+                aDialog.Show();
                 _game = new Sexy.Main();
                 _view = _game.Services.GetService(typeof(View)) as View;
                 _view.SystemUiVisibility = (StatusBarVisibility)SystemUiFlags.Fullscreen;//| (StatusBarVisibility)SystemUiFlags.HideNavigation | (StatusBarVisibility)SystemUiFlags.ImmersiveSticky;

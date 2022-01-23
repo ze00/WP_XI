@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+
+<Obfuscator>
+  <Var name="OutPath" value="..\..\..\..\..\bin\AnyCPU\Release" />
+  <Module file="LAWN.dll">
+    <SkipNamespace name="Sexy.*" />
+    <SkipEnums value='true' />
+    <SkipNamespace name="Microsoft.*" />
+  </Module>
+</Obfuscator>

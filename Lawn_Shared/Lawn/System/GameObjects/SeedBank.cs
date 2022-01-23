@@ -335,7 +335,7 @@ namespace Lawn
 
         public int mNumPackets;
 
-        public SeedPacket[] mSeedPackets = new SeedPacket[9];
+        public SeedPacket[] mSeedPackets = new SeedPacket[10];
 
         public int mCutSceneDarken;
 

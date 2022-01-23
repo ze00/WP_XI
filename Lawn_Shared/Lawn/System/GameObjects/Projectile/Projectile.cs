@@ -714,7 +714,13 @@ namespace Lawn
                     plant.mEatenFlashCountdown = Math.Max(plant.mEatenFlashCountdown, 25);
                     mApp.PlayFoley(FoleyType.Splat);
                     mApp.AddTodParticle(mPosX - 3f, mPosY + 17f, mRenderOrder + 1, ParticleEffect.PeaSplat);
-                    Die();
+                    if (mFromPeaHead)
+                    {
+                        mPosX -= 80f;
+                    } else
+                    {
+                        Die();
+                    }
                 }
                 Zombie zombie2 = FindCollisionMindControlledTarget();
                 if (zombie2 != null)
@@ -1383,6 +1389,7 @@ namespace Lawn
         private int mTargetZombieIDSaved;
 
         public int mLastPortalX;
+        public bool mFromPeaHead = false;
 
         private static Stack<Projectile> unusedObjects = new Stack<Projectile>(200);
     }

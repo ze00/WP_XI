@@ -1993,7 +1993,7 @@ namespace Lawn
                 return;
             }
             int num3 = TodCommon.ClampInt((mBoard.mCurrentWave - 1) * 6 / 12, 0, 5);
-            int num4 = 1;
+            int num4 = 5;
             ZombieType theZombieType = ZombieType.Normal;
             int num5 = RandomNumbers.NextNumber(100);
             int num6 = RandomNumbers.NextNumber(100);
@@ -2004,11 +2004,11 @@ namespace Lawn
             }
             else if (num5 < aTripleChance[num3])
             {
-                num4 = 3;
+                num4 = 10;
             }
             else if (num5 < aTripleChance[num3] + aDoubleChance[num3])
             {
-                num4 = 2;
+                num4 = 10;
             }
             if (num6 < aPailChance[num3] && num4 < 3)
             {
@@ -2267,6 +2267,9 @@ namespace Lawn
                 mBoard.mSeedBank.AddSeed(SeedType.Jalapeno);
                 mBoard.mSeedBank.AddSeed(SeedType.Cabbagepult);
                 mBoard.mSeedBank.AddSeed(SeedType.Iceshroom);
+                mBoard.mSeedBank.AddSeed(SeedType.Threepeater);
+                mBoard.mSeedBank.AddSeed(SeedType.Marigold);
+
                 mConveyorBeltCounter = 1000;
             }
             if (mApp.mGameMode == GameMode.ChallengeZenGarden)
@@ -2330,7 +2333,7 @@ namespace Lawn
                 }
             }
             bool flag = mBoard.IsFlagWave(mBoard.mCurrentWave);
-            if (mApp.mGameMode == GameMode.ChallengeGraveDanger && mBoard.mCurrentWave != mBoard.mNumWaves - 1)
+            if (mBoard.mCurrentWave != mBoard.mNumWaves - 1)
             {
                 if (flag)
                 {
@@ -2366,12 +2369,13 @@ namespace Lawn
         {
             TodWeightedGridArray[] array = new TodWeightedGridArray[Constants.GRIDSIZEX * Constants.MAX_GRIDSIZEY];
             int num = 0;
-            for (int i = 4; i < Constants.GRIDSIZEX; i++)
+            for (int i = 3; i < Constants.GRIDSIZEX; i++)
             {
                 for (int j = 0; j < Constants.MAX_GRIDSIZEY; j++)
                 {
                     if (mBoard.CanAddGraveStoneAt(i, j))
                     {
+                        array[num] = TodWeightedGridArray.GetNewTodWeightedGridArray();
                         Plant topPlantAt = mBoard.GetTopPlantAt(i, j, TopPlant.Any);
                         if (topPlantAt != null)
                         {
@@ -2393,6 +2397,10 @@ namespace Lawn
             }
             TodWeightedGridArray todWeightedGridArray = TodCommon.TodPickFromWeightedGridArray(array, num);
             GraveDangerSpawnGraveAt(todWeightedGridArray.mX, todWeightedGridArray.mY);
+            for (int i = 0; i < num; ++i)
+            {
+                array[i].PrepareForReuse();
+            }
         }
 
         public void GraveDangerSpawnGraveAt(int x, int y)

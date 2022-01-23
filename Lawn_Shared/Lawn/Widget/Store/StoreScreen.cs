@@ -635,7 +635,7 @@ namespace Lawn
             }
             if (theStoreItem == StoreItem.STORE_ITEM_PACKET_UPGRADE)
             {
-                return mApp.mPlayerInfo.mPurchases[21] >= 3;
+                return mApp.mPlayerInfo.mPurchases[21] >= 4;
             }
             if (theStoreItem == StoreItem.STORE_ITEM_FERTILIZER || theStoreItem == StoreItem.STORE_ITEM_BUG_SPRAY)
             {
