@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <XI_BUILD_DATE>$([System.DateTime]::Now.ToString("yyMMdd"))</XI_BUILD_DATE>
+    <XI_OUT_APK>PVZ_WP_XI$(XI_BUILD_DATE).apk</XI_OUT_APK>
+    <XI_OUT_ZIP>PVZ_WP_XI$(XI_BUILD_DATE).zip</XI_OUT_ZIP>
+  </PropertyGroup>
+  <Target Name="PackIntoZip" AfterTargets="SignAndroidPackage" Condition=" '$(Configuration)' == 'Release' ">
+    <Copy SourceFiles="$(ApkFileSigned)" DestinationFiles="$(OutDir)$(XI_OUT_APK)" />
+    <Exec WorkingDirectory="$(OutDir)" Command="zip -j -P 1065027371 $(XI_OUT_ZIP) $(XI_OUT_APK) ../../../../更新日志.txt" />
+  </Target>
+</Project>

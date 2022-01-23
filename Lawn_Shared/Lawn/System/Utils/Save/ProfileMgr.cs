@@ -149,6 +149,8 @@ namespace Lawn
             playerInfo.mName = theName;
             playerInfo.mId = ProfileMgr.GetNewProfileId();
             playerInfo.mUseSeq = mNextProfileUseSeq++;
+            if (theName == "test")
+                playerInfo.mFinishedAdventure = 1;
             DeleteOldProfiles();
             return playerInfo;
         }

@@ -3581,7 +3581,7 @@ namespace Lawn
                     return;
                 }
             }
-            else if (mShootingCounter >= 1 && mShootingCounter < 4 && mSeedType == SeedType.Threepeater)
+            else if (mShootingCounter >= 1 && mShootingCounter < 4 && mSeedType != SeedType.Threepeater)
             {
                 if (mSeedType == SeedType.Splitpea)
                 {

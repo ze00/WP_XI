@@ -56,7 +56,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>true</AndroidEnableProfiledAot>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidKeyStore>false</AndroidKeyStore>
     <AndroidSigningKeyStore>C:\Users\David\Documents\External Data for Further Identification and Judicious Use Just Kidding\mnjs.keystore</AndroidSigningKeyStore>
@@ -67,6 +67,7 @@
     </AndroidSigningKeyPass>
     <MandroidI18n>CJK;Mideast;Rare;West;Other</MandroidI18n>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <AndroidSupportedAbis>armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Java.Interop" />
@@ -1777,7 +1778,6 @@
     <AndroidAsset Include="Assets\Content\sounds\zombiesplash.xnb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <AndroidAsset Include="Assets\Content\Font.xnb" />
     <AndroidAsset Include="Assets\IronPython\Libs\IronPython.StdLib.2.7.11.zip" />
   </ItemGroup>
@@ -1834,6 +1834,7 @@
   <Import Project="..\IronPyInteractiveDef_Shared\IronPyInteractiveDef_Shared.projitems" Label="Shared" />
   <Import Project="..\LawnModExtension\LawnModExtension.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project=".\XI_BUILD.targets" />
   <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
     <Exec WorkingDirectory="$(MonoAndroidIntermediateAssetsDir)" Command="$(Obfuscar) $(ProjectDir)obfuscar.xml" />
     <!-- <Copy SourceFiles="$(TargetDir)LAWN.dll" DestinationFolder="$(MonoAndroidIntermediateAssetsDir)" /> -->
