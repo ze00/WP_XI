@@ -5798,7 +5798,7 @@ namespace Lawn
         {
             if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && mApp.IsWhackAZombieLevel())
             {
-                mNumWaves = 20;
+                mNumWaves = 12;
             }
             else if (mApp.IsAdventureMode() || mApp.IsQuickPlayMode())
             {
