@@ -2004,11 +2004,11 @@ namespace Lawn
             }
             else if (num5 < aTripleChance[num3])
             {
-                num4 = 10;
+                num4 = 5;
             }
             else if (num5 < aTripleChance[num3] + aDoubleChance[num3])
             {
-                num4 = 10;
+                num4 = 5;
             }
             if (num6 < aPailChance[num3] && num4 < 3)
             {
