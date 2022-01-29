@@ -454,7 +454,10 @@ namespace Lawn
                     mBodyHealth = 6000;
                 }
                 if (RandomNumbers.NextNumber(5) == 0)
+                {
+                    mIsSpecialUnit = true;
                     aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_zombie_gargantuar_telephonepole, AtlasResources.IMAGE_REANIM_SQUASH_BODY);
+                }
                 if (RandomNumbers.NextNumber(5) == 0)
                     aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_zombie_gargantuar_telephonepole, AtlasResources.IMAGE_REANIM_COBCANNON_COB);
                 if (RandomNumbers.NextNumber(5) == 0)
@@ -2103,9 +2106,13 @@ namespace Lawn
             {
                 mVelX = 0.4f;
             }
-            else if (mZombieType == ZombieType.Dancer || mZombieType == ZombieType.BackupDancer || mZombieType == ZombieType.Pogo || mZombieType == ZombieType.Flag)
+            else if (mZombieType == ZombieType.Dancer || mZombieType == ZombieType.BackupDancer || mZombieType == ZombieType.Pogo)
             {
                 mVelX = 0.45f;
+            }
+            else if (mZombieType == ZombieType.Flag)
+            {
+                mVelX = 1.5f;
             }
             else if (mZombiePhase == ZombiePhase.DiggerTunneling || mZombiePhase == ZombiePhase.PolevaulterPreVault || mZombieType == ZombieType.Football || mZombieType == ZombieType.Snorkel || mZombieType == ZombieType.JackInTheBox)
             {
@@ -6637,11 +6644,21 @@ namespace Lawn
                         if (plant.mPlantHealth <= 0)
                         {
                             SquishAllInSquare(plant.mPlantCol, plant.mRow, ZombieAttackType.Chew);
+                            if (mIsSpecialUnit)
+                            {
+                                mApp.AddTodParticle(plant.mX + plant.mWidth / 2, plant.mY + plant.mHeight / 2, 400000, ParticleEffect.Doom);
+                                mBoard.AddACrater(plant.mPlantCol, plant.mRow).mGridItemCounter = 18000;
+                            }
                         }
                     }
                     else if (plant != null)
                     {
                         SquishAllInSquare(plant.mPlantCol, plant.mRow, ZombieAttackType.Chew);
+                        if (mIsSpecialUnit)
+                        {
+                            mApp.AddTodParticle(plant.mX + plant.mWidth / 2, plant.mY + plant.mHeight / 2, 400000, ParticleEffect.Doom);
+                            mBoard.AddACrater(plant.mPlantCol, plant.mRow).mGridItemCounter = 18000;
+                        }
                     }
                     if (mApp.IsScaryPotterLevel())
                     {

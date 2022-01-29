@@ -2333,7 +2333,7 @@ namespace Lawn
                 }
             }
             bool flag = mBoard.IsFlagWave(mBoard.mCurrentWave);
-            if (mBoard.mCurrentWave != mBoard.mNumWaves - 1)
+            if ((mApp.IsAdventureMode() ? (mApp.HasFinishedAdventure() || mBoard.mLevel > 5) : mBoard.StageHasGraveStones()) && mBoard.mCurrentWave != mBoard.mNumWaves - 1)
             {
                 if (flag)
                 {

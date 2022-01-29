@@ -643,11 +643,12 @@ namespace Lawn
                 {
                     num2 -= 20f;
                 }
-                g.SetScale(1f, 0.5f, 0f, 0f);
-                Image imageInAtlasById = AtlasResources.GetImageInAtlasById((int)(10300 + mSeedType));
+                float ratioSquished = 0.5f;
+                g.SetScale(1f, ratioSquished, 0f, 0f);
+                //Image imageInAtlasById = AtlasResources.GetImageInAtlasById((int)(10300 + mSeedType));
                 g.SetColorizeImages(true);
                 g.SetColor(new Color(255, 255, 255, (int)(255f * Math.Min(1f, mDisappearCountdown / 100f))));
-                Plant.DrawSeedType(g, mSeedType, mImitaterType, DrawVariation.Normal, num * Constants.S + imageInAtlasById.GetCelWidth() / 2 + Constants.Plant_Squished_Offset.X, num2 * Constants.S + imageInAtlasById.GetCelHeight() + Constants.Plant_Squished_Offset.Y);
+                Plant.DrawSeedType(g, mSeedType, mImitaterType, DrawVariation.Normal, num * Constants.S/* + imageInAtlasById.GetCelWidth() / 2 */+ Constants.Plant_Squished_Offset.X, num2 * Constants.S + (float)Constants.New.Board_GridCellSizeY_6Rows * (1-ratioSquished) * Constants.S/*+ imageInAtlasById.GetCelHeight()*/ + Constants.Plant_Squished_Offset.Y);
                 g.SetScale(1f, 1f, 0f, 0f);
                 g.SetColorizeImages(false);
                 return;
@@ -885,6 +886,11 @@ namespace Lawn
                     mBoard.ShakeBoard(3, -4);
                     mApp.Vibrate();
                     BurnRow(mRow);
+                    if (mBoard.mIceTimer[mRow] > 0)
+                    {
+                        mBoard.mIceTimer[mRow] = 20;
+                    }
+                    Die();
                     mBoard.KillAllZombiesInRadius(mRow, num, num2, 115, 1, true, damageRangeFlags);
                     mApp.AddTodParticle(num, num2, 400000, ParticleEffect.Powie);
                     return;
@@ -2595,6 +2601,8 @@ namespace Lawn
             else if (mState == PlantState.GravebusterEating && mStateCountdown <= 0)
             {
                 GridItem graveStoneAt = mBoard.GetGraveStoneAt(mPlantCol, mRow);
+                if (graveStoneAt == null)
+                    graveStoneAt = mBoard.GetCraterAt(mPlantCol, mRow);
                 if (graveStoneAt != null)
                 {
                     graveStoneAt.GridItemDie();
@@ -2854,6 +2862,7 @@ namespace Lawn
                         return;
                     }
                     zombie2.DieWithLoot();
+                    DoSquashDamage();
                     mState = PlantState.ChomperBitingGotOne;
                     return;
                 }
@@ -2868,7 +2877,7 @@ namespace Lawn
                         reanimation.mAnimRate = 0f;
                     }
                     mState = PlantState.ChomperDigesting;
-                    mStateCountdown = 4000;
+                    mStateCountdown = 3000;
                     return;
                 }
             }
@@ -4419,6 +4428,9 @@ namespace Lawn
                     {
                         zombie3.DieWithLoot();
                     }
+                    mBoard.AddCoin(mX - 20, mY, CoinType.Sun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 40, mY, CoinType.Sun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 60, mY, CoinType.Sun, CoinMotion.Coin);
                 }
             }
         }
@@ -5467,8 +5479,7 @@ namespace Lawn
             b.WriteLong(mTargetY);
             GameObject.SaveId(mTargetZombieID, b);
             b.WriteLong(mWakeUpCounter);
-            if (mBodyReanimID != null)
-                b.WriteFloat(mBodyReanimID.mAnimTime);
+            b.WriteFloat(mBodyReanimID?.mAnimTime ?? 0f);
             return true;
         }
 
@@ -5595,7 +5606,7 @@ namespace Lawn
                 float num5 = (float)Math.Sin(num3 + num4) * 2f;
                 num += num5;
             }
-            if (theBoard != null && (thePlant == null || !thePlant.mSquished) && thePlant.mInFlowerPot)
+            if (theBoard != null && (thePlant == null || !thePlant.mSquished) && (thePlant?.mInFlowerPot ?? false))
             {
                 Plant flowerPotAt = theBoard.GetFlowerPotAt(theCol, theRow);
                 if (flowerPotAt != null && !flowerPotAt.mSquished && theSeedType != SeedType.Flowerpot)

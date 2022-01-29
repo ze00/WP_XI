@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AtlasResources_480x800.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataArray.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DataArrayFlags.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtGame\OldZombieSeeds.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GlobalMembersDialogButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GlobalMembersSexyMath.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\Widget\Achievement\Achievement.cs" />

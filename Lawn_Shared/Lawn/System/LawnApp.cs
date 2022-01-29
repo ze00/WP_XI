@@ -244,6 +244,7 @@ namespace Lawn
         public override void LoadingThreadProc()
         {
             GameConstants.Init();
+            Lawn.ExtGame.OldZombieSeeds.LoadOldZombieSeeds();
             if (!TodCommon.TodLoadResources("LoaderBar") || !TodCommon.TodLoadResources("LoaderBarFont"))
             {
                 throw new Exception();//return;
@@ -3643,7 +3644,7 @@ namespace Lawn
 
         private const string PLACEHOLDER_CRAZYDAVE_0 = "[CRAZY_DAVE_{0}]";
 
-        public static string AppVersionNumber = "0.1.2.1";
+        public static string AppVersionNumber = "0.1.2.4";
 
         public Board mBoard;
 

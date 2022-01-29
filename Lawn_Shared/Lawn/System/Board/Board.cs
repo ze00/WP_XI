@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Sexy;
 using Sexy.TodLib;
-
+using Lawn.ExtGame;
 namespace Lawn
 {
     public/*internal*/ class Board : Widget, ButtonListener
@@ -372,7 +372,7 @@ namespace Lawn
             mDoomsUsed = 0;
             mPlanternOrBloverUsed = false;
             mNutsUsed = false;
-            mLastToolX = (mLastToolY = -1);
+            mLastToolX = (mLastToolY = short.MinValue);
             mMinFPS = 1000f;
             for (int l = 0; l < Constants.MAX_GRIDSIZEY; l++)
             {
@@ -1683,7 +1683,7 @@ namespace Lawn
         }
 
         public PlantingReason CanPlantAt(int theGridX, int theGridY, SeedType theType)
-        {
+            {
             if (theGridX < 0 || theGridX >= Constants.GRIDSIZEX || theGridY < 0 || theGridY >= Constants.MAX_GRIDSIZEY)
             {
                 return PlantingReason.NotHere;
@@ -1716,7 +1716,7 @@ namespace Lawn
                     {
                         return PlantingReason.NotHere;
                     }
-                    if (flag)
+                    if (flag || GetCraterAt(theGridX, theGridY) != null)
                     {
                         return PlantingReason.Ok;
                     }
@@ -1900,7 +1900,8 @@ namespace Lawn
 
         public override void MouseMove(int x, int y)
         {
-            base.MouseMove(x, y);
+            //base.MouseMove(x, y);
+            MouseDrag(x, y);
             mChallenge.MouseMove(x, y);
         }
 
@@ -1998,6 +1999,7 @@ namespace Lawn
             }
             if (IsPlantInCursor())
             {
+                MouseDownWithPlant(x, y, theClickCount);
                 return;
             }
             if (theHitResult.mObjectType == GameObjectType.Seedpacket)
@@ -2041,7 +2043,7 @@ namespace Lawn
             base.MouseUp(x, y, theClickCount);
             if (mIgnoreMouseUp)
             {
-                mLastToolX = (mLastToolY = -1);
+                mLastToolX = (mLastToolY = short.MinValue);
                 mLastToolX = 0;
                 return;
             }
@@ -2054,12 +2056,13 @@ namespace Lawn
             {
                 HitResult hitResult;
                 MouseHitTest(x, y, out hitResult, false);
-                mIgnoreNextMouseUpSeedPacket = false;
+                //mIgnoreNextMouseUpSeedPacket = false;
                 if (hitResult.mObjectType == GameObjectType.Coin)
                 {
                     Coin coin = (Coin)hitResult.mObject;
                     if (coin.mType == CoinType.UsableSeedPacket)
                     {
+                        mLastToolX = (mLastToolY = short.MinValue);
                         return;
                     }
                 }
@@ -2116,7 +2119,7 @@ namespace Lawn
                 if (mLastToolX >= Constants.LAWN_XMIN * Constants.S && mLastToolY >= Constants.LAWN_YMIN * Constants.S && mCursorObject.mCursorType == CursorType.CobcannonTarget)
                 {
                     MouseDownCobcannonFire(mLastToolX, mLastToolY, theClickCount);
-                    mLastToolX = (mLastToolY = -1);
+                    mLastToolX = (mLastToolY = short.MinValue);
                     return;
                 }
                 if ((mCursorObject.mCursorType == CursorType.Fertilizer || mCursorObject.mCursorType == CursorType.BugSpray || mCursorObject.mCursorType == CursorType.Phonograph || mCursorObject.mCursorType == CursorType.Chocolate || mCursorObject.mCursorType == CursorType.Glove || mCursorObject.mCursorType == CursorType.MoneySign || mCursorObject.mCursorType == CursorType.Wheeelbarrow || mCursorObject.mCursorType == CursorType.TreeFood || mCursorObject.mCursorType == CursorType.WateringCan) && mLastToolY >= Constants.ZEN_YMIN * Constants.S)
@@ -2149,14 +2152,31 @@ namespace Lawn
                         mApp.DoBackToMain();
                     }
                 }
-                mLastToolX = (mLastToolY = -1);
+                mLastToolX = (mLastToolY = short.MinValue);
                 return;
             }
         }
 
         public override void KeyChar(SexyChar theChar)
         {
-            if (mApp.mDebugKeysEnabled)
+            if (!mApp.mDebugKeysEnabled)
+            {
+                switch ((char)theChar) 
+                {
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    mSeedBank.mSeedPackets[theChar-'1'].MouseDown(0, 0, 1);
+                    break;
+                }
+            }
+            else
             {
                 char value_type = theChar.value_type;
                 if (mApp.mGameMode == GameMode.ChallengeZenGarden)
@@ -3280,7 +3300,7 @@ namespace Lawn
 
         public void DrawCursorOnBackground(Graphics g)
         {
-            if (mTimeStopCounter == 0 && (!mApp.IsWhackAZombieLevel() || mCursorObject.mCursorType != CursorType.Hammer) && mIsDown && mLastToolX >= Constants.LAWN_XMIN * Constants.S && mCursorObject.BeginDraw(g))
+            if (mTimeStopCounter == 0 && (!mApp.IsWhackAZombieLevel() || mCursorObject.mCursorType != CursorType.Hammer) /*&& mIsDown */&& mLastToolX >= Constants.LAWN_XMIN * Constants.S && mCursorObject.BeginDraw(g))
             {
                 mCursorObject.DrawGroundLayer(g);
                 mCursorObject.EndDraw(g);
@@ -3289,7 +3309,7 @@ namespace Lawn
 
         public void DrawCursorOverlay(Graphics g)
         {
-            if (mTimeStopCounter == 0 && mIsDown && (mLastToolX >= Constants.LAWN_XMIN * Constants.S || mApp.mGameMode == GameMode.ChallengeZenGarden) && mCursorObject.BeginDraw(g))
+            if (mTimeStopCounter == 0 /*&& mIsDown && (mLastToolX >= Constants.LAWN_XMIN * Constants.S || mApp.mGameMode == GameMode.ChallengeZenGarden)*/ && mCursorObject.BeginDraw(g))
             {
                 mCursorObject.DrawTopLayer(g);
                 mCursorObject.EndDraw(g);
@@ -3550,7 +3570,7 @@ namespace Lawn
 
         public bool StageHasGraveStones()
         {
-            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel();
+            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel() && mApp.mGameMode != GameMode.ChallengeColumn;
         }
 
         public int PixelToGridX(int theX, int theY)
@@ -3601,8 +3621,7 @@ namespace Lawn
             {
                 return mApp.mZenGarden.GridToPixelX(theGridX, theGridY);
             }
-            int num = 80;
-            return theGridX * num + Constants.LAWN_XMIN;
+            return theGridX * Constants.New.Board_GridCellSizeX + Constants.LAWN_XMIN;
         }
 
         public int GridToPixelY(int theGridX, int theGridY)
@@ -3621,15 +3640,15 @@ namespace Lawn
                 {
                     num = (5 - theGridX) * 20;
                 }
-                num2 = theGridY * 85 + Constants.LAWN_YMIN + num - 10;
+                num2 = theGridY * Constants.New.Board_GridCellSizeY_6Rows + Constants.LAWN_YMIN + num - 10;
             }
             else if (StageHas6Rows())
             {
-                num2 = theGridY * 85 + Constants.LAWN_YMIN;
+                num2 = theGridY * Constants.New.Board_GridCellSizeY_6Rows + Constants.LAWN_YMIN;
             }
             else
             {
-                num2 = theGridY * 100 + Constants.LAWN_YMIN;
+                num2 = theGridY * Constants.New.Board_GridCellSizeY_5Rows + Constants.LAWN_YMIN;
             }
             if (theGridX != -1 && mGridSquareType[theGridX, theGridY] == GridSquareType.HighGround)
             {
@@ -3872,7 +3891,7 @@ namespace Lawn
             return false;
         }
 
-        public void MouseUpWithPlant(int x, int y, int theClickCount)
+        public void MouseDownWithPlant(int x, int y, int theClickCount) 
         {
             if (theClickCount < 0)
             {
@@ -3880,6 +3899,10 @@ namespace Lawn
                 mApp.PlayFoley(FoleyType.Drop);
                 return;
             }
+        }
+
+        public void MouseUpWithPlant(int x, int y, int theClickCount)
+        {
             if (mApp.IsIZombieLevel())
             {
                 mChallenge.IZombieMouseDownWithZombie(x, y, theClickCount);
@@ -5897,7 +5920,7 @@ namespace Lawn
                 }
                 if (mApp.mGameMode == GameMode.ChallengeColumn)
                 {
-                    zombiePicker.mZombiePoints *= 6;
+                    zombiePicker.mZombiePoints *= 3;
                 }
                 else if (mApp.IsLittleTroubleLevel() || mApp.IsWallnutBowlingLevel())
                 {
@@ -6607,7 +6630,22 @@ namespace Lawn
             }
             PickSpecialGraveStone();
         }
-
+        public void ReuseOldZombieSeeds()
+        {
+            if (mApp.IsAdventureMode())
+            {
+                if (OldZombieSeeds.OldZombieSeedsDict.TryGetValue(mLevel, out int[][] zombies))
+                {
+                    for (int i = 0; i < zombies.Length; i++)
+                    {
+                        for (int j = 0; j < zombies[i].Length; ++j)
+                        {
+                            mZombiesInWave[i, j] = (ZombieType)zombies[i][j];
+                        }
+                    }
+                }
+            }
+        }
         public void InitZombieWaves()
         {
             Debug.ASSERT(true);
@@ -6621,6 +6659,7 @@ namespace Lawn
             }
             PickZombieWaves();
             Debug.ASSERT(IsZombieWaveDistributionOk());
+            ReuseOldZombieSeeds();
             mCurrentWave = 0;
             mTotalSpawnedWaves = 0;
             mApp.mKilledYetiAndRestarted = false;

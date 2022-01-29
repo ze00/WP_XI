@@ -35,7 +35,7 @@ namespace Lawn
                 {
                     return mApp.mPlayerInfo.mMiniGamesUnlocked;
                 }
-                return 19;
+                return GameMode.ChallengeSquirrel - GameMode.ChallengeWarAndPeas + 1;
             case MiniGameMode.IZombie:
                 if (mApp.mPlayerInfo.mIZombieUnlocked < 10)
                 {
@@ -254,49 +254,7 @@ namespace Lawn
 
         public int GetGameModeMiniGames(int index)
         {
-            switch (index)
-            {
-            case 1:
-                return 16;
-            case 2:
-                return 17;
-            case 3:
-                return 18;
-            case 4:
-                return 19;
-            case 5:
-                return 20;
-            case 6:
-                return 21;
-            case 7:
-                return 22;
-            case 8:
-                return 23;
-            case 9:
-                return 24;
-            case 10:
-                return 25;
-            case 11:
-                return 26;
-            case 12:
-                return 27;
-            case 13:
-                return 28;
-            case 14:
-                return 29;
-            case 15:
-                return 30;
-            case 16:
-                return 31;
-            case 17:
-                return 32;
-            case 18:
-                return 33;
-            case 19:
-                return 34;
-            default:
-                return -1;
-            }
+            return (int)GameMode.ChallengeWarAndPeas + index - 1;
         }
 
         public void DrawBackgroundThumbnailForLevel(Graphics g, int theX, int theY, int theLevel)
@@ -305,11 +263,14 @@ namespace Lawn
             if (imageForMode != null)
             {
                 g.DrawImage(imageForMode, theX, theY + 2);
+                string theText = TodStringFile.TodStringTranslate(ChallengeScreen.gChallengeDefs[GetGameMode(theLevel) - 1].mChallengeName);
+                TodCommon.TodDrawString(g, theText, theX, theY + imageForMode.GetHeight() - 30, Resources.FONT_BRIANNETOD12, new SexyColor(0xff, 0xff, 0), DrawStringJustification.Left);
             }
         }
 
         public Image GetImageForGames(int index)
         {
+            index = (index - 1) % 19 + 1;
             Image result = null;
             switch (index)
             {
