@@ -109,7 +109,10 @@ namespace Lawn
                 string levelName = GetLevelName(j + 1);
                 g.SetFont(Resources.FONT_DWARVENTODCRAFT12);
                 g.SetColor(Color.White);
+                var aClipRect = g.mClipRect;
+                g.ClearClipRect();
                 g.WriteWordWrapped(new TRect(num + 15, AtlasResources.IMAGE_MINI_GAME_FRAME.mHeight, AtlasResources.IMAGE_MINI_GAME_FRAME.mWidth - 30, 100), levelName, 5, 0);
+                g.mClipRect = aClipRect;
                 num += AtlasResources.IMAGE_MINI_GAME_FRAME.mWidth + 10;
             }
             if (drawPadlock)
@@ -244,17 +247,60 @@ namespace Lawn
 
         public int GetGameModeVasebreaker(int index)
         {
-            return index - 1 + 50;
+            return index - 1 + (int)GameMode.ScaryPotterStart;
         }
 
         public int GetGameModeIZombie(int index)
         {
-            return index - 1 + 60;
+            return index - 1 + (int)GameMode.PuzzleIZombieStart;
         }
 
         public int GetGameModeMiniGames(int index)
         {
-            return (int)GameMode.ChallengeWarAndPeas + index - 1;
+            return 1 <= index && index <= (int)GameMode.MiniGameCount ? index - 1 + (int)GameMode.MiniGameStart : -1;
+            /*switch (index)
+            {
+            case 1:
+                return 16;
+            case 2:
+                return 17;
+            case 3:
+                return 18;
+            case 4:
+                return 19;
+            case 5:
+                return 20;
+            case 6:
+                return 21;
+            case 7:
+                return 22;
+            case 8:
+                return 23;
+            case 9:
+                return 24;
+            case 10:
+                return 25;
+            case 11:
+                return 26;
+            case 12:
+                return 27;
+            case 13:
+                return 28;
+            case 14:
+                return 29;
+            case 15:
+                return 30;
+            case 16:
+                return 31;
+            case 17:
+                return 32;
+            case 18:
+                return 33;
+            case 19:
+                return 34;
+            default:
+                return -1;
+            }*/
         }
 
         public void DrawBackgroundThumbnailForLevel(Graphics g, int theX, int theY, int theLevel)
@@ -343,6 +389,32 @@ namespace Lawn
         public Image GetImageForVasebreaker(int index)
         {
             return AtlasResources.IMAGE_MINIGAMES_VASEBREAKER;
+        }
+
+        public void RecoverLastPlayedMode() 
+        {
+            GameMode aGameMode = mApp.mGameMode;
+            int index = -1;
+            switch (mMode) 
+            {
+            case MiniGameMode.Games:
+                index = 1 <= (int)aGameMode && (int)aGameMode <= ((int)GameMode.MiniGameStart + (int)GameMode.MiniGameCount)
+                        ? (int)aGameMode + 1 - (int)GameMode.MiniGameStart : -1;
+                break;
+            case MiniGameMode.IZombie:
+                if (mApp.IsIZombieLevel())
+                    index = (int)aGameMode + 1 - (int)GameMode.PuzzleIZombieStart;
+                break;
+            case MiniGameMode.Vasebreaker:
+                if (mApp.IsScaryPotterLevel())
+                    index = (int)aGameMode + 1 - (int)GameMode.ScaryPotterStart;
+                break;
+            }
+            if (index != -1) {
+                var aWidget = mApp.mGameSelector.mMiniGamesScrollWidget;
+                int x = (AtlasResources.IMAGE_MINI_GAME_FRAME.mWidth + 10) * (index - 1);
+                aWidget.ScrollToPoint(new CGPoint((x > mWidth - aWidget.mWidth) ? mWidth - aWidget.mWidth : x, 0), true); 
+            }
         }
 
         public LawnApp mApp;

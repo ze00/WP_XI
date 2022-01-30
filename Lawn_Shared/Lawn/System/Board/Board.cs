@@ -402,6 +402,7 @@ namespace Lawn
             mClip = false;
             mDebugTextMode = DebugTextMode.None;
             mMenuButton = new GameButton(0, this);
+            mCheatButton = null;
             mMenuButton.mDrawStoneButton = true;
             mStoreButton = null;
             mIgnoreMouseUp = false;
@@ -10150,5 +10151,7 @@ namespace Lawn
         private static Dictionary<int, string> cachedChargesStringsBugSpray = new Dictionary<int, string>();
 
         private static Dictionary<int, string> cachedChargesStringsChocolate = new Dictionary<int, string>();
+
+        private GameButton mCheatButton;
     }
 }
