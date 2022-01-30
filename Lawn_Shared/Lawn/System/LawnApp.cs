@@ -1784,7 +1784,7 @@ namespace Lawn
 
         public bool IsSurvivalMode()
         {
-            return mGameMode >= GameMode.SurvivalStart && mGameMode <= GameMode.SurvivalStart + (int)GameMode.SurvivalCount;
+            return mGameMode >= GameMode.SurvivalStart && mGameMode < GameMode.SurvivalStart + (int)GameMode.SurvivalCount;
         }
 
         public bool IsContinuousChallenge()

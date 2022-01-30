@@ -4069,6 +4069,7 @@ namespace Lawn
                     float theAnimRate = TodCommon.RandRangeFloat(12f, 15f);
                     PlayBodyReanim(GlobalMembersReanimIds.ReanimTrackId_anim_bigidle, ReanimLoopType.Loop, 10, theAnimRate);
                     mState = PlantState.SunshroomBig;
+                    mLaunchRate = 2500;
                     return;
                 }
             }

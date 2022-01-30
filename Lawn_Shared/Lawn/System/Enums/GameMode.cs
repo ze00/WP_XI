@@ -146,7 +146,7 @@ namespace Lawn
         PuzzleIZombieCount = 10,
         PuzzleIZombieStart = PuzzleIZombie1,
         ChallengeStart = ChallengeWarAndPeas,
-        MiniGameCount = 19,
+        MiniGameCount = ChallengeSquirrel - ChallengeStart + 1,
         MiniGameStart = ChallengeStart,
         QuickplayCount = 50,
         QuickplayStart = Quickplay1

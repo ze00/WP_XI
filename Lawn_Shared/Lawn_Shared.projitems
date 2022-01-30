@@ -48,6 +48,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\System\GameObjects\Coin\CoinID.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\System\GameObjects\Coin\CoinMotion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\System\GameObjects\Coin\CoinType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Lawn\Widget\CheatPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\Widget\ConfirmPurchaseDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\Widget\Continue\ContinueDialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\Widget\Continue\ContinueDialogs.cs" />
@@ -401,7 +402,6 @@
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\System\MagnetItem\" />
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\System\Board\" />
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\System\Enums\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Lawn\Widget\" />
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\Widget\" />
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\Widget\" />
     <Folder Include="$(MSBuildThisFileDirectory)Lawn\Widget\" />

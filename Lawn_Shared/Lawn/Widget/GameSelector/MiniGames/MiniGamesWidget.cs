@@ -35,7 +35,7 @@ namespace Lawn
                 {
                     return mApp.mPlayerInfo.mMiniGamesUnlocked;
                 }
-                return GameMode.ChallengeSquirrel - GameMode.ChallengeWarAndPeas + 1;
+                return (int)GameMode.MiniGameCount;
             case MiniGameMode.IZombie:
                 if (mApp.mPlayerInfo.mIZombieUnlocked < 10)
                 {
@@ -309,8 +309,6 @@ namespace Lawn
             if (imageForMode != null)
             {
                 g.DrawImage(imageForMode, theX, theY + 2);
-                string theText = TodStringFile.TodStringTranslate(ChallengeScreen.gChallengeDefs[GetGameMode(theLevel) - 1].mChallengeName);
-                TodCommon.TodDrawString(g, theText, theX, theY + imageForMode.GetHeight() - 30, Resources.FONT_BRIANNETOD12, new SexyColor(0xff, 0xff, 0), DrawStringJustification.Left);
             }
         }
 
