@@ -46,6 +46,9 @@ namespace Lawn_Android
 			// aapt resource value: 0x7F010000
 			public const int Icon = 2130771968;
 			
+			// aapt resource value: 0x7F010001
+			public const int qrcode = 2130771969;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -56,11 +59,46 @@ namespace Lawn_Android
 			}
 		}
 		
-		public partial class String
+		public partial class Id
 		{
 			
 			// aapt resource value: 0x7F020000
-			public const int app_name = 2130837504;
+			public const int changelog = 2130837504;
+			
+			// aapt resource value: 0x7F020001
+			public const int qrcode = 2130837505;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
+			{
+			}
+		}
+		
+		public partial class Layout
+		{
+			
+			// aapt resource value: 0x7F030000
+			public const int LincensesAndChangeLog = 2130903040;
+			
+			static Layout()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Layout()
+			{
+			}
+		}
+		
+		public partial class String
+		{
+			
+			// aapt resource value: 0x7F040000
+			public const int app_name = 2130968576;
 			
 			static String()
 			{

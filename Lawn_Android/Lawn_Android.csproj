@@ -90,6 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LicensesAndChangeLog.cs" />
     <Compile Include="PvZActivity.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AndroidGameIME.cs" />
@@ -1832,6 +1833,17 @@
     <PackageReference Include="SharpZipLib">
       <Version>1.3.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\LincensesAndChangeLog.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\qrcode.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CHANGELOG.txt" />
   </ItemGroup>
   <Import Project="..\Lawn_Shared\Lawn_Shared.projitems" Label="Shared" />
   <Import Project="..\MonoGame.Framework.Net\MonoGame.Framework.Net.projitems" Label="Shared" />
