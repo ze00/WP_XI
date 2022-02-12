@@ -1,4 +1,5 @@
 ﻿using System;
+using Lawn.ExtGame;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
@@ -2339,7 +2340,7 @@ namespace Lawn
                 {
                     mBoard.SpawnZombiesFromGraves();
                 }
-                else if (mBoard.mCurrentWave > 5)
+                else if (mBoard.mCurrentWave > 5 && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4)
                 {
                     GraveDangerSpawnRandomGrave();
                 }

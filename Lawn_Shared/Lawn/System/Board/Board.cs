@@ -994,7 +994,7 @@ namespace Lawn
         {
             if (mLevel == ExtGameLevel.CUSTOM_LEVEL_T3W4)
             {
-                for (int col = 5; col < 9; ++col)
+                for (int col = 6; col < 9; ++col)
                 {
                     for (int row = 0; row < 5; ++row)
                         AddAGraveStone(col, row);
@@ -7649,6 +7649,10 @@ namespace Lawn
 
         public bool CanAddGraveStoneAt(int theGridX, int theGridY)
         {
+            if (mGridSquareType[theGridX, theGridY] != GridSquareType.Grass && mGridSquareType[theGridX, theGridY] != GridSquareType.HighGround && mGridSquareType[theGridX, theGridY] != GridSquareType.Pool)
+            {
+                return false;
+            }
             int num = -1;
             GridItem gridItem = null;
             while (IterateGridItems(ref gridItem, ref num))

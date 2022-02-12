@@ -195,7 +195,7 @@ namespace Sexy
             try
             {
 #endif
-                // LawnMod.IronPyInteractive.Serve();
+                LawnMod.IronPyInteractive.Serve();
 #if !DEBUG
             }
             catch (Exception e)
