@@ -2852,7 +2852,7 @@ namespace Lawn
                     if (flag)
                     {
                         mApp.PlayFoley(FoleyType.Splat);
-                        zombie2.TakeDamage(40, 0U);
+                        zombie2.TakeDamage(zombie2.mZombieType == ZombieType.Boss ? 40 : 800, 0U);
                         mState = PlantState.ChomperBitingMissed;
                         return;
                     }
@@ -4429,6 +4429,7 @@ namespace Lawn
                     {
                         zombie3.DieWithLoot();
                     }
+                    mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.Coin);
                     mBoard.AddCoin(mX - 20, mY, CoinType.Sun, CoinMotion.Coin);
                     mBoard.AddCoin(mX - 40, mY, CoinType.Sun, CoinMotion.Coin);
                     mBoard.AddCoin(mX - 60, mY, CoinType.Sun, CoinMotion.Coin);

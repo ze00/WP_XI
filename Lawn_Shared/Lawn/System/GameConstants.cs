@@ -1684,7 +1684,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Torchwood, null, ReanimationType.Torchwood, 29, 175, 750, PlantSubClass.Normal, 0, "TORCHWOOD"),
                 new PlantDefinition(SeedType.Tallnut, null, ReanimationType.Tallnut, 28, 125, 3000, PlantSubClass.Normal, 0, "TALL_NUT"),
                 new PlantDefinition(SeedType.Seashroom, null, ReanimationType.Seashroom, 39, 0, 750, PlantSubClass.Shooter, 150, "SEA_SHROOM"),
-                new PlantDefinition(SeedType.Plantern, null, ReanimationType.Plantern, 38, 25, 3000, PlantSubClass.Normal, 2500, "PLANTERN"),
+                new PlantDefinition(SeedType.Plantern, null, ReanimationType.Plantern, 38, 100, 3000, PlantSubClass.Normal, 2500, "PLANTERN"),
                 new PlantDefinition(SeedType.Cactus, null, ReanimationType.Cactus, 15, 125, 750, PlantSubClass.Shooter, 150, "CACTUS"),
                 new PlantDefinition(SeedType.Blover, null, ReanimationType.Blover, 18, 100, 750, PlantSubClass.Normal, 0, "BLOVER"),
                 new PlantDefinition(SeedType.Splitpea, null, ReanimationType.Splitpea, 32, 125, 750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),

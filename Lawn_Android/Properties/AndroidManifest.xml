@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="ze00.pvz.XI" android:versionName="3.0.4" android:installLocation="preferExternal" android:versionCode="0304">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="ze00.pvz.XI" android:versionName="3.0.6" android:installLocation="preferExternal" android:versionCode="200306">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="29" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="XI" android:icon="@drawable/Icon"></application>
+	<application android:label="XI" android:icon="@drawable/qrcode"></application>
 </manifest>

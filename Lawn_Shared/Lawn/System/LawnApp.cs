@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Sexy;
 using Sexy.TodLib;
+using Lawn.ExtGame;
 
 namespace Lawn
 {
@@ -1867,7 +1868,7 @@ namespace Lawn
             string text;
             if (!cachedStageStrings.TryGetValue(theLevel, out text))
             {
-                int num = TodCommon.ClampInt((theLevel - 1) / 10 + 1, 1, 6);
+                int num = TodCommon.ClampInt((theLevel - 1) / 10 + 1, 1, ExtGameDef.NUM_BIG_STAGE);
                 int num2 = theLevel - (num - 1) * 10;
                 text = Common.StrFormat_(TodStringFile.TodStringTranslate("[STAGE_STRING]"), num, num2);
                 cachedStageStrings.Add(theLevel, text);
@@ -3404,7 +3405,7 @@ namespace Lawn
             if (IsAdventureMode())
             {
                 int level = mBoard.mLevel;
-                if (level == 60)
+                if (level == ExtGameDef.CUSTOM_LEVEL_END)
                 {
                     if (mPlayerInfo.mIZombieUnlocked == 3 && HasBeatenChallenge(GameMode.PuzzleIZombie3))
                     {
