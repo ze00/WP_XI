@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lawn.ExtGame;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
@@ -483,7 +484,7 @@ namespace Lawn
                 mVariant = false;
                 break;
             case ZombieType.Catapult:
-                mBodyHealth = 850;
+                mBodyHealth = 1300;
                 mPosX = Constants.WIDE_BOARD_WIDTH + 25 + RandomNumbers.NextNumber(10);
                 mSummonCounter = 20;
                 if (IsOnBoard())
@@ -6518,7 +6519,7 @@ namespace Lawn
                 if (mPosX <= 650 + Constants.BOARD_EXTRA_ROOM && FindCatapultTarget() != null && mSummonCounter > 0)
                 {
                     mZombiePhase = ZombiePhase.CatapultLaunching;
-                    mPhaseCounter = 300;
+                    mPhaseCounter = ExtGameDef.ZOMBIE_CATAPULT_LAUNCH_RATE;
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_shoot, ReanimLoopType.PlayOnceAndHold, 0, 24f);
                     return;
                 }
@@ -6567,7 +6568,7 @@ namespace Lawn
                 if (plant != null)
                 {
                     mZombiePhase = ZombiePhase.CatapultLaunching;
-                    mPhaseCounter = 300;
+                    mPhaseCounter = ExtGameDef.ZOMBIE_CATAPULT_LAUNCH_RATE;
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_shoot, ReanimLoopType.PlayOnceAndHold, 20, 24f);
                     return;
                 }
@@ -10426,10 +10427,7 @@ namespace Lawn
 
         public bool IsTangleKelpTarget()
         {
-            if (!mApp.mBoard.StageHasPool())
-            {
-                return false;
-            }
+
             if (mZombieHeight == ZombieHeight.DraggedUnder)
             {
                 return true;

@@ -21,5 +21,7 @@ namespace Lawn.ExtGame
         public const int NUM_BIG_STAGE = 7;
         public const int CUSTOM_LEVEL_START = 51;
         public const int CUSTOM_LEVEL_END = 61;
+
+        public const int ZOMBIE_CATAPULT_LAUNCH_RATE = 150;
     }
 }

@@ -200,7 +200,7 @@ namespace Sexy
             }
             catch (Exception e)
             {
-                Sexy.GlobalStaticVars.gPvZActivity.OnException(this, e);
+                Sexy.GlobalStaticVars.gPvZActivity.OnException(this, e, true);
             }
 #endif
             // Window scaling
@@ -499,6 +499,6 @@ namespace Sexy
 {
     public static partial class GlobalStaticVars
     {
-        public static Lawn_Android.PvZActivity gPvZActivity;
+        public static Lawn_Android.XIActivity gPvZActivity;
     }
 }

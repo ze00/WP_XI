@@ -648,7 +648,7 @@ namespace Lawn
                 //Image imageInAtlasById = AtlasResources.GetImageInAtlasById((int)(10300 + mSeedType));
                 g.SetColorizeImages(true);
                 g.SetColor(new Color(255, 255, 255, (int)(255f * Math.Min(1f, mDisappearCountdown / 100f))));
-                Plant.DrawSeedType(g, mSeedType, mImitaterType, DrawVariation.Normal, num * Constants.S/* + imageInAtlasById.GetCelWidth() / 2 */+ Constants.Plant_Squished_Offset.X, num2 * Constants.S + (float)Constants.New.Board_GridCellSizeY_6Rows * (1-ratioSquished) * Constants.S/*+ imageInAtlasById.GetCelHeight()*/ + Constants.Plant_Squished_Offset.Y);
+                Plant.DrawSeedType(g, mSeedType, mImitaterType, DrawVariation.Normal, num * Constants.S/* + imageInAtlasById.GetCelWidth() / 2 */+ Constants.Plant_Squished_Offset.X, num2 * Constants.S + (float)Constants.New.Board_GridCellSizeY_6Rows * (1 - ratioSquished) * Constants.S/*+ imageInAtlasById.GetCelHeight()*/ + Constants.Plant_Squished_Offset.Y);
                 g.SetScale(1f, 1f, 0f, 0f);
                 g.SetColorizeImages(false);
                 return;
@@ -1064,7 +1064,7 @@ namespace Lawn
                 }
             }
             Debug.ASSERT(false);
-            IL_157:
+        IL_157:
             if (mSeedType == SeedType.Kernelpult && thePlantWeapon == PlantWeapon.Secondary)
             {
                 projectileType = ProjectileType.Butter;
@@ -1390,7 +1390,7 @@ namespace Lawn
                                     num3 = 30;
                                 }
                             }
-                            if ((mSeedType != SeedType.ExplodeONut || theZombieItem.mZombiePhase != ZombiePhase.PolevaulterInVault) && (mSeedType != SeedType.Tanglekelp || theZombieItem.mInPool))
+                            if ((mSeedType != SeedType.ExplodeONut || theZombieItem.mZombiePhase != ZombiePhase.PolevaulterInVault))
                             {
                                 TRect zombieRect = theZombieItem.GetZombieRect();
                                 if (!isPortalCheckNeeded)
@@ -1519,9 +1519,9 @@ namespace Lawn
                 {
                     SeedType seedType = (SeedType)RandomNumbers.NextNumber((int)SeedType.Melonpult);
                     while (mBoard.SeedNotRecommendedForLevel(seedType) != 0)
-                        {
+                    {
                         seedType = (SeedType)RandomNumbers.NextNumber((int)SeedType.Melonpult);
-                        }
+                    }
                     mBoard.AddCoin(mX, mY, CoinType.UsableSeedPacket, CoinMotion.FromPlant).mUsableSeedType = seedType;
                 }
                 if (mApp.mGameMode == GameMode.ChallengeBigTime)
@@ -1878,7 +1878,7 @@ namespace Lawn
 
         public static bool IsAquatic(SeedType theSeedType)
         {
-            return theSeedType == SeedType.Lilypad || theSeedType == SeedType.Tanglekelp || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Cattail;
+            return theSeedType == SeedType.Lilypad || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Cattail;
         }
 
         public static bool IsFlying(SeedType theSeedtype)
@@ -2135,7 +2135,7 @@ namespace Lawn
                         }
                     }
                 }
-                IL_108:;
+            IL_108:;
             }
         }
 
@@ -2291,10 +2291,10 @@ namespace Lawn
                     }
                     goto IL_27E;
                 }
-                IL_15B:
+            IL_15B:
                 result = new TRect(mX + 20, mY, mWidth - 50, mHeight);
                 return result;
-                IL_27E:
+            IL_27E:
                 result = new TRect(mX + 60, mY, 800, mHeight);
             }
             return result;
@@ -2670,7 +2670,7 @@ namespace Lawn
                 GlobalStaticVars.gLawnApp.mReanimatorCache.DrawCachedZombie(g, thePosX, thePosY, theZombieType);
                 return;
             }
-            if (theSeedType2 == SeedType.Sprout) 
+            if (theSeedType2 == SeedType.Sprout)
             {
                 Image image = AtlasResources.IMAGE_CACHED_MARIGOLD;
                 int num = (int)(thePosX - (float)(image.mWidth));// * g.mScaleX);
@@ -3070,7 +3070,7 @@ namespace Lawn
                         }
                     }
                 }
-                IL_322:;
+            IL_322:;
             }
             if (zombie != null)
             {
@@ -3570,7 +3570,8 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && ((mShootingCounter >= 9 && mShootingCounter < 13) || (mShootingCounter >= 18 && mShootingCounter < 21) || (mShootingCounter >= 34 && mShootingCounter < 39))) {
+            else if (mSeedType == SeedType.Threepeater && ((mShootingCounter >= 9 && mShootingCounter < 13) || (mShootingCounter >= 18 && mShootingCounter < 21) || (mShootingCounter >= 34 && mShootingCounter < 39)))
+            {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
                 Reanimation reanimation = mApp.ReanimationTryToGet(mHeadReanimID);
@@ -4370,7 +4371,8 @@ namespace Lawn
             if (mState != PlantState.TanglekelpGrabbing)
             {
                 Zombie zombie = FindTargetZombie(mRow, PlantWeapon.Primary);
-                if (zombie != null)
+                ZombieType zombieType = (zombie == null ? ZombieType.Invalid : zombie.mZombieType);
+                if (zombie != null && zombieType != ZombieType.Boss && zombieType != ZombieType.Catapult && zombieType != ZombieType.Gargantuar && zombieType != ZombieType.RedeyeGargantuar && zombieType != ZombieType.Digger && zombieType != ZombieType.Zamboni)
                 {
                     mApp.PlayFoley(FoleyType.Floop);
                     mState = PlantState.TanglekelpGrabbing;
@@ -5285,7 +5287,7 @@ namespace Lawn
 
         public void GoldMagnetFindTargets()
         {
-            for (;;)
+            for (; ; )
             {
                 MagnetItem freeMagnetItem = GetFreeMagnetItem();
                 if (freeMagnetItem == null)

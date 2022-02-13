@@ -91,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LicensesAndChangeLog.cs" />
-    <Compile Include="PvZActivity.cs" />
+    <Compile Include="XIActivity.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AndroidGameIME.cs" />
     <Compile Include="MonoGame.Framework.Net\MACRO.cs" />

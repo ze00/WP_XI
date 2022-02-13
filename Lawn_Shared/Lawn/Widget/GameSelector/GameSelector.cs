@@ -1,4 +1,5 @@
 ﻿using System;
+using Lawn.ExtGame;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
@@ -250,7 +251,7 @@ namespace Lawn
                 float num2 = 0f;
                 float num3 = 0f;
                 float num4 = 0f;
-                int num5 = TodCommon.ClampInt((mLevel - 1) / 10 + 1, 1, 6);
+                int num5 = TodCommon.ClampInt((mLevel - 1) / 10 + 1, 1, ExtGameDef.NUM_BIG_STAGE);
                 int num6 = mLevel - (num5 - 1) * 10;
                 if (num5 == 1)
                 {

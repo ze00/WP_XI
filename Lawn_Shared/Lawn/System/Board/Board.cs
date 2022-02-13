@@ -994,7 +994,7 @@ namespace Lawn
         {
             if (mLevel == ExtGameLevel.CUSTOM_LEVEL_T3W4)
             {
-                for (int col = 6; col < 9; ++col)
+                for (int col = 5; col < 9; ++col)
                 {
                     for (int row = 0; row < 5; ++row)
                         AddAGraveStone(col, row);
@@ -1817,6 +1817,10 @@ namespace Lawn
                         }
                         if (theType == SeedType.Lilypad || theType == SeedType.Tanglekelp || theType == SeedType.Seashroom)
                         {
+                            if (theType == SeedType.Tanglekelp && StageHasRoof() && plantsOnLawn.mNormalPlant == null || plantsOnLawn.mUnderPlant == null)
+                            {
+                                return PlantingReason.Ok;
+                            }
                             if (!IsPoolSquare(theGridX, theGridY))
                             {
                                 return PlantingReason.OnlyInPool;
