@@ -167,6 +167,7 @@ namespace Lawn
             mCobTargetRow = 0;
             mTargetZombieID = null;
             mLastPortalX = -1;
+            mFromPeaHead = false;
             if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
             {
                 mOnHighGround = true;

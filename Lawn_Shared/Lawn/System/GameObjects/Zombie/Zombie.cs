@@ -250,6 +250,7 @@ namespace Lawn
             mHasGroundTrack = false;
             mSummonedDancers = false;
             mSurprised = false;
+            mIsSpecialUnit = false;
             for (int i = 0; i < GameConstants.MAX_ZOMBIE_FOLLOWERS; i++)
             {
                 mFollowerZombieID[i] = null;
@@ -467,7 +468,10 @@ namespace Lawn
                     aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_zombie_gargantuar_telephonepole, AtlasResources.IMAGE_REANIM_COBCANNON_COB);
                 }
                 if (RandomNumbers.NextNumber(5) == 0)
+                {
+                    mIsSpecialUnit = true;
                     aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_zombie_gargantuar_telephonepole, AtlasResources.IMAGE_REANIM_TALLNUT_BODY);
+                }
 
                 break;
             }
@@ -863,6 +867,9 @@ namespace Lawn
                 mZombiePhase = ZombiePhase.SquashPreLaunch;
                 mVariant = false;
                 AddBucket();
+                mShieldType = ShieldType.Door;
+                mShieldHealth = 1100;
+                AttachShield();
                 break;
             }
             }

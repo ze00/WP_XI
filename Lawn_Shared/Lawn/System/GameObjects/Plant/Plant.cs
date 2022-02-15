@@ -121,6 +121,7 @@ namespace Lawn
                     mY -= Constants.ZenGardenGreenhouseOffset.Y;
                 }
             }
+            mFastLaunchCounter = 0;
             mAnimCounter = 0;
             mAnimPing = true;
             mFrame = 0;
@@ -1021,7 +1022,7 @@ namespace Lawn
                     switch (seedType)
                     {
                     case SeedType.Cabbagepult:
-                        projectileType = ProjectileType.Cabbage;
+                        projectileType = ProjectileType.Snowpea;
                         goto IL_157;
                     case SeedType.Kernelpult:
                         projectileType = ProjectileType.Kernel;
@@ -3570,7 +3571,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && ((mShootingCounter >= 9 && mShootingCounter < 13) || (mShootingCounter >= 18 && mShootingCounter < 21) || (mShootingCounter >= 34 && mShootingCounter < 39)))
+            else if (mSeedType == SeedType.Threepeater && ((mShootingCounter >= 9 && mShootingCounter < 13) || (mShootingCounter >= 18 && mShootingCounter < 25) || (mShootingCounter >= 34 && mShootingCounter < 39)))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
@@ -5812,6 +5813,8 @@ namespace Lawn
         public int mTargetY;
 
         public int mStartRow;
+
+        public int mFastLaunchCounter;
 
         public TodParticleSystem mParticleID;
 

@@ -999,16 +999,6 @@ namespace Lawn
                     for (int row = 0; row < 5; ++row)
                         AddAGraveStone(col, row);
                 }
-                mSeedBank.mSeedPackets[0].SetPacketType(SeedType.Sunflower, SeedType.None);
-                mSeedBank.mSeedPackets[1].SetPacketType(SeedType.Gravebuster, SeedType.None);
-                mSeedBank.mSeedPackets[2].SetPacketType(SeedType.Cherrybomb, SeedType.None);
-                mSeedBank.mSeedPackets[3].SetPacketType(SeedType.Plantern, SeedType.None);
-                mSeedBank.mSeedPackets[4].SetPacketType(SeedType.Squash, SeedType.None);
-                mSeedBank.mSeedPackets[5].SetPacketType(SeedType.Threepeater, SeedType.None);
-                mSeedBank.mSeedPackets[6].SetPacketType(SeedType.Garlic, SeedType.None);
-                mSeedBank.mSeedPackets[7].SetPacketType(SeedType.Pumpkinshell, SeedType.None);
-                mSeedBank.mSeedPackets[8].SetPacketType(SeedType.Iceshroom, SeedType.None);
-                mSeedBank.mSeedPackets[9].SetPacketType(SeedType.InstantCoffee, SeedType.None);
             }
         }
         public void InitLevel()
@@ -3522,7 +3512,7 @@ namespace Lawn
 
         public bool ChooseSeedsOnCurrentLevel()
         {
-            return !mApp.IsChallengeWithoutSeedBank() && !HasConveyorBeltSeedBank() && mApp.mGameMode != GameMode.ChallengeIce && mApp.mGameMode != GameMode.ChallengeZenGarden && mApp.mGameMode != GameMode.TreeOfWisdom && mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && mApp.mGameMode != GameMode.ChallengeZombiquarium && !mApp.IsIZombieLevel() && !mApp.IsSquirrelLevel() && !mApp.IsSlotMachineLevel() && ((!mApp.IsAdventureMode() && !mApp.IsQuickPlayMode()) || !mApp.IsFirstTimeAdventureMode() || mLevel > 7) && mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4;
+            return !mApp.IsChallengeWithoutSeedBank() && !HasConveyorBeltSeedBank() && mApp.mGameMode != GameMode.ChallengeIce && mApp.mGameMode != GameMode.ChallengeZenGarden && mApp.mGameMode != GameMode.TreeOfWisdom && mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && mApp.mGameMode != GameMode.ChallengeZombiquarium && !mApp.IsIZombieLevel() && !mApp.IsSquirrelLevel() && !mApp.IsSlotMachineLevel() && ((!mApp.IsAdventureMode() && !mApp.IsQuickPlayMode()) || !mApp.IsFirstTimeAdventureMode() || mLevel > 7);
         }
 
         public int GetNumSeedsInBank()
@@ -3578,10 +3568,6 @@ namespace Lawn
             if (mApp.IsSlotMachineLevel())
             {
                 return 3;
-            }
-            if (mLevel == (int)ExtGameLevel.CUSTOM_LEVEL_T3W4)
-            {
-                return 10;
             }
             int num = mApp.mPlayerInfo.mPurchases[21] + 6;
             int seedsAvailable = mApp.GetSeedsAvailable();
