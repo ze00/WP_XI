@@ -90,15 +90,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="LicensesAndChangeLog.cs" />
-    <Compile Include="XIActivity.cs" />
-=======
-    <Compile Include="AndroidGameIME.cs" />
     <Compile Include="BuglyAppBind.cs" />
     <Compile Include="BuglyAppBindId.cs" />
-    <Compile Include="PvZActivity.cs" />
->>>>>>> ec9eba164905bd2971b02c623c3bf25fa4392b15
+    <Compile Include="LicensesAndChangeLog.cs" />
+    <Compile Include="XIActivity.cs" />
+    <Compile Include="AndroidGameIME.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AndroidGameIME.cs" />
     <Compile Include="MonoGame.Framework.Net\MACRO.cs" />

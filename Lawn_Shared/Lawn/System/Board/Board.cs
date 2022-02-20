@@ -1807,7 +1807,7 @@ namespace Lawn
                         }
                         if (theType == SeedType.Lilypad || theType == SeedType.Tanglekelp || theType == SeedType.Seashroom)
                         {
-                            if (theType == SeedType.Tanglekelp && StageHasRoof() && plantsOnLawn.mNormalPlant == null || plantsOnLawn.mUnderPlant == null)
+                            if (theType == SeedType.Tanglekelp && StageHasRoof() && (plantsOnLawn.mNormalPlant == null || plantsOnLawn.mUnderPlant == null))
                             {
                                 return PlantingReason.Ok;
                             }
@@ -9015,8 +9015,6 @@ namespace Lawn
                 int num2 = Math.Max(CountPlantByType(theSeedType), CountPlantByType(theImitaterType));
                 if (theImitaterType == SeedType.Threepeater || theSeedType == SeedType.Threepeater)
                     num += num2 * 25;
-                else if (theSeedType == SeedType.Marigold || theImitaterType == SeedType.Marigold)
-                    num += num2 * 150;
                 else
                     num += num2 * 50;
             }

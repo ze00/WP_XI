@@ -213,7 +213,7 @@ namespace Lawn
             }
             else if (mProjectileType == ProjectileType.Fireball)
             {
-                Debug.ASSERT(false);
+                ConvertToFireball();
             }
             else if (mProjectileType == ProjectileType.Cobbig)
             {

@@ -51,10 +51,10 @@ namespace Lawn_Android
                     break;
                 }
             }
-            string buglyId = (string)(this.GetType().GetField("BuglyId", BindingFlags.Static | BindingFlags.NonPublic)?.GetValue(this) ?? "");
+            string buglyId = BuglyAppBindId.BuglyId;
             CrashReport.InitCrashReport(ApplicationContext, buglyId, true);
             Sexy.Debug.Logger = loggerBugly;
-            PvZActivity.ExceptionReporter = (Exception e) =>
+            XIActivity.ExceptionReporter = (Exception e) =>
             {
                 CrashReport.PostCatchedException(Throwable.FromException(e));
             };

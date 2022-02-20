@@ -113,8 +113,8 @@ namespace Lawn_Android
 		public partial class Xml
 		{
 			
-			// aapt resource value: 0x7F030000
-			public const int network_security_config = 2130903040;
+			// aapt resource value: 0x7F050000
+			public const int network_security_config = 2131034112;
 			
 			static Xml()
 			{

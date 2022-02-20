@@ -1022,7 +1022,15 @@ namespace Lawn
                     switch (seedType)
                     {
                     case SeedType.Cabbagepult:
-                        projectileType = ProjectileType.Snowpea;
+                        if (mFastLaunchCounter != 0)
+                        {
+                            projectileType = ProjectileType.Fireball;
+                            mFastLaunchCounter--;
+                        }
+                        else
+                        {
+                            projectileType = ProjectileType.Cabbage;
+                        }
                         goto IL_157;
                     case SeedType.Kernelpult:
                         projectileType = ProjectileType.Kernel;
@@ -3627,6 +3635,16 @@ namespace Lawn
                             thePlantWeapon = PlantWeapon.Secondary;
                         }
                         Zombie theTargetZombie = FindTargetZombie(mRow, thePlantWeapon);
+                        if (mFastLaunchCounter == 0)
+                        {
+                            if (mSeedType == SeedType.Cabbagepult && RandomNumbers.NextNumber(20) == 0)
+                            {
+                                mFastLaunchCounter = 5;
+                            }
+                        } else
+                        {
+                            mShootingCounter = 6;
+                        }
                         Fire(theTargetZombie, mRow, thePlantWeapon);
                         return;
                     }
