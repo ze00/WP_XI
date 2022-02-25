@@ -197,7 +197,7 @@ namespace Lawn
                     mZombiesInWave[num13, num14] = (ZombieType)b.ReadLong();
                 }
             }
-            if (b.ReadLong() != 777)
+            if (b.ReadLong() != SAVE_CHECK_NUMBER)
             {
                 throw new Exception("Check number mismatch while loading.");
             }
@@ -7875,7 +7875,7 @@ namespace Lawn
                     DisplayAdvice("[ADVICE_PLANT_SUNFLOWER3]", MessageStyle.TutorialLevel2, AdviceType.None);
                 }
             }
-            if ((mTutorialState == TutorialState.Level2PickUpSunflower || mTutorialState == TutorialState.MoresunPlantSunflower || mTutorialState == TutorialState.MoresunRefreshSunflower) && mTutorialTimer == 0)
+            if ((mTutorialState == TutorialState.MoresunPickUpSunflower || mTutorialState == TutorialState.MoresunPlantSunflower || mTutorialState == TutorialState.MoresunRefreshSunflower) && mTutorialTimer == 0)
             {
                 DisplayAdvice("[ADVICE_PLANT_SUNFLOWER5]", MessageStyle.TutorialLater, AdviceType.PlantSunflower5);
                 mTutorialTimer = -1;
@@ -9905,7 +9905,7 @@ namespace Lawn
                         b.WriteLong((int)mZombiesInWave[num4, num5]);
                     }
                 }
-                b.WriteLong(777);
+                b.WriteLong(SAVE_CHECK_NUMBER);
             }
             catch (Exception ex)
             {

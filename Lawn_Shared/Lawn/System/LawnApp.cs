@@ -465,6 +465,7 @@ namespace Lawn
                         mGameSelector.SyncProfile(true);
                     }
                 }
+                ShowGameSelector();
             }
             KillDialog(29);
         }
@@ -3420,7 +3421,7 @@ namespace Lawn
                     if (mPlayerInfo.mFinishedAdventure == 1)
                     {
                         mPlayerInfo.mNeedsMessageOnGameSelector = true;
-                        mPlayerInfo.mMiniGamesUnlockable = 19;
+                        mPlayerInfo.mMiniGamesUnlockable = (int)GameMode.MiniGameCount;
                         int num = 0;
                         if (HasBeatenChallenge(GameMode.ChallengeWarAndPeas))
                         {
@@ -3495,9 +3496,9 @@ namespace Lawn
                             {
                                 mPlayerInfo.mVasebreakerUnlocked = 3;
                             }
-                            if (mPlayerInfo.mVasebreakerUnlocked > 10)
+                            if (mPlayerInfo.mVasebreakerUnlocked > (int)GameMode.ScaryPotterCount)
                             {
-                                mPlayerInfo.mVasebreakerUnlocked = 10;
+                                mPlayerInfo.mVasebreakerUnlocked = (int)GameMode.ScaryPotterCount;
                             }
                         }
                         else
@@ -3508,9 +3509,9 @@ namespace Lawn
                             {
                                 mPlayerInfo.mIZombieUnlocked = 3;
                             }
-                            if (mPlayerInfo.mIZombieUnlocked > 10)
+                            if (mPlayerInfo.mIZombieUnlocked > (int)GameMode.PuzzleIZombieCount)
                             {
-                                mPlayerInfo.mIZombieUnlocked = 10;
+                                mPlayerInfo.mIZombieUnlocked = (int)GameMode.PuzzleIZombieCount;
                             }
                         }
                     }
@@ -3535,7 +3536,7 @@ namespace Lawn
                 }
             }
             int numTrophies3 = GetNumTrophies(ChallengePage.Challenge);
-            if (numTrophies3 == 19)
+            if (numTrophies3 == (int)GameMode.MiniGameCount)
             {
                 ReportAchievement.GiveAchievement(AchievementId.BeyondTheGrave);
             }
