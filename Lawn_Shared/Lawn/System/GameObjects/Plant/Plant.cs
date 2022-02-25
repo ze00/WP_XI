@@ -541,7 +541,7 @@ namespace Lawn
             UpdateReanim();
         }
 
-        public void Update()
+        public void Update()//3update
         {
             if ((!IsOnBoard() || mApp.mGameScene != GameScenes.LevelIntro || !mApp.IsWallnutBowlingLevel()) && (!IsOnBoard() || mApp.mGameMode != GameMode.ChallengeZenGarden) && (!IsOnBoard() || !mBoard.mCutScene.ShouldRunUpsellBoard()) && IsOnBoard() && mApp.mGameScene != GameScenes.Playing)
             {
@@ -556,7 +556,7 @@ namespace Lawn
             UpdateReanim();
         }
 
-        public void Animate()
+        public void Animate()//3update
         {
             if ((mSeedType == SeedType.Cherrybomb || mSeedType == SeedType.Jalapeno) && mApp.mGameMode != GameMode.ChallengeZenGarden)
             {
@@ -569,15 +569,18 @@ namespace Lawn
             }
             if (mRecentlyEatenCountdown > 0)
             {
-                mRecentlyEatenCountdown -= 3;
+                //mRecentlyEatenCountdown -= 3;
+                mRecentlyEatenCountdown--;
             }
             if (mEatenFlashCountdown > 0)
             {
-                mEatenFlashCountdown -= 3;
+                //mEatenFlashCountdown -= 3;
+                mEatenFlashCountdown--;
             }
             if (mBeghouledFlashCountdown > 0)
             {
-                mBeghouledFlashCountdown -= 3;
+                //mBeghouledFlashCountdown -= 3;
+                mBeghouledFlashCountdown--;
             }
             if (mSquished)
             {
@@ -602,7 +605,8 @@ namespace Lawn
                 int num = mFrameLength * mNumFrames - 1;
                 if (mAnimCounter < num)
                 {
-                    mAnimCounter += 3;
+                    //mAnimCounter += 3;
+                    mAnimCounter++;
                 }
                 else
                 {
@@ -612,7 +616,8 @@ namespace Lawn
             }
             else if (mAnimCounter > 0)
             {
-                mAnimCounter -= 3;
+                //mAnimCounter -= 3;
+                mAnimCounter--;
             }
             else
             {
@@ -1464,7 +1469,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateProductionPlant()
+        public void UpdateProductionPlant()//3update
         {
             if (!IsInPlay())
             {
@@ -1494,7 +1499,8 @@ namespace Lawn
             {
                 return;
             }
-            mLaunchCounter -= 3;
+            //mLaunchCounter -= 3;
+            mLaunchCounter--;
             if (mLaunchCounter <= 100)
             {
                 int num = TodCommon.TodAnimateCurve(100, 0, mLaunchCounter, 0, 100, TodCurves.Linear);
@@ -1548,7 +1554,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateShooter()
+        public void UpdateShooter()//1update
         {
             mLaunchCounter--;
             if (mLaunchCounter <= 0)
@@ -1900,7 +1906,7 @@ namespace Lawn
             return theSeedtype == SeedType.Wintermelon || theSeedtype == SeedType.Twinsunflower || theSeedtype == SeedType.Spikerock || theSeedtype == SeedType.Cobcannon || theSeedtype == SeedType.GoldMagnet || theSeedtype == SeedType.Gloomshroom || theSeedtype == SeedType.Cattail;
         }
 
-        public void UpdateAbilities()
+        public void UpdateAbilities()//3update
         {
             if (!IsInPlay())
             {
@@ -1908,7 +1914,8 @@ namespace Lawn
             }
             if (mState == PlantState.Doingspecial || mSquished)
             {
-                mDisappearCountdown -= 3;
+                //mDisappearCountdown -= 3;
+                mDisappearCountdown--;
                 if (mDisappearCountdown < 0)
                 {
                     Die();
@@ -1917,12 +1924,15 @@ namespace Lawn
             }
             if (mWakeUpCounter > 0)
             {
-                mWakeUpCounter -= 3;
-                if (mWakeUpCounter >= 60 && mWakeUpCounter < 63)
+                //mWakeUpCounter -= 3;
+                mWakeUpCounter--;
+                //if (mWakeUpCounter >= 60 && mWakeUpCounter < 63)
+                if (mWakeUpCounter == 60)
                 {
                     mApp.PlayFoley(FoleyType.Wakeup);
                 }
-                if (mWakeUpCounter >= 0 && mWakeUpCounter < 3)
+                //if (mWakeUpCounter >= 0 && mWakeUpCounter < 3)
+                if (mWakeUpCounter == 0) 
                 {
                     SetSleeping(false);
                 }
@@ -1934,12 +1944,13 @@ namespace Lawn
             UpdateShooting();
             if (mStateCountdown > 0)
             {
-                mStateCountdown -= 3;
+                //mStateCountdown -= 3;
+                mStateCountdown--;
             }
             if (mApp.IsWallnutBowlingLevel())
             {
-                UpdateBowling();
-                UpdateBowling();
+                //UpdateBowling();
+                //UpdateBowling();
                 UpdateBowling();
                 return;
             }
@@ -2033,13 +2044,14 @@ namespace Lawn
             }
             if (mSubclass == 1)
             {
-                UpdateShooter();
-                UpdateShooter();
+                //UpdateShooter();
+                //UpdateShooter();
                 UpdateShooter();
             }
             if (mDoSpecialCountdown > 0)
             {
-                mDoSpecialCountdown -= 3;
+                //mDoSpecialCountdown -= 3;
+                mDoSpecialCountdown--;
                 if (mDoSpecialCountdown <= 0)
                 {
                     DoSpecial();
@@ -2364,7 +2376,7 @@ namespace Lawn
             return zombie;
         }
 
-        public void UpdateSquash()
+        public void UpdateSquash()//3update
         {
             Reanimation reanimation = mApp.ReanimationTryToGet(mBodyReanimID);
             Debug.ASSERT(reanimation != null);
@@ -2413,7 +2425,7 @@ namespace Lawn
                         }
                         mState = PlantState.SquashRising;
                         mStateCountdown = 50;
-                        mRenderOrder = Board.MakeRenderOrder(RenderLayer.Projectile, mRow, 0);
+                        mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, mRow, 0);
                     }
                     return;
                 }
@@ -2593,7 +2605,7 @@ namespace Lawn
             mBoard.mFogBlownCountDown = 4000;
         }
 
-        public void UpdateGraveBuster()
+        public void UpdateGraveBuster()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             if (mState == PlantState.GravebusterLanding)
@@ -2708,7 +2720,7 @@ namespace Lawn
             return mBoard != null && mBoard.mGridSquareType[mPlantCol, mRow] == GridSquareType.HighGround;
         }
 
-        public void UpdateTorchwood()
+        public void UpdateTorchwood()//3update
         {
             TRect plantAttackRect = GetPlantAttackRect(PlantWeapon.Primary);
             int num = -1;
@@ -2817,7 +2829,7 @@ namespace Lawn
             return false;
         }
 
-        public void UpdateChomper()
+        public void UpdateChomper()//3update
         {
             Reanimation reanimation = mApp.ReanimationTryToGet(mBodyReanimID);
             if (mState == PlantState.Ready)
@@ -2947,7 +2959,7 @@ namespace Lawn
             reanimation.AssignRenderGroupToPrefix("anim_eye", -1);
         }
 
-        public void UpdateBlink()
+        public void UpdateBlink()//3update
         {
             if (mBlinkReanimID != null)
             {
@@ -2963,7 +2975,8 @@ namespace Lawn
             }
             if (mBlinkCountdown > 0)
             {
-                mBlinkCountdown -= 3;
+                //mBlinkCountdown -= 3;
+                mBlinkCountdown--;
                 if (mBlinkCountdown == 0)
                 {
                     DoBlink();
@@ -2991,7 +3004,7 @@ namespace Lawn
             reanimation.SetFramesForLayer(theTrackName);
         }
 
-        public void UpdateMagnetShroom()
+        public void UpdateMagnetShroom()//3update
         {
             for (int i = 0; i < 5; i++)
             {
@@ -3263,7 +3276,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateDoomShroom()
+        public void UpdateDoomShroom()//3update
         {
             if (mIsAsleep || mState == PlantState.Doingspecial)
             {
@@ -3282,7 +3295,7 @@ namespace Lawn
             mApp.PlayFoley(FoleyType.ReverseExplosion);
         }
 
-        public void UpdateIceShroom()
+        public void UpdateIceShroom()//3update
         {
             if (mIsAsleep || mState == PlantState.Doingspecial)
             {
@@ -3292,7 +3305,7 @@ namespace Lawn
             mDoSpecialCountdown = 100;
         }
 
-        public void UpdatePotato()
+        public void UpdatePotato()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             if (mState == PlantState.Notready)
@@ -3383,7 +3396,7 @@ namespace Lawn
             return Board.MakeRenderOrder(theRenderLayer, mRow, (int)plant_ORDER * 5 - mX + num);
         }
 
-        public void AnimateNuts()
+        public void AnimateNuts()//3update
         {
             Reanimation reanimation = mApp.ReanimationTryToGet(mBodyReanimID);
             if (reanimation == null)
@@ -3531,7 +3544,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateShooting()
+        public void UpdateShooting()//3update
         {
             if (NotOnGround())
             {
@@ -3541,8 +3554,10 @@ namespace Lawn
             {
                 return;
             }
-            mShootingCounter -= 3;
-            if (mSeedType == SeedType.Fumeshroom && mShootingCounter >= 15 && mShootingCounter < 18)
+            //mShootingCounter -= 3;
+            mShootingCounter--;
+            //if (mSeedType == SeedType.Fumeshroom && mShootingCounter >= 15 && mShootingCounter < 18)
+            if (mSeedType == SeedType.Fumeshroom && mShootingCounter == 15)
             {
                 int theRenderPostition = Board.MakeRenderOrder(RenderLayer.Particle, mRow, 0);
                 AddAttachedParticle(mX + 85, mY + 31, theRenderPostition, ParticleEffect.Fumecloud);
@@ -3551,26 +3566,30 @@ namespace Lawn
             Reanimation reanimation6;
             if (mSeedType == SeedType.Gloomshroom)
             {
-                if ((mShootingCounter >= 136 && mShootingCounter < 139) || (mShootingCounter >= 108 && mShootingCounter < 111) || (mShootingCounter >= 80 && mShootingCounter < 83) || (mShootingCounter >= 52 && mShootingCounter < 55))
+                //if ((mShootingCounter >= 136 && mShootingCounter < 139) || (mShootingCounter >= 108 && mShootingCounter < 111) || (mShootingCounter >= 80 && mShootingCounter < 83) || (mShootingCounter >= 52 && mShootingCounter < 55))
+                if (mShootingCounter == 136 || mShootingCounter == 108 || mShootingCounter == 80 || mShootingCounter == 52)
                 {
                     int theRenderPostition2 = Board.MakeRenderOrder(RenderLayer.Particle, mRow, 0);
                     AddAttachedParticle(mX + 40, mY + 40, theRenderPostition2, ParticleEffect.Gloomcloud);
                 }
-                if ((mShootingCounter >= 126 && mShootingCounter < 129) || (mShootingCounter >= 98 && mShootingCounter < 101) || (mShootingCounter >= 70 && mShootingCounter < 73) || (mShootingCounter >= 42 && mShootingCounter < 45))
+                //if ((mShootingCounter >= 126 && mShootingCounter < 129) || (mShootingCounter >= 98 && mShootingCounter < 101) || (mShootingCounter >= 70 && mShootingCounter < 73) || (mShootingCounter >= 42 && mShootingCounter < 45))
+                if (mShootingCounter == 126 || mShootingCounter == 98 || mShootingCounter == 70 || mShootingCounter == 42)
                 {
                     Fire(null, mRow, PlantWeapon.Primary);
                 }
             }
             else if (mSeedType == SeedType.Gatlingpea)
             {
-                if ((mShootingCounter >= 18 && mShootingCounter < 21) || (mShootingCounter >= 35 && mShootingCounter < 38) || (mShootingCounter >= 51 && mShootingCounter < 54) || (mShootingCounter >= 68 && mShootingCounter < 80))
+                //if ((mShootingCounter >= 18 && mShootingCounter < 21) || (mShootingCounter >= 35 && mShootingCounter < 38) || (mShootingCounter >= 51 && mShootingCounter < 54) || (mShootingCounter >= 68 && mShootingCounter < 71))
+                if (mShootingCounter == 18 || mShootingCounter == 35 || mShootingCounter == 51 || mShootingCounter == 68 || mShootingCounter == 78 || mShootingCounter == 88 || mShootingCounter == 98)
                 {
                     Fire(null, mRow, PlantWeapon.Primary);
                 }
             }
             else if (mSeedType == SeedType.Cattail)
             {
-                if (mShootingCounter >= 19 && mShootingCounter < 22)
+                //if (mShootingCounter >= 19 && mShootingCounter < 22)
+                if (mShootingCounter == 19)
                 {
                     Zombie zombie = FindTargetZombie(mRow, PlantWeapon.Primary);
                     if (zombie != null)
@@ -3579,7 +3598,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && ((mShootingCounter >= 9 && mShootingCounter < 13) || (mShootingCounter >= 18 && mShootingCounter < 25) || (mShootingCounter >= 34 && mShootingCounter < 39)))
+            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40)))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
@@ -3600,7 +3619,7 @@ namespace Lawn
                     return;
                 }
             }
-            else if (mShootingCounter >= 1 && mShootingCounter < 4 && mSeedType != SeedType.Threepeater)
+            else if (mShootingCounter == 1 && mSeedType != SeedType.Threepeater)
             {
                 if (mSeedType == SeedType.Splitpea)
                 {
@@ -3753,7 +3772,7 @@ namespace Lawn
                     return;
                 }
             }
-            mShootingCounter = 3;
+            mShootingCounter = 1;//3;
         }
 
         public void DrawShadow(Graphics g, float theOffsetX, float theOffsetY)
@@ -3884,7 +3903,7 @@ namespace Lawn
             TodCommon.TodDrawImageCenterScaledF(g, AtlasResources.IMAGE_PLANTSHADOW2, (theOffsetX + num2) * Constants.S, (theOffsetY + num3) * Constants.S, num4, num4);
         }
 
-        public void UpdateScaredyShroom()
+        public void UpdateScaredyShroom()//3update
         {
             if (mShootingCounter > 0)
             {
@@ -3918,7 +3937,7 @@ namespace Lawn
             return num;
         }
 
-        public void UpdateSpikeweed()
+        public void UpdateSpikeweed()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             if (mState == PlantState.SpikeweedAttacking)
@@ -4068,7 +4087,7 @@ namespace Lawn
             freeMagnetItem.mDestOffsetY *= Constants.S;
         }
 
-        public void UpdateSunShroom()
+        public void UpdateSunShroom()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             if (mState == PlantState.SunshroomSmall)
@@ -4099,12 +4118,13 @@ namespace Lawn
             }
         }
 
-        public void UpdateBowling()
+        public void UpdateBowling()//1update
         {
             Reanimation reanimation = mApp.ReanimationTryToGet(mBodyReanimID);
             if (reanimation != null && reanimation.TrackExists(Reanimation.ReanimTrackId__ground))
             {
-                float num = reanimation.GetTrackVelocity(Reanimation.ReanimTrackId__ground) / 4f;
+                //float num = reanimation.GetTrackVelocity(Reanimation.ReanimTrackId__ground) / 4f;
+                float num = reanimation.GetTrackVelocity(Reanimation.ReanimTrackId__ground) * Constants.S;
                 if (mSeedType == SeedType.GiantWallnut)
                 {
                     num *= 2f;
@@ -4247,7 +4267,7 @@ namespace Lawn
             }
         }
 
-        public void AnimatePumpkin()
+        public void AnimatePumpkin()//3update
         {
             if (!mBodyReanimID.mActive)
             {
@@ -4279,7 +4299,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateBlover()
+        public void UpdateBlover()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             if (reanimation.mLoopCount > 0 && reanimation.mLoopType != ReanimLoopType.Loop)
@@ -4293,7 +4313,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateCactus()
+        public void UpdateCactus()//3update
         {
             if (mShootingCounter > 0)
             {
@@ -4385,7 +4405,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateTanglekelp()
+        public void UpdateTanglekelp()//3update
         {
             if (mState != PlantState.TanglekelpGrabbing)
             {
@@ -4576,7 +4596,7 @@ namespace Lawn
             return reanimation2;
         }
 
-        public void UpdateReanimColor()
+        public void UpdateReanimColor()//3update
         {
             if (!IsOnBoard())
             {
@@ -4703,11 +4723,11 @@ namespace Lawn
                 flag = true;
                 reanimation.mEnableExtraOverlayDraw = false;
             }
-            //if (mSeedType != SeedType.Sunflower && mSeedType != SeedType.Twinsunflower && mSeedType != SeedType.Sunshroom && reanimation.mEnableExtraAdditiveDraw)
-            //{
-            //	flag = true;
-            //	reanimation.mEnableExtraAdditiveDraw = false;
-            //}
+            /*if (mSeedType != SeedType.SEED_SUNFLOWER && mSeedType != SeedType.SEED_TWINSUNFLOWER && mSeedType != SeedType.SEED_SUNSHROOM && reanimation.mEnableExtraAdditiveDraw)
+            {
+                flag = true;
+                reanimation.mEnableExtraAdditiveDraw = false;
+            }*/
             if (flag)
             {
                 reanimation.PropogateColorToAttachments();
@@ -4770,7 +4790,7 @@ namespace Lawn
             return IsUpgradableTo(aUpdatedType);
         }
 
-        public void UpdateCobCannon()
+        public void UpdateCobCannon()//3update
         {
             if (mState == PlantState.CobcannonArming)
             {
@@ -4828,7 +4848,7 @@ namespace Lawn
             trackInstanceByName.mTrackColor = SexyColor.White;
         }
 
-        public void UpdateGoldMagnetShroom()
+        public void UpdateGoldMagnetShroom()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             bool flag = false;
@@ -4936,7 +4956,7 @@ namespace Lawn
             mApp.RemoveReanimation(ref mSleepingReanimID);
         }
 
-        public void UpdateCoffeeBean()
+        public void UpdateCoffeeBean()//3update
         {
             if (mState == PlantState.Doingspecial)
             {
@@ -4948,7 +4968,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateUmbrella()
+        public void UpdateUmbrella()//3update
         {
             if (mState == PlantState.UmbrellaTriggered)
             {
@@ -4986,7 +5006,7 @@ namespace Lawn
             }
         }
 
-        public void AnimateGarlic()
+        public void AnimateGarlic()//3update
         {
             Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
             string reanimTrackId_anim_face = GlobalMembersReanimIds.ReanimTrackId_anim_face;
@@ -5078,7 +5098,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateImitater()
+        public void UpdateImitater()//3update
         {
             if (mState != PlantState.ImitaterMorphing)
             {
@@ -5103,7 +5123,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateReanim()
+        public void UpdateReanim()//3update
         {
             Reanimation reanimation = mApp.ReanimationTryToGet(mBodyReanimID);
             if (reanimation == null)
@@ -5288,7 +5308,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateFlowerPot()
+        public void UpdateFlowerPot()//3update
         {
             if (mState == PlantState.FlowerpotInvulnerable && mStateCountdown <= 0)
             {
@@ -5296,7 +5316,7 @@ namespace Lawn
             }
         }
 
-        public void UpdateLilypad()
+        public void UpdateLilypad()//3update
         {
             if (mState == PlantState.LilypadInvulnerable && mStateCountdown <= 0)
             {

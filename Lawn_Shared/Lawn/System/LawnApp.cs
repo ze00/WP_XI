@@ -2400,7 +2400,7 @@ namespace Lawn
             PreNewGame(GameMode.Adventure, false);
         }
 
-        public void UpdateCrazyDave()
+        public void UpdateCrazyDave()//3update
         {
             Reanimation reanimation = ReanimationTryToGet(mCrazyDaveReanimID);
             if (reanimation == null)
@@ -3655,7 +3655,7 @@ namespace Lawn
 
         private const string PLACEHOLDER_CRAZYDAVE_0 = "[CRAZY_DAVE_{0}]";
 
-        public static string AppVersionNumber = "0.1.2.5";
+        public static string AppVersionNumber = "1.2.4.2";
 
         public Board mBoard;
 

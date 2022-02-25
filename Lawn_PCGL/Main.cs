@@ -27,7 +27,7 @@ namespace Sexy
             GraphicsState.mGraphicsDeviceManager.DeviceCreated += new EventHandler<EventArgs>(graphics_DeviceCreated);
             GraphicsState.mGraphicsDeviceManager.DeviceReset += new EventHandler<EventArgs>(graphics_DeviceReset);
             GraphicsState.mGraphicsDeviceManager.PreparingDeviceSettings += new EventHandler<PreparingDeviceSettingsEventArgs>(mGraphicsDeviceManager_PreparingDeviceSettings);
-            base.TargetElapsedTime = TimeSpan.FromSeconds(0.03333333333333333);
+            base.TargetElapsedTime = TimeSpan.FromSeconds(0.01);
             base.Exiting += new EventHandler<EventArgs>(Main_Exiting);
             //PhoneApplicationService.Current.UserIdleDetectionMode = 0;
             //PhoneApplicationService.Current.Launching += new EventHandler<LaunchingEventArgs>(this.Game_Launching);
@@ -104,7 +104,15 @@ namespace Sexy
             ReportAchievement.Initialise();
             IronPyInteractive.Serve();
             base.Initialize();
-            
+            //
+            // IME Support
+            GlobalStaticVars.gSexyAppBase.mWidgetManager.mIMEHandler = new MonoGame.IMEHelper.SdlIMEHandler(this);
+            GlobalStaticVars.gSexyAppBase.mWidgetManager.mIMEHandler.TextInput += (s, e) =>
+            {
+                Debug.OutputDebug<string>(String.Format("input:{0}", e.Character));
+                GlobalStaticVars.gSexyAppBase.mWidgetManager.KeyChar(new SexyChar(e.Character));
+            };
+
         }
 
         protected override void OnExiting(object sender, EventArgs args) 
