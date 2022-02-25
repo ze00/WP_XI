@@ -168,6 +168,8 @@ namespace Lawn
             mTargetZombieID = null;
             mLastPortalX = -1;
             mFromPeaHead = false;
+            mFromStarFruit = false;
+            mStarCollisionCount = 5;
             if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
             {
                 mOnHighGround = true;
@@ -282,6 +284,10 @@ namespace Lawn
             if (mProjectileAge > num)
             {
                 mRenderOrder = Board.MakeRenderOrder(RenderLayer.Projectile, mRow, 0);
+            }
+            if (mProjectileType == ProjectileType.Star && mProjectileAge > 50)
+            {
+                mMotionType = ProjectileMotion.Straight;
             }
             if (mApp.IsFinalBossLevel())
             {
@@ -557,6 +563,8 @@ namespace Lawn
             else if (mProjectileType == ProjectileType.Star)
             {
                 particleEffect = ParticleEffect.StarSplat;
+                mStarCollisionCount--;
+                mPosX += 80;
             }
             else if (mProjectileType == ProjectileType.Puff)
             {
@@ -605,7 +613,12 @@ namespace Lawn
                     mApp.AddTodParticle(num3, num4, aRenderOrder, particleEffect);
                 }
             }
-            Die();
+            if (mProjectileType != ProjectileType.Star) {
+                Die();
+            } else if (mStarCollisionCount == 0)
+            {
+                Die();
+            }
         }
 
         public void UpdateMotion()//3update
@@ -1404,7 +1417,9 @@ namespace Lawn
         private int mTargetZombieIDSaved;
 
         public int mLastPortalX;
-        public bool mFromPeaHead = false;
+        public bool mFromPeaHead;
+        public bool mFromStarFruit;
+        public int mStarCollisionCount;
 
         private static Stack<Projectile> unusedObjects = new Stack<Projectile>(200);
     }

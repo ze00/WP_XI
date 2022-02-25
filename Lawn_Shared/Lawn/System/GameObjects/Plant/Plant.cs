@@ -2588,6 +2588,7 @@ namespace Lawn
 
         public void BlowAwayFliers(int theX, int theRow)
         {
+            IceZombies();
             int count = mBoard.mZombies.Count;
             for (int i = 0; i < count; i++)
             {
@@ -2599,6 +2600,9 @@ namespace Lawn
                     {
                         zombie.mBlowingAway = true;
                     }
+                    zombie.TakeDamage(50, 1);
+                    zombie.mChilledCounter = 750;
+                    zombie.UpdateAnimSpeed();
                 }
             }
             mApp.PlaySample(Resources.SOUND_BLOVER);
@@ -2780,10 +2784,7 @@ namespace Lawn
                         }
                         if (zombie.mRow == mRow)
                         {
-                            if (zombieRect.mX + zombieRect.mWidth < num)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                         else
                         {
@@ -3598,7 +3599,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40)))
+            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
@@ -4372,6 +4373,7 @@ namespace Lawn
                 int theX = mX + 25;
                 int theY = mY + 25;
                 Projectile projectile = mBoard.AddProjectile(theX, theY, mRenderOrder + -1, mRow, ProjectileType.Star);
+                projectile.mFromStarFruit = true;
                 projectile.mDamageRangeFlags = GetDamageRangeFlags(PlantWeapon.Primary);
                 projectile.mMotionType = ProjectileMotion.Star;
                 float velX = (float)Math.Cos(TodCommon.DegToRad(30f)) * 3.33f;
@@ -4392,7 +4394,7 @@ namespace Lawn
                     break;
                 case 3:
                     projectile.mVelX = velX;
-                    projectile.mVelY = velY;
+                    projectile.mVelY = 0f;
                     break;
                 case 4:
                     projectile.mVelX = velX;

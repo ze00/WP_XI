@@ -3629,7 +3629,7 @@ namespace Lawn
 
         public bool StageHasGraveStones()
         {
-            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel() && mApp.mGameMode != GameMode.ChallengeColumn;
+            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel() && mApp.mGameMode != GameMode.ChallengeColumn && mApp.mGameMode != GameMode.ChallengeSeeingStars && mApp.mGameMode != GameMode.ChallengeArtChallenge1 && mApp.mGameMode != GameMode.ChallengeArtChallenge2;
         }
 
         public int PixelToGridX(int theX, int theY)
