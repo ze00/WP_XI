@@ -1354,7 +1354,7 @@ namespace Lawn
             {
                 mMushroomsUsed = true;
             }
-            if (seedType == SeedType.Plantern)
+            if (seedType == SeedType.Plantern && theImitaterType != SeedType.Plantern)
             {
                 for (int i = 0; i < 4; ++i)
                 {

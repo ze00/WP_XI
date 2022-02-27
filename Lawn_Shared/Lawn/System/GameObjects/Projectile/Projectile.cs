@@ -285,10 +285,6 @@ namespace Lawn
             {
                 mRenderOrder = Board.MakeRenderOrder(RenderLayer.Projectile, mRow, 0);
             }
-            if (mProjectileType == ProjectileType.Star && mProjectileAge > 50)
-            {
-                mMotionType = ProjectileMotion.Straight;
-            }
             if (mApp.IsFinalBossLevel())
             {
                 mRenderOrder = Board.MakeRenderOrder(RenderLayer.Projectile, 5, 0);

@@ -2588,7 +2588,6 @@ namespace Lawn
 
         public void BlowAwayFliers(int theX, int theRow)
         {
-            IceZombies();
             int count = mBoard.mZombies.Count;
             for (int i = 0; i < count; i++)
             {
@@ -2596,11 +2595,8 @@ namespace Lawn
                 if (!zombie.mDead && !zombie.IsDeadOrDying())
                 {
                     zombie.GetZombieRect();
-                    if (zombie.IsFlying() && zombie.mZombiePhase != ZombiePhase.BalloonPopping)
-                    {
-                        zombie.mBlowingAway = true;
-                    }
                     zombie.TakeDamage(50, 1);
+                    zombie.mPosX = zombie.mPosX + 50 > 850 ? 850 : zombie.mPosX + 50;
                     zombie.mChilledCounter = 750;
                     zombie.UpdateAnimSpeed();
                 }
