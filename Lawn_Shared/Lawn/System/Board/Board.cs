@@ -3118,7 +3118,7 @@ namespace Lawn
                 //mApp.mZenGarden.ZenGardenUpdate(0);
                 //mApp.mZenGarden.ZenGardenUpdate(1);
                 mApp.mZenGarden.ZenGardenUpdate(/*2*/);
-                //mApp.UpdateCrazyDave();
+                mApp.UpdateCrazyDave();
             }
             if (IsScaryPotterDaveTalking())
             {
@@ -5864,7 +5864,7 @@ namespace Lawn
         {
             if (mZombies.Count >= mZombies.Capacity - 1)
             {
-                return null;
+                //return null;
             }
             bool theVariant = false;
             if (RandomNumbers.NextNumber(5) == 0)
