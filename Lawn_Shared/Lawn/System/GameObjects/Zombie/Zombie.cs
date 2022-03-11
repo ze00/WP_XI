@@ -634,6 +634,7 @@ namespace Lawn
                     mIsSpecialUnit = true;
                     mBodyHealth = mBodyMaxHealth = 1100;
                     mShieldHealth = 1;
+                    mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD);
                 }
                 break;
             case ZombieType.Balloon:
@@ -728,8 +729,11 @@ namespace Lawn
                 }
                 ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
                 aTrackInstance.mImageOverride = AtlasResources.IMAGE_BLANK;
-                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, ReanimationType.Peashooter);
-                aPeaHeadReanim.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
+                if (RandomNumbers.NextNumber(5) == 0) {
+                    mIsSpecialUnit = true;
+                }
+                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Starfruit : ReanimationType.Peashooter);
+                aPeaHeadReanim.PlayReanim(mIsSpecialUnit ? GlobalMembersReanimIds.ReanimTrackId_anim_idle : GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
                 mSpecialHeadReanimID = mApp.ReanimationGetID(aPeaHeadReanim);
                 AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
                 aBodyReanim.mFrameBasePose = 0;
@@ -870,6 +874,11 @@ namespace Lawn
                 mShieldType = ShieldType.Door;
                 mShieldHealth = 1100;
                 AttachShield();
+                if (RandomNumbers.NextNumber(10) == 0)
+                {
+                    mIsSpecialUnit = true;
+                    mApp.ReanimationTryToGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_screendoor, AtlasResources.IMAGE_REANIM_PORTAL_SQUARE_CENTER);
+                }
                 break;
             }
             }
@@ -934,10 +943,10 @@ namespace Lawn
             {
                 //for (int i = 0; i < 3; i++)
                 //{
-                    //if (mYuckyFace)
-                    //{
-                        UpdateYuckyFace();
-                    //}
+                //if (mYuckyFace)
+                //{
+                UpdateYuckyFace();
+                //}
                 //}
             }
             if (mIsEating && mHasHead)
@@ -4874,7 +4883,7 @@ namespace Lawn
             }
             if (mChilledCounter > 0)
             {
-               // mChilledCounter -= 3;
+                // mChilledCounter -= 3;
                 mChilledCounter--;
                 if (mChilledCounter <= 0)
                 {
@@ -6483,7 +6492,7 @@ namespace Lawn
 
         public bool CanTargetPlant(Plant thePlant, ZombieAttackType theAttackType)
         {
-            if (mApp.IsWallnutBowlingLevel() && theAttackType != ZombieAttackType.Vault)
+            if ((mApp.IsWallnutBowlingLevel() && theAttackType != ZombieAttackType.Vault) || thePlant.mSeedType == SeedType.ExplodeONut)
             {
                 return false;
             }
@@ -10026,14 +10035,15 @@ namespace Lawn
                 return;
             }
             //if (mPhaseCounter >= 36 && mPhaseCounter < 39)
-            if (mPhaseCounter == 36)
+            if (mPhaseCounter == 36 && !mIsSpecialUnit)
             {
                 mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_shooting, ReanimLoopType.PlayOnceAndHold, 20, 35f);
                 return;
             }
             else if (mPhaseCounter <= 0)
             {
-                mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
+                if (!mIsSpecialUnit)
+                    mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
                 mApp.PlayFoley(FoleyType.Throw);
                 Reanimation reanimation_v = mApp.ReanimationGet(mBodyReanimID);
                 if (reanimation_v != null)
@@ -10448,6 +10458,13 @@ namespace Lawn
                 aSpecialHeadReanim.ReanimationDie();
                 mSpecialHeadReanimID = null;
                 TakeDamage(1800, 9U);
+                if (mIsSpecialUnit)
+                {
+                    if (!mBoard.mChallenge.mHasPortal)
+                        mBoard.mChallenge.PortalStart();
+                    else
+                        mBoard.mChallenge.MoveAPortal();
+                }
             }
         }
 

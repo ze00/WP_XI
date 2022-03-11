@@ -176,7 +176,7 @@ namespace Lawn
                 {
                     reanimation.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_anim_idle);
                 }
-                if (mApp.IsWallnutBowlingLevel() && reanimation.TrackExists(Reanimation.ReanimTrackId__ground))
+                if ((mApp.IsWallnutBowlingLevel() && reanimation.TrackExists(Reanimation.ReanimTrackId__ground) || mSeedType == SeedType.ExplodeONut) && !mBoard.StageHasRoof())
                 {
                     reanimation.SetFramesForLayer(Reanimation.ReanimTrackId__ground);
                     if (mSeedType == SeedType.Wallnut || mSeedType == SeedType.ExplodeONut)
@@ -1947,7 +1947,7 @@ namespace Lawn
                 //mStateCountdown -= 3;
                 mStateCountdown--;
             }
-            if (mApp.IsWallnutBowlingLevel())
+            if ((mApp.IsWallnutBowlingLevel() || mSeedType == SeedType.ExplodeONut) && !mBoard.StageHasRoof())
             {
                 //UpdateBowling();
                 //UpdateBowling();
@@ -2233,7 +2233,7 @@ namespace Lawn
         public TRect GetPlantAttackRect(PlantWeapon thePlantWeapon)
         {
             TRect result = default(TRect);
-            if (mApp.IsWallnutBowlingLevel())
+            if (mApp.IsWallnutBowlingLevel() || mSeedType == SeedType.ExplodeONut)
             {
                 result = new TRect(mX, mY, mWidth - 20, mHeight);
             }
@@ -4142,7 +4142,7 @@ namespace Lawn
                 mY += num2;
             }
             int num3 = mBoard.GridToPixelY(0, mRow) - mY;
-            if (num3 > 2 || num3 < -2)
+            if ((num3 > 2 || num3 < -2))
             {
                 return;
             }
@@ -4160,7 +4160,7 @@ namespace Lawn
             {
                 int num4 = mX + mWidth / 2;
                 int num5 = mY + mHeight / 2;
-                if (mSeedType == SeedType.ExplodeONut)
+                if (mSeedType == SeedType.ExplodeONut && mApp.IsWallnutBowlingLevel())
                 {
                     mApp.PlayFoley(FoleyType.Cherrybomb);
                     mApp.PlaySample(Resources.SOUND_BOWLINGIMPACT2);

@@ -238,6 +238,7 @@ namespace Lawn
             mBeghouledMatchesThisMove = 0;
             mRainCounter = 0;
             mTreeOfWisdomTalkIndex = 0;
+            mHasPortal = false;
             for (int i = 0; i < 6; i++)
             {
                 mReanimCloud[i] = null;
@@ -990,7 +991,7 @@ namespace Lawn
             {
                 UpdateRainingSeeds();
             }
-            if (mApp.mGameMode == GameMode.ChallengePortalCombat)
+            if (mHasPortal)
             {
                 UpdatePortalCombat();
             }
@@ -3008,10 +3009,11 @@ namespace Lawn
 
         public void PortalStart()
         {
+            mHasPortal = true;
             mChallengeStateCounter = 9000;
             GridItem newGridItem = GridItem.GetNewGridItem();
             newGridItem.mGridItemType = GridItemType.PortalSquare;
-            newGridItem.mGridX = 2;
+            newGridItem.mGridX = 4;
             newGridItem.mGridY = 0;
             newGridItem.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem.mGridY, 0);
             newGridItem.OpenPortal();
@@ -3032,7 +3034,7 @@ namespace Lawn
             mBoard.mGridItems.Add(newGridItem3);
             GridItem newGridItem4 = GridItem.GetNewGridItem();
             newGridItem4.mGridItemType = GridItemType.PortalCircle;
-            newGridItem4.mGridX = 2;
+            newGridItem4.mGridX = 4;
             newGridItem4.mGridY = 4;
             newGridItem4.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem4.mGridY, 0);
             newGridItem4.OpenPortal();
@@ -5838,6 +5840,8 @@ namespace Lawn
         public int mRainCounter;
 
         public int mTreeOfWisdomTalkIndex;
+
+        public bool mHasPortal;
 
         public string mName = "Put a name here";
 

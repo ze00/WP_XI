@@ -2,7 +2,10 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
   </PropertyGroup>
+  <Target Name="UpdateVersion" BeforeTargets="CoreCompile" Condition=" '$(Configuration)' == 'Release' ">
+    <Exec WorkingDirectory="$(OutDir)" Command="pwsh ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 1" />
+  </Target>
   <Target Name="PackIntoZip" AfterTargets="SignAndroidPackage" Condition=" '$(Configuration)' == 'Release' ">
-    <Exec WorkingDirectory="$(OutDir)" Command="pwsh ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned)" />
+    <Exec WorkingDirectory="$(OutDir)" Command="pwsh ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 0" />
   </Target>
 </Project>

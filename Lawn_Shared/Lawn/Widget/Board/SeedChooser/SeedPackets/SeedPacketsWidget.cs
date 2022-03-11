@@ -56,6 +56,10 @@ namespace Lawn
             {
                 num = 48;
             }
+            else if (mRows == 13)
+            {
+                num = 52;
+            }
             for (int i = 0; i < num; i++)
             {
                 int num2 = 0;

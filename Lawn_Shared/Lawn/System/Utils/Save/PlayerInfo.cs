@@ -110,8 +110,8 @@ namespace Lawn
             {
                 mPlantTypesUsed[n] = false;
             }
-            mMiniGamesUnlocked = 19;
-            mMiniGamesUnlockable = 19;
+            mMiniGamesUnlocked = GameConstants.MINI_GAME_COUNT;
+            mMiniGamesUnlockable = GameConstants.MINI_GAME_COUNT;
             mVasebreakerUnlocked = 5;
             mIZombieUnlocked = 5;
             FirstRun = true;

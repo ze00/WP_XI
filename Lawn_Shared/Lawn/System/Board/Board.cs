@@ -4652,6 +4652,7 @@ namespace Lawn
                             Debug.ASSERT(thePlantOnLawn.mPumpkinPlant == null);
                             thePlantOnLawn.mPumpkinPlant = plant;
                         }
+                        else if (seedType == SeedType.ExplodeONut) { }
                         else
                         {
                             Debug.ASSERT(thePlantOnLawn.mNormalPlant == null);
