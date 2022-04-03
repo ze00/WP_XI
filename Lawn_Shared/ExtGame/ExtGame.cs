@@ -18,6 +18,7 @@ namespace Lawn.ExtGame
     }
     public class ExtGameDef
     {
+        public const int NUM_OF_SEEDPACKETS_ROW = 14;
         public const int NUM_BIG_STAGE = 7;
         public const int CUSTOM_LEVEL_START = 51;
         public const int CUSTOM_LEVEL_END = 61;

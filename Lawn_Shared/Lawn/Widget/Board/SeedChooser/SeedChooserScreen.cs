@@ -26,7 +26,7 @@ namespace Lawn
             mChooseState = SeedChooserState.Normal;
             mViewLawnTime = 0;
             mDoStartButton = false;
-            mSeedPacketsWidget = new SeedPacketsWidget(mApp, 13, false, this);
+            mSeedPacketsWidget = new SeedPacketsWidget(mApp, ExtGame.ExtGameDef.NUM_OF_SEEDPACKETS_ROW, false, this);
             mScrollWidget = new ScrollWidget();
             mScrollWidget.Resize(Constants.SCROLL_AREA_OFFSET_X, Constants.SCROLL_AREA_OFFSET_Y, mSeedPacketsWidget.mWidth + (int)Constants.InvertAndScale(10f), (int)Constants.InvertAndScale(227f));
             mScrollWidget.AddWidget(mSeedPacketsWidget);

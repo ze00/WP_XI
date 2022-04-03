@@ -168,7 +168,7 @@ namespace Lawn
             mTargetZombieID = null;
             mLastPortalX = -1;
             mFromPeaHead = false;
-            mFromStarFruit = false;
+            mFromStarFruitHead = false;
             mStarCollisionCount = 5;
             if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
             {
@@ -311,7 +311,7 @@ namespace Lawn
                 image = AtlasResources.IMAGE_REANIM_COBCANNON_COB;
                 num = 0.9f;
             }
-            else if (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.ZombiePea || mProjectileType == ProjectileType.ZombiePeaMindControl)
+            else if (mProjectileType == ProjectileType.Pea || (mProjectileType == ProjectileType.ZombiePea && !mFromStarFruitHead) || mProjectileType == ProjectileType.ZombiePeaMindControl)
             {
                 image = AtlasResources.IMAGE_PROJECTILEPEA;
                 if (mProjectileType == ProjectileType.ZombiePeaMindControl)
@@ -319,6 +319,10 @@ namespace Lawn
                     g.SetColorizeImages(true);
                     g.SetColor(GameConstants.ZOMBIE_MINDCONTROLLED_COLOR);
                 }
+            }
+            else if (mFromStarFruitHead)
+            {
+                image = AtlasResources.IMAGE_PROJECTILE_STAR;
             }
             else if (mProjectileType == ProjectileType.Snowpea)
             {
@@ -609,9 +613,11 @@ namespace Lawn
                     mApp.AddTodParticle(num3, num4, aRenderOrder, particleEffect);
                 }
             }
-            if (mProjectileType != ProjectileType.Star) {
+            if (mProjectileType != ProjectileType.Star)
+            {
                 Die();
-            } else if (mStarCollisionCount == 0)
+            }
+            else if (mStarCollisionCount == 0)
             {
                 Die();
             }
@@ -730,7 +736,8 @@ namespace Lawn
                     if (mFromPeaHead)
                     {
                         mPosX -= 80f;
-                    } else
+                    }
+                    else
                     {
                         Die();
                     }
@@ -1414,7 +1421,7 @@ namespace Lawn
 
         public int mLastPortalX;
         public bool mFromPeaHead;
-        public bool mFromStarFruit;
+        public bool mFromStarFruitHead;
         public int mStarCollisionCount;
 
         private static Stack<Projectile> unusedObjects = new Stack<Projectile>(200);

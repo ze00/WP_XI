@@ -58,7 +58,7 @@ namespace Lawn
             }
             else if (mRows == 13)
             {
-                num = 52;
+                num = (int)SeedType.SeedsInChooserCount;
             }
             for (int i = 0; i < num; i++)
             {

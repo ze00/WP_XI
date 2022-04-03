@@ -10040,33 +10040,53 @@ namespace Lawn
                 mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_shooting, ReanimLoopType.PlayOnceAndHold, 20, 35f);
                 return;
             }
-            else if (mPhaseCounter <= 0)
+            else if (mPhaseCounter <= 0 || mPhaseCounter == 15 || mPhaseCounter == 30 || mPhaseCounter == 45 || mPhaseCounter == 60)
             {
-                if (!mIsSpecialUnit)
-                    mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
-                mApp.PlayFoley(FoleyType.Throw);
-                Reanimation reanimation_v = mApp.ReanimationGet(mBodyReanimID);
-                if (reanimation_v != null)
+                if (mPhaseCounter <= 0 || mIsSpecialUnit)
                 {
-                    reanimation_v.GetCurrentTransform(
-                        reanimation_v.FindTrackIndex(GlobalMembersReanimIds.ReanimTrackId_anim_head1),
-                        out ReanimatorTransform aTransForm,
-                        false);
-                    float aOriginX = mPosX + aTransForm.mTransX * Constants.IS - 9f;
-                    float aOriginY = mPosY + aTransForm.mTransY * Constants.IS + 6f - mAltitude;
-                    if (mMindControlled)
+                    if (!mIsSpecialUnit)
+                        mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
+                    mApp.PlayFoley(FoleyType.Throw);
+                    Reanimation reanimation_v = mApp.ReanimationGet(mBodyReanimID);
+                    if (reanimation_v != null)
                     {
-                        aOriginX += 90f * mScaleZombie;
-                        mBoard.AddProjectile((int)aOriginX, (int)aOriginY, mRenderOrder, mRow, ProjectileType.ZombiePeaMindControl);
+                        reanimation_v.GetCurrentTransform(
+                            reanimation_v.FindTrackIndex(GlobalMembersReanimIds.ReanimTrackId_anim_head1),
+                            out ReanimatorTransform aTransForm,
+                            false);
+                        float aOriginX = mPosX + aTransForm.mTransX * Constants.IS - 9f;
+                        float aOriginY = mPosY + aTransForm.mTransY * Constants.IS + 6f - mAltitude;
+                        if (mMindControlled)
+                        {
+                            aOriginX += 90f * mScaleZombie;
+                            mBoard.AddProjectile((int)aOriginX, (int)aOriginY, mRenderOrder, mRow, ProjectileType.ZombiePeaMindControl);
+                        }
+                        else
+                        {
+                            Projectile proj = mBoard.AddProjectile((int)aOriginX, (int)aOriginY, mRenderOrder, mRow, ProjectileType.ZombiePea);
+                            if (mPhaseCounter <= 0 && !mIsSpecialUnit)
+                            {
+                                proj.mMotionType = ProjectileMotion.Backwards;
+                                proj.mFromPeaHead = true;
+                            } else if (mIsSpecialUnit)
+                            {
+                                if (mPhaseCounter == 45 || mPhaseCounter == 60)
+                                {
+                                    proj.mMotionType = ProjectileMotion.Straight;
+                                    proj.mFromStarFruitHead = true;
+                                } else
+                                {
+                                    proj.mMotionType = ProjectileMotion.Backwards;
+                                    proj.mFromStarFruitHead = true;
+                                }
+                            }
+                        }
+                        if (mPhaseCounter <= 0)
+                        {
+                            mPhaseCounter = 150;
+                            aTransForm.PrepareForReuse();
+                        }
                     }
-                    else
-                    {
-                        Projectile proj = mBoard.AddProjectile((int)aOriginX, (int)aOriginY, mRenderOrder, mRow, ProjectileType.ZombiePea);
-                        proj.mMotionType = ProjectileMotion.Backwards;
-                        proj.mFromPeaHead = true;
-                    }
-                    mPhaseCounter = 150;
-                    aTransForm.PrepareForReuse();
                 }
             }
         }
