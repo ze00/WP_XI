@@ -112,8 +112,8 @@ namespace Lawn
             }
             mMiniGamesUnlocked = GameConstants.MINI_GAME_COUNT;
             mMiniGamesUnlockable = GameConstants.MINI_GAME_COUNT;
-            mVasebreakerUnlocked = 5;
-            mIZombieUnlocked = 5;
+            mVasebreakerUnlocked = GameConstants.VASEBREAKER_LEVEL_COUNT;
+            mIZombieUnlocked = GameConstants.I_ZOMBIE_LEVEL_COUNT;
             FirstRun = true;
             mZenTutorialMessage = -1;
             mZenGardenTutorialComplete = false;

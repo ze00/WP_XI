@@ -305,6 +305,7 @@ namespace Lawn
             b.WriteLong(mSlotMachineRollCount);
             b.WriteLong(mSurvivalStage);
             b.WriteLong(mTreeOfWisdomTalkIndex);
+            b.WriteBoolean(mHasPortal);
             return true;
         }
 
@@ -333,6 +334,7 @@ namespace Lawn
             mSlotMachineRollCount = b.ReadLong();
             mSurvivalStage = b.ReadLong();
             mTreeOfWisdomTalkIndex = b.ReadLong();
+            mHasPortal = b.ReadBoolean();
             return true;
         }
 

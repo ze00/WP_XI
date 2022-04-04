@@ -63,6 +63,8 @@ namespace Lawn
             b.WriteFloat(mVelX);
             b.WriteFloat(mVelY);
             b.WriteFloat(mVelZ);
+            b.WriteBoolean(mFromPeaHead);
+            b.WriteBoolean(mFromStarFruitHead);
             GameObject.SaveId(mTargetZombieID, b);
             return true;
         }
@@ -95,6 +97,8 @@ namespace Lawn
             mVelX = b.ReadFloat();
             mVelY = b.ReadFloat();
             mVelZ = b.ReadFloat();
+            mFromPeaHead = b.ReadBoolean();
+            mFromStarFruitHead = b.ReadBoolean();
             mTargetZombieIDSaved = GameObject.LoadId(b);
             return true;
         }

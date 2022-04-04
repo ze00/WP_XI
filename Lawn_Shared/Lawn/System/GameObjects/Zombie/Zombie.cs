@@ -767,7 +767,6 @@ namespace Lawn
                 mShieldHealth = 1100;
                 AttachShield();
                 mVariant = false;
-                AddBucket();
                 break;
             }
 
@@ -1254,6 +1253,7 @@ namespace Lawn
             b.WriteBoolean(mHasHead);
             b.WriteBoolean(mHasHelm);
             b.WriteBoolean(mHasShield);
+            b.WriteBoolean(mIsSpecialUnit);
             return true;
         }
 
@@ -1345,6 +1345,7 @@ namespace Lawn
             mHasHead = b.ReadBoolean();
             mHasHelm = b.ReadBoolean();
             mHasShield = b.ReadBoolean();
+            mIsSpecialUnit = b.ReadBoolean();
             if (!mHasArm)
             {
                 mHasArm = true;
@@ -1377,6 +1378,22 @@ namespace Lawn
                 mPosX = mBoard.GridToPixelX(mTargetCol, aRow);
                 mPosY = GetPosYBasedOnRow(aRow);
                 mRenderOrder = Board.MakeRenderOrder(RenderLayer.GraveStone, aRow, 7);
+            }
+            if (mZombieType == ZombieType.PeaHead)
+            {
+                Reanimation aBodyReanim = mApp.ReanimationGet(mBodyReanimID);
+                if (IsOnBoard())
+                {
+                    aBodyReanim.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_anim_walk2);
+                }
+                ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
+                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Starfruit : ReanimationType.Peashooter);
+                aPeaHeadReanim.PlayReanim(mIsSpecialUnit ? GlobalMembersReanimIds.ReanimTrackId_anim_idle : GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
+                mApp.ReanimationGet(mSpecialHeadReanimID).ReanimationDie();
+                mSpecialHeadReanimID = mApp.ReanimationGetID(aPeaHeadReanim);
+                AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
+                aBodyReanim.mFrameBasePose = 0;
+                TodCommon.TodScaleRotateTransformMatrix(ref aAttachEffect.mOffset.mMatrix, 65f * Constants.S, -8f * Constants.S, 0.2f, -1f, 1f);
             }
             return true;
         }

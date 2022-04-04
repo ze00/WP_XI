@@ -610,7 +610,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Spikerock,     null, ReanimationType.Spikerock,    27, 125,5000,PlantSubClass.Normal,  0, "SPIKEROCK"),
                 new PlantDefinition(SeedType.Cobcannon,     null, ReanimationType.Cobcannon,    16, 500,5000,PlantSubClass.Normal,  600, "COB_CANNON"),
                 new PlantDefinition(SeedType.Imitater,      null, ReanimationType.Imitater,     33, 0,  750, PlantSubClass.Normal,  0, "IMITATER"),
-                new PlantDefinition(SeedType.ExplodeONut,   null, ReanimationType.Wallnut,      2,  100,  750,PlantSubClass.Normal,  0, "EXPLODE_O_NUT"),
+                new PlantDefinition(SeedType.ExplodeONut,   null, ReanimationType.Wallnut,      2,  50,  750,PlantSubClass.Normal,  0, "EXPLODE_O_NUT"),
                 new PlantDefinition(SeedType.GiantWallnut,  null, ReanimationType.Wallnut,      2,  50,  3000,PlantSubClass.Normal,  0, "GIANT_WALLNUT"),
                 new PlantDefinition(SeedType.Sprout,        null, ReanimationType.None,         33, 0,  3000,PlantSubClass.Normal,  0, "SPROUT"),
                 new PlantDefinition(SeedType.Leftpeater,    null, ReanimationType.Repeater,     5,  200,750, PlantSubClass.Shooter, 150, "REPEATER")

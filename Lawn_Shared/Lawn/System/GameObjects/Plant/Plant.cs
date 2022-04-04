@@ -176,7 +176,7 @@ namespace Lawn
                 {
                     reanimation.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_anim_idle);
                 }
-                if ((mApp.IsWallnutBowlingLevel() && reanimation.TrackExists(Reanimation.ReanimTrackId__ground) || mSeedType == SeedType.ExplodeONut) && !mBoard.StageHasRoof())
+                if (mApp.IsWallnutBowlingLevel() && reanimation.TrackExists(Reanimation.ReanimTrackId__ground) || mSeedType == SeedType.ExplodeONut)
                 {
                     reanimation.SetFramesForLayer(Reanimation.ReanimTrackId__ground);
                     if (mSeedType == SeedType.Wallnut || mSeedType == SeedType.ExplodeONut)
@@ -1947,7 +1947,7 @@ namespace Lawn
                 //mStateCountdown -= 3;
                 mStateCountdown--;
             }
-            if ((mApp.IsWallnutBowlingLevel() || mSeedType == SeedType.ExplodeONut) && !mBoard.StageHasRoof())
+            if (mApp.IsWallnutBowlingLevel() || mSeedType == SeedType.ExplodeONut)
             {
                 //UpdateBowling();
                 //UpdateBowling();
@@ -3595,7 +3595,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40))
+            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
@@ -4231,7 +4231,8 @@ namespace Lawn
                 }
                 if (mSeedType != SeedType.GiantWallnut)
                 {
-                    if (mRow == 4 || mState == PlantState.BowlingDown)
+                    int rows = mBoard.StageHas6Rows() ? 5 : 4;
+                    if (mRow == rows || mState == PlantState.BowlingDown)
                     {
                         plantState = PlantState.BowlingUp;
                     }
