@@ -7,14 +7,19 @@ namespace Lawn.ExtGame
     public class ExtGameLevel
     {
         /// <summary>
+        /// 条3窝4
         /// 7-1白天草地 初始阳光100
         /// 不长墓碑
-        ///  卡槽向日葵 墓碑吞噬者 樱桃 路灯 窝瓜 三线 大蒜 南瓜
         ///  开局右边5*3范围全是墓碑
-        ///  左方5*3范围花盆
-        ///  第十个卡槽显示寒冰菇耗费50 冷却10s 使用后全屏僵尸减速10s
         /// </summary>
         public const int CUSTOM_LEVEL_T3W4 = 61;
+
+        /// <summary>
+        /// 驱羊攻虎
+        /// 开局40秒发育时间
+        /// 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
+        /// </summary>
+        public const int CUSTOM_LEVEL_QYGH = 62;
     }
     public class ExtGameDef
     {

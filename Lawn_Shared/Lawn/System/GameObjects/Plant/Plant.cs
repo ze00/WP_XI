@@ -1888,7 +1888,7 @@ namespace Lawn
 
         public static bool IsNocturnal(SeedType theSeedtype)
         {
-            return theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
+            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
         }
 
         public static bool IsAquatic(SeedType theSeedType)
@@ -3595,7 +3595,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36))
+            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;

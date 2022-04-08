@@ -3,9 +3,9 @@
   <PropertyGroup>
   </PropertyGroup>
   <Target Name="UpdateVersion" BeforeTargets="CoreCompile" Condition=" '$(Configuration)' == 'Release' ">
-    <Exec WorkingDirectory="$(OutDir)" Command="pwsh ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 1" />
+    <Exec WorkingDirectory="$(OutDir)" Command="pwsh -NoProfile ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 1" />
   </Target>
   <Target Name="PackIntoZip" AfterTargets="SignAndroidPackage" Condition=" '$(Configuration)' == 'Release' ">
-    <Exec WorkingDirectory="$(OutDir)" Command="pwsh ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 0" />
+    <Exec WorkingDirectory="$(OutDir)" Command="pwsh -NoProfile ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 0" />
   </Target>
 </Project>

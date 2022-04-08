@@ -1000,6 +1000,11 @@ namespace Lawn
                         AddAGraveStone(col, row);
                 }
             }
+            if (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+            {
+                mZombieCountDown = 4000;
+                mZombieCountDownStart = mZombieCountDown;
+            }
         }
         public void InitLevel()
         {
@@ -6433,7 +6438,7 @@ namespace Lawn
                 {
                     mBackground = BackgroundType.Num2Night;
                 }
-                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA)
+                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
                 {
                     mBackground = BackgroundType.Num3Pool;
                 }
@@ -9047,10 +9052,7 @@ namespace Lawn
             if (PlantUsesAcceleratedPricing(theSeedType) || PlantUsesAcceleratedPricing(theImitaterType))
             {
                 int num2 = Math.Max(CountPlantByType(theSeedType), CountPlantByType(theImitaterType));
-                if (theImitaterType == SeedType.Threepeater || theSeedType == SeedType.Threepeater)
-                    num += num2 * 25;
-                else
-                    num += num2 * 50;
+                num += num2 * 50;
             }
             return num;
         }

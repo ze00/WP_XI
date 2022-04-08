@@ -490,7 +490,7 @@ namespace Lawn
             case ZombieType.Catapult:
                 mBodyHealth = 1300;
                 mPosX = Constants.WIDE_BOARD_WIDTH + 25 + RandomNumbers.NextNumber(10);
-                mSummonCounter = 20;
+                mSummonCounter = 50;
                 if (IsOnBoard())
                 {
                     PlayZombieReanim(ref Reanimation.ReanimTrackId_anim_walk, ReanimLoopType.Loop, 0, 5.5f);
@@ -729,7 +729,8 @@ namespace Lawn
                 }
                 ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
                 aTrackInstance.mImageOverride = AtlasResources.IMAGE_BLANK;
-                if (RandomNumbers.NextNumber(5) == 0) {
+                if (RandomNumbers.NextNumber(5) == 0)
+                {
                     mIsSpecialUnit = true;
                 }
                 Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Starfruit : ReanimationType.Peashooter);
@@ -1548,9 +1549,47 @@ namespace Lawn
             GlobalMembersAttachment.AttachmentUpdateAndMove(ref mAttachmentID, mPosX, mPosY);
             UpdateReanim();
         }
-
+        public void SpawnNewZombieAfterDied(ZombieType zombieType)
+        {
+            mApp.AddTodParticle(mPosX + 110f, mPosY + 0f, mRenderOrder + 1, ParticleEffect.MowerCloud);
+            int xDelta = RandomNumbers.NextNumber(50);
+            Zombie zombie = mBoard.AddZombie(zombieType, 0);
+            zombie.mPosX = mPosX + (float)xDelta;
+            zombie.mPosY = mPosY;
+            zombie.mX = mX + xDelta;
+            zombie.mY = mY;
+            zombie.mRow = mRow;
+            if (zombieType == ZombieType.Snorkel)
+            {
+                zombie.mZombiePhase = ZombiePhase.SnorkelIntoPool;
+                zombie.mVelX = 0.2f;
+                zombie.PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_jumpinpool, ReanimLoopType.PlayOnceAndHold, 20, 16f);
+            }
+        }
         public void DieNoLoot(bool giveAchievements)
         {
+            // 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
+            if (mApp.mGameScene == GameScenes.Playing && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+            {
+                switch (mZombieType)
+                {
+                case ZombieType.DolphinRider:
+                    SpawnNewZombieAfterDied(ZombieType.Snorkel);
+                    SpawnNewZombieAfterDied(ZombieType.Snorkel);
+                    break;
+                case ZombieType.Football:
+                    SpawnNewZombieAfterDied(ZombieType.Polevaulter);
+                    break;
+                case ZombieType.Pail:
+                    SpawnNewZombieAfterDied(ZombieType.Normal);
+                    SpawnNewZombieAfterDied(ZombieType.Normal);
+                    break;
+                case ZombieType.Gargantuar:
+                    SpawnNewZombieAfterDied(ZombieType.Pail);
+                    SpawnNewZombieAfterDied(ZombieType.Pail);
+                    break;
+                }
+            }
             StopZombieSound();
             GlobalMembersAttachment.AttachmentDie(ref mAttachmentID);
             mApp.RemoveReanimation(ref mBodyReanimID);
@@ -10085,13 +10124,15 @@ namespace Lawn
                             {
                                 proj.mMotionType = ProjectileMotion.Backwards;
                                 proj.mFromPeaHead = true;
-                            } else if (mIsSpecialUnit)
+                            }
+                            else if (mIsSpecialUnit)
                             {
                                 if (mPhaseCounter == 45 || mPhaseCounter == 60)
                                 {
                                     proj.mMotionType = ProjectileMotion.Straight;
                                     proj.mFromStarFruitHead = true;
-                                } else
+                                }
+                                else
                                 {
                                     proj.mMotionType = ProjectileMotion.Backwards;
                                     proj.mFromStarFruitHead = true;
