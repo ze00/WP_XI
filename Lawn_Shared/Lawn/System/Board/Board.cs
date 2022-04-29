@@ -1002,8 +1002,15 @@ namespace Lawn
             }
             if (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
             {
-                mZombieCountDown = 4000;
+                mZombieCountDown = ExtGameDef.CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN;
                 mZombieCountDownStart = mZombieCountDown;
+                for (int i = 0; i < 2; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        AddPlant(j, 2 + i, SeedType.Lilypad, SeedType.None);
+                    }
+                }
             }
         }
         public void InitLevel()
@@ -1296,6 +1303,10 @@ namespace Lawn
                     return;
                 }
                 mApp.mMusic.StartGameMusic();
+            }
+            if (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+            {
+                DisplayAdvice($"YOU HAVE {ExtGameDef.CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN / 100}s TO SET YOUR PLANTS!", MessageStyle.HintLong, AdviceType.None);
             }
         }
 
@@ -6720,6 +6731,7 @@ namespace Lawn
             {
                 if (OldZombieSeeds.OldZombieSeedsDict.TryGetValue(mLevel, out int[][] zombies))
                 {
+                    mNumWaves = zombies.Length;
                     for (int i = 0; i < zombies.Length; i++)
                     {
                         for (int j = 0; j < zombies[i].Length; ++j)

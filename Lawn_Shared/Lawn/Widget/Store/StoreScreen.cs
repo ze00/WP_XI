@@ -624,7 +624,7 @@ namespace Lawn
                     return true;
                 }
             }
-            return (theStoreItem == StoreItem.STORE_ITEM_PLANT_SPIKEROCK && !mApp.HasFinishedAdventure() && mApp.mPlayerInfo.mLevel < 41) || (theStoreItem == StoreItem.STORE_ITEM_PLANT_GOLD_MAGNET && !mApp.HasFinishedAdventure() && mApp.mPlayerInfo.mLevel < 41) || ((theStoreItem == StoreItem.STORE_ITEM_PLANT_WINTERMELON || theStoreItem == StoreItem.STORE_ITEM_PLANT_COBCANNON || theStoreItem == StoreItem.STORE_ITEM_PLANT_IMITATER || theStoreItem == StoreItem.STORE_ITEM_FIRSTAID) && !mApp.HasFinishedAdventure());
+            return (theStoreItem == StoreItem.STORE_ITEM_PLANT_SPIKEROCK && !mApp.HasFinishedAdventure() && mApp.mPlayerInfo.mLevel < 41) || (theStoreItem == StoreItem.STORE_ITEM_PLANT_GOLD_MAGNET && !mApp.HasFinishedAdventure() && mApp.mPlayerInfo.mLevel < 41);
         }
 
         public bool IsItemSoldOut(StoreItem theStoreItem)

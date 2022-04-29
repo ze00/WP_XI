@@ -1551,11 +1551,11 @@ namespace Lawn
         }
         public void SpawnNewZombieAfterDied(ZombieType zombieType)
         {
-            mApp.AddTodParticle(mPosX + 110f, mPosY + 0f, mRenderOrder + 1, ParticleEffect.MowerCloud);
             int xDelta = RandomNumbers.NextNumber(50);
             Zombie zombie = mBoard.AddZombie(zombieType, 0);
-            zombie.mPosX = mPosX + (float)xDelta;
+            zombie.mPosX = mPosX + 200 > 800 ? 800 : mPosX + 200 + xDelta; ;
             zombie.mPosY = mPosY;
+            mApp.AddTodParticle(zombie.mPosX, zombie.mPosY + 0f, mRenderOrder + 1, ParticleEffect.MowerCloud);
             zombie.mX = mX + xDelta;
             zombie.mY = mY;
             zombie.mRow = mRow;

@@ -590,7 +590,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Cactus,        null, ReanimationType.Cactus,       15, 125,750, PlantSubClass.Shooter, 150, "CACTUS"),
                 new PlantDefinition(SeedType.Blover,        null, ReanimationType.Blover,       18, 100,1000, PlantSubClass.Normal,  0, "BLOVER"),
                 new PlantDefinition(SeedType.Splitpea,      null, ReanimationType.Splitpea,     32, 125,750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),
-                new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 250,750, PlantSubClass.Shooter, 150, "STARFRUIT"),
+                new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 225,3000, PlantSubClass.Shooter, 150, "STARFRUIT"),
                 new PlantDefinition(SeedType.Pumpkinshell,  null, ReanimationType.Pumpkin,      25, 125,3000,PlantSubClass.Normal,  0, "PUMPKIN"),
                 new PlantDefinition(SeedType.Magnetshroom,  null, ReanimationType.Magnetshroom, 35, 100,750, PlantSubClass.Normal,  0, "MAGNET_SHROOM"),
                 new PlantDefinition(SeedType.Cabbagepult,   null, ReanimationType.Cabbagepult,  13, 100,750, PlantSubClass.Shooter, 300, "CABBAGE_PULT"),
@@ -612,7 +612,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Imitater,      null, ReanimationType.Imitater,     33, 0,  750, PlantSubClass.Normal,  0, "IMITATER"),
                 new PlantDefinition(SeedType.ExplodeONut,   null, ReanimationType.Wallnut,      2,  50,  750,PlantSubClass.Normal,  0, "EXPLODE_O_NUT"),
                 new PlantDefinition(SeedType.GiantWallnut,  null, ReanimationType.Wallnut,      2,  50,  3000,PlantSubClass.Normal,  0, "GIANT_WALLNUT"),
-                new PlantDefinition(SeedType.Sprout,        null, ReanimationType.None,         33, 0,  3000,PlantSubClass.Normal,  0, "SPROUT"),
+                new PlantDefinition(SeedType.Sprout,        null, ReanimationType.None,         33, 0,  0,PlantSubClass.Normal,  0, "SPROUT"),
                 new PlantDefinition(SeedType.Leftpeater,    null, ReanimationType.Repeater,     5,  200,750, PlantSubClass.Shooter, 150, "REPEATER")
             };
             GameConstants.NUM_BACKUP_DANCERS = 4;
