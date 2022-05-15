@@ -3,6 +3,7 @@ using Lawn.ExtGame;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
+using System.Linq;
 
 namespace Lawn
 {
@@ -1489,14 +1490,22 @@ namespace Lawn
             {
                 mBoard.mZombieAllowed[2] = true;
             }
-            int i = Math.Min(mSurvivalStage + 1, 9);
+            int i = Math.Min(mSurvivalStage + 1, 9), j = i;
+            int downcount = 10000;
             while (i > 0)
             {
                 ZombieType zombieType = (ZombieType)RandomNumbers.NextNumber(33f);
-                if (!mBoard.mZombieAllowed[(int)zombieType] && (!Board.IsZombieTypePoolOnly(zombieType) || mBoard.StageHasPool()) && (!mBoard.StageHasRoof() || (zombieType != ZombieType.Digger && zombieType != ZombieType.Dancer)) && (!mBoard.StageHasGraveStones() || zombieType != ZombieType.Zamboni) && (mBoard.StageHasRoof() || mApp.IsSurvivalEndless(mApp.mGameMode) || zombieType != ZombieType.Bungee) && (mBoard.GetSurvivalFlagsCompleted() >= 4 || (zombieType != ZombieType.Gargantuar && zombieType != ZombieType.Zamboni)) && (mBoard.GetSurvivalFlagsCompleted() >= 10 || zombieType != ZombieType.RedeyeGargantuar) && ((mApp.mGameMode != GameMode.SurvivalNormalStage1 && mApp.mGameMode != GameMode.SurvivalNormalStage2 && mApp.mGameMode != GameMode.SurvivalNormalStage3) || zombieType <= ZombieType.Snorkel) && zombieType != ZombieType.Bobsled && zombieType != ZombieType.BackupDancer && zombieType != ZombieType.Imp && zombieType != ZombieType.DuckyTube && zombieType != ZombieType.PeaHead && zombieType != ZombieType.WallnutHead && zombieType != ZombieType.TallnutHead && zombieType != ZombieType.JalapenoHead && zombieType != ZombieType.GatlingHead && zombieType != ZombieType.SquashHead && zombieType != ZombieType.Yeti)
+                if (!mBoard.mZombieAllowed[(int)zombieType] && (!Board.IsZombieTypePoolOnly(zombieType) || mBoard.StageHasPool()) && (!mBoard.StageHasRoof() || (zombieType != ZombieType.Digger && zombieType != ZombieType.Dancer)) && (!mBoard.StageHasGraveStones() || zombieType != ZombieType.Zamboni) && (mBoard.StageHasRoof() || mApp.IsSurvivalEndless(mApp.mGameMode) || zombieType != ZombieType.Bungee) && (mBoard.GetSurvivalFlagsCompleted() >= 4 || (zombieType != ZombieType.Gargantuar && zombieType != ZombieType.Zamboni)) && (mBoard.GetSurvivalFlagsCompleted() >= 10 || zombieType != ZombieType.RedeyeGargantuar) && ((mApp.mGameMode != GameMode.SurvivalNormalStage1 && mApp.mGameMode != GameMode.SurvivalNormalStage2 && mApp.mGameMode != GameMode.SurvivalNormalStage3) || zombieType != ZombieType.Snorkel) && zombieType != ZombieType.Bobsled && zombieType != ZombieType.BackupDancer && zombieType != ZombieType.Imp && zombieType != ZombieType.DuckyTube && zombieType != ZombieType.PeaHead && zombieType != ZombieType.WallnutHead && zombieType != ZombieType.TallnutHead && zombieType != ZombieType.JalapenoHead && zombieType != ZombieType.GatlingHead && zombieType != ZombieType.SquashHead && zombieType != ZombieType.Yeti)
                 {
                     mBoard.mZombieAllowed[(int)zombieType] = true;
                     i--;
+                } else
+                {
+                    downcount--;
+                    if (downcount == 0 && mBoard.mZombieAllowed.Count(x => x) >= j)
+                    {
+                        i = 0;
+                    }
                 }
             }
         }

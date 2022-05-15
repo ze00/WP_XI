@@ -64,7 +64,7 @@ namespace Lawn
             b.WriteFloat(mVelY);
             b.WriteFloat(mVelZ);
             b.WriteBoolean(mFromPeaHead);
-            b.WriteBoolean(mFromStarFruitHead);
+            b.WriteBoolean(mFromRepeater);
             GameObject.SaveId(mTargetZombieID, b);
             return true;
         }
@@ -98,7 +98,7 @@ namespace Lawn
             mVelY = b.ReadFloat();
             mVelZ = b.ReadFloat();
             mFromPeaHead = b.ReadBoolean();
-            mFromStarFruitHead = b.ReadBoolean();
+            mFromRepeater = b.ReadBoolean();
             mTargetZombieIDSaved = GameObject.LoadId(b);
             return true;
         }
@@ -172,7 +172,7 @@ namespace Lawn
             mTargetZombieID = null;
             mLastPortalX = -1;
             mFromPeaHead = false;
-            mFromStarFruitHead = false;
+            mFromRepeater = false;
             mStarCollisionCount = 5;
             if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
             {
@@ -315,7 +315,7 @@ namespace Lawn
                 image = AtlasResources.IMAGE_REANIM_COBCANNON_COB;
                 num = 0.9f;
             }
-            else if (mProjectileType == ProjectileType.Pea || (mProjectileType == ProjectileType.ZombiePea && !mFromStarFruitHead) || mProjectileType == ProjectileType.ZombiePeaMindControl)
+            else if (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.ZombiePea || mProjectileType == ProjectileType.ZombiePeaMindControl)
             {
                 image = AtlasResources.IMAGE_PROJECTILEPEA;
                 if (mProjectileType == ProjectileType.ZombiePeaMindControl)
@@ -323,10 +323,6 @@ namespace Lawn
                     g.SetColorizeImages(true);
                     g.SetColor(GameConstants.ZOMBIE_MINDCONTROLLED_COLOR);
                 }
-            }
-            else if (mFromStarFruitHead)
-            {
-                image = AtlasResources.IMAGE_PROJECTILE_STAR;
             }
             else if (mProjectileType == ProjectileType.Snowpea)
             {
@@ -1425,7 +1421,7 @@ namespace Lawn
 
         public int mLastPortalX;
         public bool mFromPeaHead;
-        public bool mFromStarFruitHead;
+        public bool mFromRepeater;
         public int mStarCollisionCount;
 
         private static Stack<Projectile> unusedObjects = new Stack<Projectile>(200);

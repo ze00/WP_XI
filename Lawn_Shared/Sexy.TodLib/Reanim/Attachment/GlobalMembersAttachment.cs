@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Sexy.TodLib
 {
-    internal static class GlobalMembersAttachment
+    public static class GlobalMembersAttachment
     {
         public static void AttachmentUpdateAndMove(ref Attachment theAttachmentID, float theX, float theY)
         {

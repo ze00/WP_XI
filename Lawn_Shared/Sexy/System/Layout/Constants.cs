@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace Sexy
 {
-    internal class Constants : FrameworkConstants
+    public class Constants : FrameworkConstants
     {
         public static void Load320x480()
         {

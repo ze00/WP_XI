@@ -17,7 +17,8 @@ namespace Lawn
             mBackToMainButton = GameButton.MakeButton(1, this, "[MAIN_MENU_BUTTON]");
             mBackToGameButton = GameButton.MakeButton(1000, this, "[BACK_TO_GAME]");
             mHelpButton = GameButton.MakeButton(6, this, "[HELP]");
-            mAboutButton = GameButton.MakeButton(7, this, "[ABOUT]");
+            mLoadExtGameButton = GameButton.MakeButton(7, this, "Load Ext Game");
+            mLoadCustomLevelDialog = new ExtGame.LoadCustomLevelDialog(theApp);
             mMusicVolumeSlider = new Slider(AtlasResources.IMAGE_OPTIONS_SLIDERSLOT, AtlasResources.IMAGE_OPTIONS_SLIDERKNOB2, 4, this);
             double num = theApp.GetMusicVolume();
             num = Math.Max(0.0, Math.Min(1.0, num));
@@ -64,7 +65,7 @@ namespace Lawn
         public override void Dispose()
         {
             mHelpButton.Dispose();
-            mAboutButton.Dispose();
+            mLoadExtGameButton.Dispose();
             mRunWhileLocked.Dispose();
             mMusicVolumeSlider.Dispose();
             mSfxVolumeSlider.Dispose();
@@ -96,7 +97,7 @@ namespace Lawn
             AddWidget(mLinkCredits);
             if (mFromGameSelector)
             {
-                AddWidget(mAboutButton);
+                AddWidget(mLoadExtGameButton);
                 AddWidget(mHelpButton);
             }
         }
@@ -116,7 +117,7 @@ namespace Lawn
             RemoveWidget(mLinkCredits);
             if (mFromGameSelector)
             {
-                RemoveWidget(mAboutButton);
+                RemoveWidget(mLoadExtGameButton);
                 RemoveWidget(mHelpButton);
             }
         }
@@ -139,7 +140,7 @@ namespace Lawn
                 int num = (int)Constants.InvertAndScale(100f);
                 mBackToGameButton.Resize(mWidth * 4 / 5 - num / 2, theHeight - (int)Constants.InvertAndScale(50f), num, btnHeight);
                 mHelpButton.Resize(mWidth / 2 - num / 2, theHeight - (int)Constants.InvertAndScale(50f), num, btnHeight);
-                mAboutButton.Resize(mWidth / 5 - num / 2, theHeight - (int)Constants.InvertAndScale(50f), num, btnHeight);
+                mLoadExtGameButton.Resize(mWidth / 5 - num / 2, theHeight - (int)Constants.InvertAndScale(50f), num, btnHeight);
                 mLinkCredits.Resize(theWidth - (int)Constants.InvertAndScale(175f), theHeight - (int)Constants.InvertAndScale(90f), (int)Constants.InvertAndScale(190f), mLinkCredits.mFont.GetHeight() + (int)Constants.InvertAndScale(8f));
                 mVersionY = Constants.NewOptionsDialog_Version_Low_Y;
                 return;
@@ -330,6 +331,7 @@ namespace Lawn
                 return;
             case 7:
             {
+                /*
                 string empty = string.Empty;
                 string theDialogLines2 = string.Empty;
                 empty = string.Empty;
@@ -338,6 +340,8 @@ namespace Lawn
                 lawnDialog2.mMinWidth = (int)Constants.InvertAndScale(350f);
                 lawnDialog2.mLawnYesButton.mLabel = TodStringFile.TodStringTranslate("[BACK]");
                 lawnDialog2.CalcSize(0, 0);
+                */
+                mApp.AddDialog(mLoadCustomLevelDialog);
                 return;
             }
             case 10:
@@ -412,9 +416,11 @@ namespace Lawn
 
         public HyperlinkWidget mLinkCredits;
 
-        public LawnStoneButton mAboutButton;
+        public LawnStoneButton mLoadExtGameButton;
 
         public LawnStoneButton mHelpButton;
+
+        public ExtGame.LoadCustomLevelDialog mLoadCustomLevelDialog;
 
         public bool mFromGameSelector;
 

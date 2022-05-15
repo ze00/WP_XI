@@ -656,7 +656,8 @@ namespace Lawn
                 aBodyReanim.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_propeller);
                 aBodyReanim.mLoopType = ReanimLoopType.LoopFullLastFrame;
                 aBodyReanim.AttachToAnotherReanimation(ref reanimation8, GlobalMembersReanimIds.ReanimTrackId_hat);
-                mFlyingHealth = 100;
+                mFlyingHealth = 50;
+                mBodyHealth = 450;
                 mZombieRect = new TRect(36, 30, 42, 115);
                 mZombieAttackRect = new TRect(20, 30, 50, 115);
                 mVariant = false;
@@ -732,9 +733,15 @@ namespace Lawn
                 if (RandomNumbers.NextNumber(5) == 0)
                 {
                     mIsSpecialUnit = true;
+                    mShieldType = ShieldType.Door;
+                    mShieldHealth = 1100;
+                    AttachShield();
+                } else
+                {
+                    AddTrafficCone();
                 }
-                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Starfruit : ReanimationType.Peashooter);
-                aPeaHeadReanim.PlayReanim(mIsSpecialUnit ? GlobalMembersReanimIds.ReanimTrackId_anim_idle : GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
+                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Repeater : ReanimationType.Peashooter);
+                aPeaHeadReanim.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
                 mSpecialHeadReanimID = mApp.ReanimationGetID(aPeaHeadReanim);
                 AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
                 aBodyReanim.mFrameBasePose = 0;
@@ -1382,21 +1389,31 @@ namespace Lawn
             }
             if (mZombieType == ZombieType.PeaHead)
             {
-                Reanimation aBodyReanim = mApp.ReanimationGet(mBodyReanimID);
-                if (IsOnBoard())
-                {
-                    aBodyReanim.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_anim_walk2);
-                }
-                ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
-                Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, mIsSpecialUnit ? ReanimationType.Starfruit : ReanimationType.Peashooter);
-                aPeaHeadReanim.PlayReanim(mIsSpecialUnit ? GlobalMembersReanimIds.ReanimTrackId_anim_idle : GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
-                mApp.ReanimationGet(mSpecialHeadReanimID).ReanimationDie();
-                mSpecialHeadReanimID = mApp.ReanimationGetID(aPeaHeadReanim);
-                AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
-                aBodyReanim.mFrameBasePose = 0;
-                TodCommon.TodScaleRotateTransformMatrix(ref aAttachEffect.mOffset.mMatrix, 65f * Constants.S, -8f * Constants.S, 0.2f, -1f, 1f);
+
+                RedrawHeadReanimation(mIsSpecialUnit ? ReanimationType.Repeater : ReanimationType.Peashooter);
             }
             return true;
+        }
+
+
+        public void RedrawHeadReanimation(ReanimationType reanimationType)
+        {
+            Reanimation aBodyReanim = mApp.ReanimationGet(mBodyReanimID);
+            if (IsOnBoard())
+            {
+                aBodyReanim.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_anim_walk2);
+            }
+            ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
+            Reanimation aPeaHeadReanim = mApp.AddReanimation(0f, 0f, 0, reanimationType);
+            aPeaHeadReanim.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.Loop, 0, 15f);
+            if (mSpecialHeadReanimID != null)
+            {
+                mApp.ReanimationGet(mSpecialHeadReanimID).ReanimationDie();
+            }
+            mSpecialHeadReanimID = mApp.ReanimationGetID(aPeaHeadReanim);
+            AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
+            aBodyReanim.mFrameBasePose = 0;
+            TodCommon.TodScaleRotateTransformMatrix(ref aAttachEffect.mOffset.mMatrix, 65f * Constants.S, -8f * Constants.S, 0.2f, -1f, 1f);
         }
 
         public override void LoadingComplete()
@@ -1569,7 +1586,7 @@ namespace Lawn
         public void DieNoLoot(bool giveAchievements)
         {
             // 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
-            if (mApp.mGameScene == GameScenes.Playing && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+            if (mApp.mGameScene == GameScenes.Playing && mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
             {
                 switch (mZombieType)
                 {
@@ -4321,10 +4338,24 @@ namespace Lawn
             {
                 return null;
             }
-            Zombie aZombie = mBoard.AddZombie(ZombieType.BackupDancer, mFromWave);
+            ZombieType zombieType = ZombieType.BackupDancer;
+            if (RandomNumbers.NextNumber(8) == 0)
+            {
+                zombieType = ZombieType.PeaHead;
+            }
+            if (RandomNumbers.NextNumber(8) == 0)
+            {
+                zombieType = ZombieType.WallnutHead;
+            }
+            Zombie aZombie = mBoard.AddZombie(zombieType, mFromWave);
             if (aZombie == null)
             {
                 return null;
+            }
+            if (zombieType == ZombieType.PeaHead)
+            {
+                aZombie.mIsSpecialUnit = true;
+                aZombie.RedrawHeadReanimation(ReanimationType.Repeater);
             }
             aZombie.mPosX = thePosX;
             aZombie.mPosY = GetPosYBasedOnRow(theRow);
@@ -9699,6 +9730,10 @@ namespace Lawn
             {
                 UpdateZombiePeaHead();
             }
+            if (mZombieType == ZombieType.WallnutHead && mLeaderZombie != null)
+            {
+                UpdateZombieBackupDancer();
+            }
             if (mZombieType == ZombieType.JalapenoHead)
             {
                 UpdateZombieJalapenoHead();
@@ -10090,17 +10125,18 @@ namespace Lawn
             {
                 return;
             }
+            if (mLeaderZombie != null)
+                UpdateZombieBackupDancer();
             //if (mPhaseCounter >= 36 && mPhaseCounter < 39)
-            if (mPhaseCounter == 36 && !mIsSpecialUnit)
+            if (mPhaseCounter == 36)
             {
                 mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_shooting, ReanimLoopType.PlayOnceAndHold, 20, 35f);
                 return;
             }
-            else if (mPhaseCounter <= 0 || mPhaseCounter == 15 || mPhaseCounter == 30 || mPhaseCounter == 45 || mPhaseCounter == 60)
+            else if (mPhaseCounter <= 0 || mPhaseCounter == 15)
             {
                 if (mPhaseCounter <= 0 || mIsSpecialUnit)
                 {
-                    if (!mIsSpecialUnit)
                         mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
                     mApp.PlayFoley(FoleyType.Throw);
                     Reanimation reanimation_v = mApp.ReanimationGet(mBodyReanimID);
@@ -10130,12 +10166,12 @@ namespace Lawn
                                 if (mPhaseCounter == 45 || mPhaseCounter == 60)
                                 {
                                     proj.mMotionType = ProjectileMotion.Straight;
-                                    proj.mFromStarFruitHead = true;
+                                    proj.mFromRepeater = true;
                                 }
                                 else
                                 {
                                     proj.mMotionType = ProjectileMotion.Backwards;
-                                    proj.mFromStarFruitHead = true;
+                                    proj.mFromRepeater = true;
                                 }
                             }
                         }
@@ -11116,7 +11152,7 @@ namespace Lawn
 
         public bool mHasShield = true;
 
-        public bool mIsSpecialUnit = false;
+        public bool mIsSpecialUnit;
 
         public enum ZombieRenderLayerOffset //Prefix: ZOMBIE_LAYER_OFFSET
         {

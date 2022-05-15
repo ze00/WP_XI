@@ -16,6 +16,7 @@ namespace Lawn
             mHasTrophy = false;
             mDoNewGameAfterStore = false;
             mInUserDialog = false;
+
             mAdventureButton = GameButton.MakeNewButton(100, this, "", null, AtlasResources.IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_BUTTON, AtlasResources.IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT, AtlasResources.IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_HIGHLIGHT);
             mAdventureButton.Resize(Constants.MAIN_MENU_ORIGIN_X + Constants.GameSelector_AdventureButton_X, 10, AtlasResources.IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_BUTTON.mWidth, AtlasResources.IMAGE_REANIM_SELECTORSCREEN_ADVENTURE_BUTTON.mHeight);
             mAdventureButton.mClip = false;
@@ -114,7 +115,6 @@ namespace Lawn
             AddWidget(mAlmanacButton);
             AddWidget(mZenGardenButton);
             AddWidget(mAchievementsButton);
-
             if (mApp.mPlayerInfo != null && mApp.mDebugKeysEnabled)
             {
                 AddWidget(mChallengePageSurvivalButton);

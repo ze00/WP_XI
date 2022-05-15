@@ -1895,7 +1895,7 @@ namespace Lawn
                                         {
                                             return PlantingReason.NotHere;
                                         }
-                                        if (plantsOnLawn.mUnderPlant.IsUpgradableTo(theType) && plantsOnLawn.mUnderPlant.mOnBungeeState != PlantOnBungeeState.GettingGrabbedByBungee)
+                                        if (plantsOnLawn.mUnderPlant.IsUpgradableTo(theType) && plantsOnLawn.mUnderPlant.mOnBungeeState != PlantOnBungeeState.GettingGrabbedByBungee || flag3)
                                         {
                                             return PlantingReason.Ok;
                                         }
@@ -3643,7 +3643,7 @@ namespace Lawn
 
         public bool StageHasGraveStones()
         {
-            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel() && mApp.mGameMode != GameMode.ChallengeColumn && mApp.mGameMode != GameMode.ChallengeSeeingStars && mApp.mGameMode != GameMode.ChallengeArtChallenge1 && mApp.mGameMode != GameMode.ChallengeArtChallenge2;
+            return mApp.mGameMode != GameMode.ChallengeBeghouled && mApp.mGameMode != GameMode.ChallengeBeghouledTwist && !mApp.IsIZombieLevel() && !mApp.IsScaryPotterLevel() && mApp.mGameMode != GameMode.ChallengeColumn && mApp.mGameMode != GameMode.ChallengeSeeingStars && mApp.mGameMode != GameMode.ChallengeArtChallenge1 && mApp.mGameMode != GameMode.ChallengeArtChallenge2 && !mApp.IsSurvivalMode();
         }
 
         public int PixelToGridX(int theX, int theY)
@@ -7943,7 +7943,7 @@ namespace Lawn
 
         public bool PlantingRequirementsMet(SeedType theSeedType)
         {
-            return (theSeedType != SeedType.Wintermelon || CountPlantByType(SeedType.Melonpult) != 0) && (theSeedType != SeedType.Twinsunflower || CountPlantByType(SeedType.Sunflower) != 0) && (theSeedType != SeedType.Spikerock || CountPlantByType(SeedType.Spikeweed) != 0) && (theSeedType != SeedType.Cobcannon || HasValidCobCannonSpot()) && (theSeedType != SeedType.GoldMagnet || CountPlantByType(SeedType.Magnetshroom) != 0) && (theSeedType != SeedType.Gloomshroom || CountPlantByType(SeedType.Fumeshroom) != 0) && (theSeedType != SeedType.Cattail || CountEmptyPotsOrLilies(SeedType.Lilypad) != 0);
+            return (theSeedType != SeedType.Wintermelon || CountPlantByType(SeedType.Melonpult) != 0) && (theSeedType != SeedType.Twinsunflower || CountPlantByType(SeedType.Sunflower) != 0) && (theSeedType != SeedType.Spikerock || CountPlantByType(SeedType.Spikeweed) != 0) && (theSeedType != SeedType.Cobcannon || HasValidCobCannonSpot()) && (theSeedType != SeedType.GoldMagnet || CountPlantByType(SeedType.Magnetshroom) != 0) && (theSeedType != SeedType.Gloomshroom || CountPlantByType(SeedType.Fumeshroom) != 0) && (theSeedType != SeedType.Cattail || CountEmptyPotsOrLilies(SeedType.Lilypad) != 0 || CountEmptyPotsOrLilies(SeedType.Flowerpot) != 0);
         }
 
         public bool HasValidCobCannonSpot()

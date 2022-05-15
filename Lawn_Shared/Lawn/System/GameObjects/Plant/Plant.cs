@@ -1932,7 +1932,7 @@ namespace Lawn
                     mApp.PlayFoley(FoleyType.Wakeup);
                 }
                 //if (mWakeUpCounter >= 0 && mWakeUpCounter < 3)
-                if (mWakeUpCounter == 0) 
+                if (mWakeUpCounter == 0)
                 {
                     SetSleeping(false);
                 }
@@ -2595,10 +2595,24 @@ namespace Lawn
                 if (!zombie.mDead && !zombie.IsDeadOrDying())
                 {
                     zombie.GetZombieRect();
-                    zombie.TakeDamage(50, 1);
-                    zombie.mPosX = zombie.mPosX + 50 > 850 ? 850 : zombie.mPosX + 50;
-                    zombie.mChilledCounter = 750;
-                    zombie.UpdateAnimSpeed();
+                    //在僵尸有铁门时 三叶草效果:只对门造成伤害 且没有击退、减速效果
+                    //扶梯: 没有减速效果 对扶梯僵尸有伤害 有击退效果
+                    //读报:报纸直接吹飞 且本体被减速 击退 受到伤害
+                    if (zombie.mHasShield && (zombie.mShieldType == ShieldType.Door || zombie.mZombieType == ZombieType.Ladder))
+                    {
+                        zombie.TakeShieldDamage(50, 1);
+                    }
+                    else
+                    {
+                        zombie.TakeDamage(50, 1);
+                        zombie.mPosX = zombie.mPosX + 50 > 850 ? 850 : zombie.mPosX + 50;
+                        zombie.mChilledCounter = 750;
+                        zombie.UpdateAnimSpeed();
+                    }
+                    if (zombie.mZombieType == ZombieType.Newspaper && zombie.mHasShield)
+                    {
+                        zombie.DropShield(1);
+                    }
                 }
             }
             mApp.PlaySample(Resources.SOUND_BLOVER);
@@ -3595,7 +3609,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9  || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40))
+            else if (mSeedType == SeedType.Threepeater && (mShootingCounter == 9 || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36 || mShootingCounter == 40))
             {
                 int theRow = mRow - 1;
                 int theRow2 = mRow + 1;
@@ -3657,7 +3671,8 @@ namespace Lawn
                             {
                                 mFastLaunchCounter = 5;
                             }
-                        } else
+                        }
+                        else
                         {
                             mShootingCounter = 6;
                         }
@@ -4767,7 +4782,7 @@ namespace Lawn
                 {
                     return true;
                 }
-                if (aUpdatedType == SeedType.Cattail && mSeedType == SeedType.Lilypad)
+                if ((aUpdatedType == SeedType.Cattail && mSeedType == SeedType.Lilypad) || (aUpdatedType == SeedType.Cattail && mSeedType == SeedType.Flowerpot))
                 {
                     Plant topPlantAt = mBoard.GetTopPlantAt(mPlantCol, mRow, TopPlant.OnlyNormalPosition);
                     if (topPlantAt == null || topPlantAt.mSeedType != SeedType.Cattail)
