@@ -4380,7 +4380,7 @@ namespace Lawn
         public void StarFruitFire()
         {
             mApp.PlayFoley(FoleyType.Throw);
-            for (int i = 0; i < 5; i++)
+            for (int i = 3; i < 4; i++)
             {
                 int theX = mX + 25;
                 int theY = mY + 25;
@@ -4391,28 +4391,28 @@ namespace Lawn
                 float velY = (float)Math.Sin(TodCommon.DegToRad(30f)) * 3.33f;
                 switch (i)
                 {
-                case 0:
-                    projectile.mVelX = -3.33f;
-                    projectile.mVelY = 0f;
-                    break;
-                case 1:
-                    projectile.mVelX = 0f;
-                    projectile.mVelY = 3.33f;
-                    break;
-                case 2:
-                    projectile.mVelX = 0f;
-                    projectile.mVelY = -3.33f;
-                    break;
+                //case 0:
+                //    projectile.mVelX = -3.33f;
+                //    projectile.mVelY = 0f;
+                //    break;
+                //case 1:
+                //    projectile.mVelX = 0f;
+                //    projectile.mVelY = 3.33f;
+                //    break;
+                //case 2:
+                //    projectile.mVelX = 0f;
+                //    projectile.mVelY = -3.33f;
+                //    break;
                 case 3:
                     projectile.mVelX = velX;
                     projectile.mVelY = 0f;
                     break;
-                case 4:
-                    projectile.mVelX = velX;
-                    projectile.mVelY = -velY;
-                    break;
+                //case 4:
+                //    projectile.mVelX = velX;
+                //    projectile.mVelY = -velY;
+                //    break;
                 default:
-                    Debug.ASSERT(false);
+                    //Debug.ASSERT(false);
                     break;
                 }
             }

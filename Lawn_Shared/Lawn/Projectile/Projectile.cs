@@ -563,8 +563,7 @@ namespace Lawn
             else if (mProjectileType == ProjectileType.Star)
             {
                 particleEffect = ParticleEffect.StarSplat;
-                mStarCollisionCount--;
-                mPosX += 80;
+                mPosX += 20f;
             }
             else if (mProjectileType == ProjectileType.Puff)
             {
@@ -614,10 +613,6 @@ namespace Lawn
                 }
             }
             if (mProjectileType != ProjectileType.Star)
-            {
-                Die();
-            }
-            else if (mStarCollisionCount == 0)
             {
                 Die();
             }

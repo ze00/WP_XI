@@ -3945,10 +3945,6 @@ namespace Lawn
             float aDeflection = 9f;
             mAltitude = TodCommon.TodAnimateCurveFloat(GameConstants.POGO_BOUNCE_TIME, 0, mPhaseCounter, aDeflection, aHeight + aDeflection, TodCurves.BounceSlowMiddle);
             mFrame = TodCommon.ClampInt(3 - (int)mAltitude / 3, 0, 3);
-            if (mApp.mGameScene == GameScenes.Playing && mAltitude > 40.0f && (mChilledCounter != 0 ? RandomNumbers.NextNumber(20) == 0 : RandomNumbers.NextNumber(10) == 0))
-            {
-                mRow = mBoard.PickRowForNewZombie(this.mZombieType);
-            }
             //if (mPhaseCounter >= 8 && mPhaseCounter < 11)
             if (mPhaseCounter == 8)
             {
@@ -4002,6 +3998,10 @@ namespace Lawn
                 mZombiePhase = ZombiePhase.PogoBouncing;
                 PickRandomSpeed();
                 mPhaseCounter = GameConstants.POGO_BOUNCE_TIME;
+                if (mApp.mGameScene == GameScenes.Playing)
+                {
+                    mRow = mBoard.PickRowForNewZombie(this.mZombieType);
+                }
                 return;
             }
             if (mZombiePhase == ZombiePhase.PogoHighBounce1)
