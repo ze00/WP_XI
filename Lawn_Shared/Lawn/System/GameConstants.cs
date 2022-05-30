@@ -599,7 +599,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.InstantCoffee, null, ReanimationType.Coffeebean,   33, 75, 750, PlantSubClass.Normal,  0, "COFFEE_BEAN"),
                 new PlantDefinition(SeedType.Garlic,        null, ReanimationType.Garlic,       8,  50, 750, PlantSubClass.Normal,  0, "GARLIC"),
                 new PlantDefinition(SeedType.Umbrella,      null, ReanimationType.Umbrellaleaf, 23, 100,750, PlantSubClass.Normal,  0, "UMBRELLA_LEAF"),
-                new PlantDefinition(SeedType.Marigold,      null, ReanimationType.Marigold,     24, 200, 25000,PlantSubClass.Normal,  2500, "MARIGOLD"),
+                new PlantDefinition(SeedType.Marigold,      null, ReanimationType.Marigold,     24, 325, 25000,PlantSubClass.Normal,  2500, "MARIGOLD"),
                 new PlantDefinition(SeedType.Melonpult,     null, ReanimationType.Melonpult,    14, 250,750, PlantSubClass.Shooter, 300, "MELON_PULT"),
                 new PlantDefinition(SeedType.Gatlingpea,    null, ReanimationType.Gatlingpea,   5,  375,2500,PlantSubClass.Shooter, 150, "GATLING_PEA"),
                 new PlantDefinition(SeedType.Twinsunflower, null, ReanimationType.TwinSunflower,1,  150,5000,PlantSubClass.Normal,  2500, "TWIN_SUNFLOWER"),

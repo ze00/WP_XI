@@ -895,11 +895,11 @@ namespace Lawn
         {
             if (mType == CoinType.Sun)
             {
-                return 25;
+                return GlobalStaticVars.gUseSun ? 50 : 25;
             }
             if (mType == CoinType.Smallsun)
             {
-                return 15;
+                return GlobalStaticVars.gUseSun ? 25 : 15;
             }
             if (mType == CoinType.Largesun)
             {

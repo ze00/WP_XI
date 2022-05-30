@@ -16,7 +16,7 @@ namespace Lawn
             mEasyPlantingCheckbox = LawnCommon.MakeNewCheckbox(1, this, mApp.mEasyPlantingCheat);
             mSunButton = GameButton.MakeButton(2, this, "9990 Sun");
             mPassLevelButton = GameButton.MakeButton(3, this, "Pass This Level");
-            mTriggerMowersButton = GameButton.MakeButton(4, this, "Trigger Mowers");
+            mTriggerMowersButton = GameButton.MakeButton(4, this, "use 'sun' once");
             mFastMoCheckbox = LawnCommon.MakeNewCheckbox(5, this, GlobalStaticVars.gFastMo);
             mEnableVirtualKeyboardButton = GameButton.MakeButton(6, this, "Use TodKeys");
             base.CalcSize(0, 0);
@@ -126,11 +126,7 @@ namespace Lawn
                 mApp.mBoard.mBoardFadeOutCounter = 200;
                 return;
             case 4:
-                LawnMower lawnMower = null;
-                while (mApp.mBoard.IterateLawnMowers(ref lawnMower))
-                {
-                    lawnMower.StartMower();
-                }
+                GlobalStaticVars.gUseSun = !GlobalStaticVars.gUseSun;
                 break;
             case 6:
                 mApp.KillDialog(2);

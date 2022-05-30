@@ -730,7 +730,7 @@ namespace Lawn
                 }
                 ReanimatorTrackInstance aTrackInstance = aBodyReanim.GetTrackInstanceByName(GlobalMembersReanimIds.ReanimTrackId_anim_head1);
                 aTrackInstance.mImageOverride = AtlasResources.IMAGE_BLANK;
-                if (RandomNumbers.NextNumber(5) == 0)
+                if (RandomNumbers.NextNumber(4) <= 1)
                 {
                     mIsSpecialUnit = true;
                     mShieldType = ShieldType.Door;
@@ -746,7 +746,10 @@ namespace Lawn
                 AttachEffect aAttachEffect = GlobalMembersAttachment.AttachReanim(ref aTrackInstance.mAttachmentID, aPeaHeadReanim, 0f, 0f);
                 aBodyReanim.mFrameBasePose = 0;
                 TodCommon.TodScaleRotateTransformMatrix(ref aAttachEffect.mOffset.mMatrix, 65f * Constants.S, -8f * Constants.S, 0.2f, -1f, 1f);
-                mPhaseCounter = 150;
+                if (mIsSpecialUnit)
+                    mPhaseCounter = 150;
+                else
+                    mPhaseCounter = 210;
                 mVariant = false;
                 break;
             }
@@ -10177,7 +10180,10 @@ namespace Lawn
                         }
                         if (mPhaseCounter <= 0)
                         {
-                            mPhaseCounter = 150;
+                            if (mIsSpecialUnit)
+                                mPhaseCounter = 150;
+                            else
+                                mPhaseCounter = 210;
                             aTransForm.PrepareForReuse();
                         }
                     }

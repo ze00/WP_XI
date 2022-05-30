@@ -446,6 +446,7 @@ namespace Lawn
                 mStoreButton.Resize(mStoreButton.mX, mStoreButton.mY, mStoreButton.mWidth + 200, mStoreButton.mHeight);
                 mStoreButton.SetLabel("[GET_FULL_VERSION_BUTTON]");
             }
+            GlobalStaticVars.gUseSun = false;
         }
 
         public override void Dispose()
@@ -1063,6 +1064,11 @@ namespace Lawn
             else if (mLevel == (int)ExtGameLevel.CUSTOM_LEVEL_T3W4)
             {
                 mSunMoney = 100;
+            }
+            // 第六大关开局75阳光，4列花盆
+            else if (mLevel >= 51 && mLevel <= 60)
+            {
+                mSunMoney = 125;
             }
             else
             {
@@ -5915,7 +5921,7 @@ namespace Lawn
         {
             if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && mApp.IsWhackAZombieLevel())
             {
-                mNumWaves = 12;
+                mNumWaves = 10;
             }
             else if (mApp.IsAdventureMode() || mApp.IsQuickPlayMode())
             {
@@ -9064,14 +9070,19 @@ namespace Lawn
             if (PlantUsesAcceleratedPricing(theSeedType) || PlantUsesAcceleratedPricing(theImitaterType))
             {
                 int num2 = Math.Max(CountPlantByType(theSeedType), CountPlantByType(theImitaterType));
-                num += num2 * 50;
+                if (theSeedType == SeedType.Marigold || theImitaterType == SeedType.Marigold)
+                    num += num2 * 100;
+                else if (theSeedType == SeedType.Scaredyshroom || theImitaterType == SeedType.Scaredyshroom)
+                    num = Math.Max(0, num + num2 * -5);
+                else
+                    num += num2 * 50;
             }
             return num;
         }
 
         public bool PlantUsesAcceleratedPricing(SeedType theSeedType)
         {
-            return theSeedType == SeedType.Threepeater || theSeedType == SeedType.Marigold || (Plant.IsUpgrade(theSeedType) && mApp.IsSurvivalEndless(mApp.mGameMode));
+            return theSeedType == SeedType.Threepeater || theSeedType == SeedType.Marigold || theSeedType == SeedType.Scaredyshroom || (Plant.IsUpgrade(theSeedType) && mApp.IsSurvivalEndless(mApp.mGameMode));
         }
 
         public void FreezeEffectsForCutscene(bool theFreeze)

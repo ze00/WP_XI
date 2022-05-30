@@ -2151,7 +2151,10 @@ namespace Lawn
                                     Die();
                                 }
                             }
-                            zombie.TakeDamage(theDamage2, theDamageFlags);
+                            if (mSeedType == SeedType.Fumeshroom && zombie.mHasShield)
+                                zombie.TakeDamage(50, 0);
+                            else
+                                zombie.TakeDamage(theDamage2, theDamageFlags);
                             mApp.PlayFoley(FoleyType.Splat);
                         }
                     }
@@ -2243,7 +2246,7 @@ namespace Lawn
             }
             else
             {
-                SeedType seedType = mSeedType == SeedType.Fumeshroom ? SeedType.Peashooter : mSeedType;
+                SeedType seedType = mSeedType;
                 if (seedType <= SeedType.Seashroom)
                 {
                     switch (seedType)
@@ -2261,7 +2264,7 @@ namespace Lawn
                     case SeedType.Puffshroom:
                         break;
                     case SeedType.Fumeshroom:
-                        result = new TRect(mX + 60, mY, 340, mHeight);
+                        result = new TRect(mX + 60, mY, 800, mHeight);
                         return result;
                     default:
                         switch (seedType)
@@ -2796,6 +2799,8 @@ namespace Lawn
                         {
                             return true;
                         }
+                        // 星星的判定
+                        /*
                         else
                         {
                             if (zombie.mZombieType == ZombieType.Digger)
@@ -2834,6 +2839,8 @@ namespace Lawn
                                 }
                             }
                         }
+                        */
+
                     }
                 }
             }

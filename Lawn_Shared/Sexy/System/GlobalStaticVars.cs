@@ -125,6 +125,8 @@ namespace Sexy
 
         public static bool gFastMo = false;
 
+        public static bool gUseSun = false;
+
         public static bool gLowFramerate = false;
 
         public static string gGetCurrentLevelName;

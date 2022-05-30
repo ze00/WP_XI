@@ -173,7 +173,7 @@ namespace Lawn
             mLastPortalX = -1;
             mFromPeaHead = false;
             mFromRepeater = false;
-            mStarCollisionCount = 5;
+            mZombiePeaCollisionCount = 3;
             if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
             {
                 mOnHighGround = true;
@@ -563,7 +563,7 @@ namespace Lawn
             else if (mProjectileType == ProjectileType.Star)
             {
                 particleEffect = ParticleEffect.StarSplat;
-                mPosX += 20f;
+                mPosX += 15f;
             }
             else if (mProjectileType == ProjectileType.Puff)
             {
@@ -730,7 +730,15 @@ namespace Lawn
                     mApp.AddTodParticle(mPosX - 3f, mPosY + 17f, mRenderOrder + 1, ParticleEffect.PeaSplat);
                     if (mFromPeaHead)
                     {
-                        mPosX -= 80f;
+                        if (mZombiePeaCollisionCount == 0)
+                        {
+                            Die();
+                        }
+                        else
+                        {
+                            mPosX -= 80f;
+                            mZombiePeaCollisionCount--;
+                        }
                     }
                     else
                     {
@@ -1417,7 +1425,7 @@ namespace Lawn
         public int mLastPortalX;
         public bool mFromPeaHead;
         public bool mFromRepeater;
-        public int mStarCollisionCount;
+        public int mZombiePeaCollisionCount;
 
         private static Stack<Projectile> unusedObjects = new Stack<Projectile>(200);
     }

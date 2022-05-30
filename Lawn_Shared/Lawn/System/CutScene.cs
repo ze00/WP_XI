@@ -926,7 +926,8 @@ namespace Lawn
             {
                 num = 5;
             }
-            else if (mBoard.mLevel == 42)
+            // 第六大关6行花盆
+            else if (mBoard.mLevel == 42 || (mBoard.mLevel >= 51 && mBoard.mLevel <= 60))
             {
                 num = 4;
             }
