@@ -378,6 +378,12 @@ namespace Lawn
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_dig, ReanimLoopType.LoopFullLastFrame, 0, 12f);
                     PickRandomSpeed();
                 }
+                if (RandomNumbers.NextNumber(10) == 0)
+                {
+                    // mLastPortalX记录第几格出土
+                    mLastPortalX = 1 + RandomNumbers.NextNumber(3);
+                    mIsSpecialUnit = true;
+                }
 
                 break;
             }
@@ -520,15 +526,27 @@ namespace Lawn
                 {
                     num3 /= 3;
                 }
+                if (IsOnBoard())
+                {
+                    mZombiePhase = ZombiePhase.JackInTheBoxRunning;
+                }
+                if (mApp.IsAdventureMode() && mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY)
+                {
+                    // 喜剧之夜
+                    mBodyHealth = 114514;
+                    num3 = 100000;
+                    mZombiePhase = ZombiePhase.ZombieNormal;
+                } else if (RandomNumbers.NextNumber(10) == 0)
+                {
+                    mIsSpecialUnit = true;
+                    mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_SUN2);
+                    num3 = 100000;
+                }
                 mPhaseCounter = (int)(num3 / mVelX) * GameConstants.ZOMBIE_LIMP_SPEED_FACTOR;
                 mZombieAttackRect = new TRect(20, 0, 50, 115);
                 if (mApp.IsScaryPotterLevel())
                 {
                     mPhaseCounter = 10;
-                }
-                if (IsOnBoard())
-                {
-                    mZombiePhase = ZombiePhase.JackInTheBoxRunning;
                 }
 
                 break;
@@ -626,13 +644,14 @@ namespace Lawn
                 mZombieAttackRect = new TRect(20, 0, 50, 115);
                 mZombiePhase = ZombiePhase.NewspaperReading;
                 mShieldType = ShieldType.Newspaper;
-                mShieldHealth = 150;
+                mShieldHealth = 270;
+                mBodyHealth = 670;
                 mVariant = false;
                 AttachShield();
                 if (RandomNumbers.NextNumber(5) == 0)
                 {
                     mIsSpecialUnit = true;
-                    mBodyHealth = mBodyMaxHealth = 1100;
+                    mBodyHealth = mBodyMaxHealth = 500;
                     mShieldHealth = 1;
                     mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD);
                 }
@@ -661,6 +680,15 @@ namespace Lawn
                 mZombieRect = new TRect(36, 30, 42, 115);
                 mZombieAttackRect = new TRect(20, 30, 50, 115);
                 mVariant = false;
+                if (RandomNumbers.NextNumber(10) == 0)
+                {
+                    mIsSpecialUnit = true;
+                    mApp.ReanimationGet(mBodyReanimID).SetImageOverride("zombie_balloon_top", AtlasResources.IMAGE_REANIM_COBCANNON_COB);
+                }
+                else
+                {
+
+                }
                 break;
             }
 
@@ -704,7 +732,10 @@ namespace Lawn
                 mZombieRect = new TRect(700, 80, 90, 430);
                 mZombieAttackRect = default;
                 aRenderLayer = RenderLayer.Top;
-                mBodyHealth = 120000;
+                if (mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
+                    mBodyHealth = 40000;
+                else
+                    mBodyHealth = 120000;
                 if (IsOnBoard())
                 {
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_enter, ReanimLoopType.PlayOnceAndHold, 0, 12f);
@@ -736,7 +767,8 @@ namespace Lawn
                     mShieldType = ShieldType.Door;
                     mShieldHealth = 1100;
                     AttachShield();
-                } else
+                }
+                else
                 {
                     AddTrafficCone();
                 }
@@ -1158,9 +1190,12 @@ namespace Lawn
                 }
             }
             thePlant.mPlantHealth -= /*3 * */GameConstants.TICKS_BETWEEN_EATS;
-            if (mZombieType == ZombieType.Newspaper && mIsSpecialUnit && mZombiePhase == ZombiePhase.NewspaperMad)
+            if (mZombieType == ZombieType.Newspaper && mZombiePhase == ZombiePhase.NewspaperMad)
             {
-                thePlant.mPlantHealth -= 3 * GameConstants.TICKS_BETWEEN_EATS;
+                if (mIsSpecialUnit)
+                    thePlant.mPlantHealth -= 3 * GameConstants.TICKS_BETWEEN_EATS;
+                else
+                    thePlant.mPlantHealth -= GameConstants.TICKS_BETWEEN_EATS;
             }
             thePlant.mRecentlyEatenCountdown = 50;
             if (mApp.IsIZombieLevel() && mJustGotShotCounter < -500 && (thePlant.mSeedType == SeedType.Wallnut || thePlant.mSeedType == SeedType.Tallnut || thePlant.mSeedType == SeedType.Pumpkinshell))
@@ -2239,7 +2274,11 @@ namespace Lawn
             }
             else if (mZombiePhase == ZombiePhase.NewspaperMad)
             {
-                mVelX = TodCommon.RandRangeFloat(2.0f, 3.0f);
+                //mVelX = TodCommon.RandRangeFloat(2.0f, 3.0f);
+                if (mIsSpecialUnit)
+                    mVelX = 3.0f;
+                else
+                    mVelX = 2.0f;
             }
             else if (mZombiePhase == ZombiePhase.DolphinWalking || mZombiePhase == ZombiePhase.DolphinWalkingWithoutDolphin)
             {
@@ -3411,7 +3450,14 @@ namespace Lawn
         {
             if (mZombiePhase == ZombiePhase.JackInTheBoxRunning)
             {
-                if (mPhaseCounter <= 0 && mHasHead)
+                if (mIsSpecialUnit && RandomNumbers.NextNumber(10) == 0 && mIceTrapCounter == 0 && mButteredCounter == 0)
+                {
+                    if (mChilledCounter != 0 && RandomNumbers.NextNumber(2) == 0)
+                        mBoard.AddSunMoney(-1);
+                    else if (mChilledCounter == 0)
+                        mBoard.AddSunMoney(-1);
+                }
+                else if (mPhaseCounter <= 0 && mHasHead)
                 {
                     mPhaseCounter = 110;
                     mZombiePhase = ZombiePhase.JackInTheBoxPopping;
@@ -3449,6 +3495,13 @@ namespace Lawn
                         mBoard.mChallenge.ScaryPotterJackExplode(aPosX, aPosY);
                     }
                 }
+            } // 喜剧之夜
+            else if (mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY && mBoard.mCurrentWave != mBoard.mNumWaves)
+            {
+                if (mPosX <= mBoard.GridToPixelX(3, 0))
+                    mZombiePhase = ZombiePhase.YetiRunning;
+                else if (mZombiePhase == ZombiePhase.YetiRunning && mPosX >= mBoard.GridToPixelX(8, 0))
+                    mZombiePhase = ZombiePhase.ZombieNormal;
             }
         }
 
@@ -3904,6 +3957,15 @@ namespace Lawn
                 Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
                 if (reanimation.mLoopCount > 0)
                 {
+                    if (mIsSpecialUnit)
+                    {
+                        int aPosX = mX + mWidth / 2;
+                        int aPosY = mY + mHeight / 2;
+                        mBoard.KillAllPlantsInRadius(aPosX, aPosY, Constants.JackInTheBoxPlantRadius);
+                        mApp.AddTodParticle(aPosX, aPosY, 400000, ParticleEffect.Jackexplode);
+                        mBoard.ShakeBoard(4, -6);
+                        DieNoLoot(false);
+                    }
                     mZombiePhase = ZombiePhase.BalloonWalking;
                     StartWalkAnim(0);
                 }
@@ -4058,7 +4120,7 @@ namespace Lawn
         {
             if (mZombiePhase == ZombiePhase.DiggerTunneling)
             {
-                if (mPosX < 90f)
+                if (mPosX < 90f && !mIsSpecialUnit)
                 {
                     mZombiePhase = ZombiePhase.DiggerRising;
                     mPhaseCounter = 130;
@@ -4071,6 +4133,10 @@ namespace Lawn
                     mApp.AddTodParticle(mPosX + 60f, mPosY + 118f, mRenderOrder + 1, ParticleEffect.DiggerRise);
                     Reanimation reanimation = mApp.AddReanimation(mPosX + 13f, mPosY + 97f, mRenderOrder + 1, ReanimationType.DiggerDirt);
                     reanimation.mAnimRate = 24f;
+                }
+                else if (mIsSpecialUnit && mPosX < 90f + 80 * mLastPortalX)
+                {
+                    mZombiePhase = ZombiePhase.DiggerTunnelingPauseWithoutAxe;
                 }
             }
             else if (mZombiePhase == ZombiePhase.DiggerRising)
@@ -4169,6 +4235,10 @@ namespace Lawn
             if (mZombieType == ZombieType.Digger)
             {
                 return mZombiePhase == ZombiePhase.DiggerRising || mZombiePhase == ZombiePhase.DiggerStunned || mZombiePhase == ZombiePhase.DiggerWalking || ((mZombiePhase == ZombiePhase.ZombieDying || mZombiePhase == ZombiePhase.ZombieBurned || mZombiePhase == ZombiePhase.ZombieMowered) && mHasObject);
+            }
+            if (mZombieType == ZombieType.JackInTheBox && mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY && mZombiePhase == ZombiePhase.YetiRunning)
+            {
+                return true;
             }
             return mZombieType == ZombieType.Yeti && !mHasObject;
         }
@@ -6583,6 +6653,10 @@ namespace Lawn
         public bool CanTargetPlant(Plant thePlant, ZombieAttackType theAttackType)
         {
             if ((mApp.IsWallnutBowlingLevel() && theAttackType != ZombieAttackType.Vault) || thePlant.mSeedType == SeedType.ExplodeONut)
+            {
+                return false;
+            }
+            if ((mZombieType == ZombieType.Gargantuar || mZombieType == ZombieType.RedeyeGargantuar) && (thePlant.mSeedType == SeedType.Spikeweed || thePlant.mSeedType == SeedType.Spikerock))
             {
                 return false;
             }
@@ -10140,7 +10214,7 @@ namespace Lawn
             {
                 if (mPhaseCounter <= 0 || mIsSpecialUnit)
                 {
-                        mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
+                    mApp.ReanimationGet(mSpecialHeadReanimID)?.PlayReanim(GlobalMembersReanimIds.ReanimTrackId_anim_head_idle, ReanimLoopType.PlayOnceAndHold, 20, 15f);
                     mApp.PlayFoley(FoleyType.Throw);
                     Reanimation reanimation_v = mApp.ReanimationGet(mBodyReanimID);
                     if (reanimation_v != null)

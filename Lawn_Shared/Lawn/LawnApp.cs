@@ -245,7 +245,8 @@ namespace Lawn
         public override void LoadingThreadProc()
         {
             GameConstants.Init();
-            Lawn.ExtGame.OldZombieSeeds.LoadOldZombieSeeds();
+            OldZombieSeeds.LoadOldZombieSeeds();
+            ExtGameDef.InitExtGameDef();
             if (!TodCommon.TodLoadResources("LoaderBar") || !TodCommon.TodLoadResources("LoaderBarFont"))
             {
                 throw new Exception();//return;
@@ -2051,12 +2052,12 @@ namespace Lawn
         public int GetSeedsAvailable()
         {
             int level = mPlayerInfo.GetLevel();
-            if (HasFinishedAdventure() || level > 50)
+            if (HasFinishedAdventure() || level > 60)
             {
                 return (int)SeedType.SeedsInChooserCount;
             }
             int awardSeedForLevel = (int)GetAwardSeedForLevel(level);
-            return Math.Min(49, awardSeedForLevel);
+            return Math.Min((int)SeedType.SeedsInChooserCount, awardSeedForLevel);
         }
 
         public Reanimation AddReanimation(float theX, float theY, int aRenderOrder, ReanimationType theReanimationType)
@@ -2262,12 +2263,12 @@ namespace Lawn
 
         public bool IsStormyNightLevel()
         {
-            return mBoard != null && (mGameMode == GameMode.ChallengeStormyNight || ((IsAdventureMode() && mPlayerInfo.mLevel == 40) || mGameMode == GameMode.Quickplay40));
+            return mBoard != null && (mGameMode == GameMode.ChallengeStormyNight || ((IsAdventureMode() && mPlayerInfo.mLevel == 40) || mGameMode == GameMode.Quickplay40 || (IsAdventureMode() && mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_XJZY)));
         }
 
         public bool IsFinalBossLevel()
         {
-            return mBoard != null && (mGameMode == GameMode.ChallengeFinalBoss || ((IsAdventureMode() && mPlayerInfo.mLevel == 50) || mGameMode == GameMode.Quickplay50));
+            return mBoard != null && (mGameMode == GameMode.ChallengeFinalBoss || ((IsAdventureMode() && (mPlayerInfo.mLevel == 50 || mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)) || mGameMode == GameMode.Quickplay50));
         }
 
         public bool IsBungeeBlitzLevel()
@@ -2288,9 +2289,9 @@ namespace Lawn
             {
                 num3--;
             }
-            if (num3 > 40)
+            if (num3 >= 40)
             {
-                num3 = 40;
+                num3 = 49 + (num3 - 40);
             }
             return (SeedType)num3;
         }

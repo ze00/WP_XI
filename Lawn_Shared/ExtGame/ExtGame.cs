@@ -21,16 +21,37 @@ namespace Lawn.ExtGame
         /// 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
         /// </summary>
         public const int CUSTOM_LEVEL_QYGH = 62;
+        // 喜剧之夜
+        // 夜晚关卡 暴风雨天气（屏幕会一闪一闪）节奏原版 小丑不会爆炸血量114514 啃咬1/s无精英 无法携带大嘴花和魅惑菇
+        public const int CUSTOM_XJZY = 63;
+        public const int CUSTOM_LEVEL_BOSS = 60;
+        public const int CUSTOM_MINIGAME_55 = 55;
     }
     public class ExtGameDef
     {
         public const int NUM_OF_SEEDPACKETS_ROW = 14;
         public const int NUM_BIG_STAGE = 7;
         public const int CUSTOM_LEVEL_START = 51;
-        public const int CUSTOM_LEVEL_END = 62;
-        public const int CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN = 8000;
+        public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_XJZY;
+        public const int CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN = 7500;
         public const int ZOMBIE_CATAPULT_LAUNCH_RATE = 150;
 
+
+        public static Dictionary<ZombieType, int> CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE = new Dictionary<ZombieType, int>();
+        public static void InitExtGameDef()
+        {
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.GatlingHead, 5);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Balloon, 3);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Zamboni, 3);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Pogo, 2);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Normal, 3);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.TrafficCone, 2);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.RedeyeGargantuar, 1);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Polevaulter, 6);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.SquashHead, 4);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.Newspaper, 4);
+            CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.JackInTheBox, 2);
+        }
     }
     enum CustomLevelSelectorID
     {

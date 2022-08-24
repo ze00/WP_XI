@@ -45,6 +45,7 @@
     <MandroidI18n>CJK;Mideast;Rare;West;Other</MandroidI18n>
     <AndroidSupportedAbis />
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

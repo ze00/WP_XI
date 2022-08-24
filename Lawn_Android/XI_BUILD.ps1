@@ -10,10 +10,11 @@ if ($BEFORE_BUILD.Equals("1")) {
   sed -i "s:XI.*_AS:XI${XI_VERSION}_AS:" ../../../Assets\Content\LawnStrings_en.txt
 } else {
   cp ../../../$SIGNED_APK $XI_OUT_APK
-  zip -j -P 1065027371 $XI_OUT_ZIP $XI_OUT_APK ../../../Assets/CHANGELOG.txt
+  # zip -j -P 1065027371 $XI_OUT_ZIP $XI_OUT_APK ../../../Assets/CHANGELOG.txt
   echo "XI${XI_VERSION}版本发布,文件在 *群文件\XI3\${XI_OUT_APK}*
 ··· 若有操作方法上的问题，先看群公告 ···
 ··· 若遇到游戏内的BUG，可于740923179群内反馈 ···
+··· 大佬的打关教程：https://www.bilibili.com/video/BV1E94y1d7GH ···
 $($CHANGELOG_OF_THIS_VERSION.Replace("`t", ''))"
 
 }

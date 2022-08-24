@@ -1021,7 +1021,7 @@ namespace Lawn
                     projectileType = ProjectileType.Spike;
                     goto IL_157;
                 case SeedType.Splitpea:
-                    projectileType = ProjectileType.Pea;
+                    projectileType = new ProjectileType[] { ProjectileType.Pea, ProjectileType.Fireball, ProjectileType.Snowpea }[RandomNumbers.NextNumber(3)];
                     goto IL_157;
                 default:
                     switch (seedType)
@@ -1071,7 +1071,7 @@ namespace Lawn
                 default:
                     if (seedType == SeedType.Leftpeater)
                     {
-                        projectileType = ProjectileType.Pea;
+                        projectileType = new ProjectileType[] { ProjectileType.Fireball, ProjectileType.Snowpea }[RandomNumbers.NextNumber(2)];
                         goto IL_157;
                     }
                     break;
@@ -1533,7 +1533,7 @@ namespace Lawn
                 else if (mSeedType == SeedType.Marigold)
                 {
                     SeedType seedType = (SeedType)RandomNumbers.NextNumber((int)SeedType.Melonpult);
-                    while (mBoard.SeedNotRecommendedForLevel(seedType) != 0)
+                    while (mBoard.SeedNotRecommendedForLevel(seedType) != 0 || mBoard.SeedNotAllowedToPick(seedType))
                     {
                         seedType = (SeedType)RandomNumbers.NextNumber((int)SeedType.Melonpult);
                     }
@@ -1903,7 +1903,8 @@ namespace Lawn
 
         public static bool IsUpgrade(SeedType theSeedtype)
         {
-            return theSeedtype == SeedType.Wintermelon || theSeedtype == SeedType.Twinsunflower || theSeedtype == SeedType.Spikerock || theSeedtype == SeedType.Cobcannon || theSeedtype == SeedType.GoldMagnet || theSeedtype == SeedType.Gloomshroom || theSeedtype == SeedType.Cattail;
+            //return theSeedtype == SeedType.Wintermelon || theSeedtype == SeedType.Twinsunflower || theSeedtype == SeedType.Spikerock || theSeedtype == SeedType.Cobcannon || theSeedtype == SeedType.GoldMagnet || theSeedtype == SeedType.Gloomshroom || theSeedtype == SeedType.Cattail;
+            return false;
         }
 
         public void UpdateAbilities()//3update
@@ -2151,8 +2152,16 @@ namespace Lawn
                                     Die();
                                 }
                             }
-                            if (mSeedType == SeedType.Fumeshroom && zombie.mHasShield)
+                            if (mSeedType == SeedType.Fumeshroom && zombie.mHasShield && zombie.mShieldType != ShieldType.None)
                                 zombie.TakeDamage(50, 0);
+                            else if (mSeedType == SeedType.Fumeshroom && zombie.mHasHelm && zombie.mHelmType != HelmType.None)
+                                zombie.TakeDamage(30, 0);
+                            else if (mSeedType == SeedType.Spikerock || mSeedType == SeedType.Spikeweed)
+                            {
+                                zombie.TakeDamage(theDamage2, theDamageFlags);
+                                zombie.mChilledCounter = 500;
+                                zombie.UpdateAnimSpeed();
+                            }
                             else
                                 zombie.TakeDamage(theDamage2, theDamageFlags);
                             mApp.PlayFoley(FoleyType.Splat);
@@ -2595,7 +2604,7 @@ namespace Lawn
             for (int i = 0; i < count; i++)
             {
                 Zombie zombie = mBoard.mZombies[i];
-                if (!zombie.mDead && !zombie.IsDeadOrDying())
+                if (!zombie.mDead && !zombie.IsDeadOrDying() && zombie.mZombieType != ZombieType.Boss)
                 {
                     zombie.GetZombieRect();
                     //在僵尸有铁门时 三叶草效果:只对门造成伤害 且没有击退、减速效果
@@ -4431,7 +4440,7 @@ namespace Lawn
             {
                 Zombie zombie = FindTargetZombie(mRow, PlantWeapon.Primary);
                 ZombieType zombieType = (zombie == null ? ZombieType.Invalid : zombie.mZombieType);
-                if (zombie != null && zombieType != ZombieType.Boss && zombieType != ZombieType.Catapult && zombieType != ZombieType.Gargantuar && zombieType != ZombieType.RedeyeGargantuar && zombieType != ZombieType.Digger && zombieType != ZombieType.Zamboni)
+                if (zombie != null && zombieType != ZombieType.Boss && zombieType != ZombieType.Catapult && zombieType != ZombieType.Gargantuar && zombieType != ZombieType.RedeyeGargantuar && zombieType != ZombieType.Digger && zombieType != ZombieType.Zamboni && zombieType != ZombieType.Bungee)
                 {
                     mApp.PlayFoley(FoleyType.Floop);
                     mState = PlantState.TanglekelpGrabbing;

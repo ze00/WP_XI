@@ -2287,7 +2287,7 @@ namespace Lawn
                 mChallengeStateCounter = 150;
                 mApp.PlayFoley(FoleyType.Rain);
             }
-            if (mApp.IsFinalBossLevel())
+            if (mApp.IsFinalBossLevel() && mApp.mBoard.mLevel != 60)
             {
                 mBoard.mSeedBank.AddSeed(SeedType.Cabbagepult);
                 mBoard.mSeedBank.AddSeed(SeedType.Jalapeno);
@@ -2317,6 +2317,11 @@ namespace Lawn
             {
                 mBoard.mSeedBank.AddSeed(SeedType.Peashooter);
                 mBoard.mSeedBank.AddSeed(SeedType.Iceshroom);
+                mConveyorBeltCounter = 1000;
+            }
+            if (mBoard.mLevel == ExtGameLevel.CUSTOM_MINIGAME_55)
+            {
+                mBoard.mSeedBank.AddSeed(SeedType.Marigold);
                 mConveyorBeltCounter = 1000;
             }
             if (mApp.IsIZombieLevel())
@@ -2643,6 +2648,9 @@ namespace Lawn
             else if (mApp.mGameMode == GameMode.ChallengeColumn)
             {
                 num = 3f;
+            } else if (mBoard.mLevel == ExtGameLevel.CUSTOM_MINIGAME_55)
+            {
+                num = 0.875f;
             }
             if (mBoard.mSeedBank.GetNumSeedsOnConveyorBelt() > 8)
             {
@@ -2765,6 +2773,35 @@ namespace Lawn
                 num2++;
                 Challenge.aSeedPickArray[num2].mItem = 30;
                 Challenge.aSeedPickArray[num2].mWeight = 10;
+                num2++;
+            } else if (mBoard.mLevel == ExtGameLevel.CUSTOM_MINIGAME_55)
+            {
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Flowerpot;
+                Challenge.aSeedPickArray[num2].mWeight = 12;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Doomshroom;
+                Challenge.aSeedPickArray[num2].mWeight = 2;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Iceshroom;
+                Challenge.aSeedPickArray[num2].mWeight = 4;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Pumpkinshell;
+                Challenge.aSeedPickArray[num2].mWeight = 6;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Melonpult;
+                Challenge.aSeedPickArray[num2].mWeight = 5;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Kernelpult;
+                Challenge.aSeedPickArray[num2].mWeight = 3;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Blover;
+                Challenge.aSeedPickArray[num2].mWeight = 4;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Cattail;
+                Challenge.aSeedPickArray[num2].mWeight = 2;
+                num2++;
+                Challenge.aSeedPickArray[num2].mItem = SeedType.Gravebuster;
+                Challenge.aSeedPickArray[num2].mWeight = 2;
                 num2++;
             }
             else if (mApp.IsFinalBossLevel())
@@ -2959,7 +2996,7 @@ namespace Lawn
                     int theTimeEnd = 18;
                     todWeightedArray.mWeight = TodCommon.TodAnimateCurve(0, theTimeEnd, num5 + num3, todWeightedArray.mWeight, 1, TodCurves.Linear);
                 }
-                if (seedType == SeedType.Flowerpot)
+                if (seedType == SeedType.Flowerpot && mBoard.mLevel != ExtGameLevel.CUSTOM_MINIGAME_55)
                 {
                     int num6 = mBoard.CountPlantByType(seedType);
                     int theTimeEnd2 = 35;

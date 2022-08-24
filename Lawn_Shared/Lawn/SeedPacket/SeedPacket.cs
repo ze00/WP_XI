@@ -677,8 +677,11 @@ namespace Lawn
                 return;
             }
             mTimesUsed++;
+            //if (!(mApp.IsAdventureMode() && mBoard.mLevel == ExtGame.ExtGameLevel.CUSTOM_XJZY && mBoard.mCurrentWave == mBoard.mNumWaves && mPacketType == SeedType.Chomper))
+            //{
             mRefreshing = true;
             mRefreshTime = Plant.GetRefreshTime(mPacketType, mImitaterType);
+            //}
         }
 
         public void FlashIfReady()

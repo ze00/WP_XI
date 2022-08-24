@@ -933,7 +933,7 @@ namespace Lawn
         public void CheckForHighGround()
         {
             float num = mShadowY - mPosY;
-            if ((mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball || mProjectileType == ProjectileType.Spike || mProjectileType == ProjectileType.Cobbig) && num < 28f)
+            if ((mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball || mProjectileType == ProjectileType.Cobbig) && num < 28f)
             {
                 DoImpact(null);
                 return;

@@ -20,7 +20,7 @@ namespace Sexy.TodLib
             TodWeightedArray.unusedObjects.Push(this);
         }
 
-        private TodWeightedArray()
+        public TodWeightedArray()
         {
         }
 

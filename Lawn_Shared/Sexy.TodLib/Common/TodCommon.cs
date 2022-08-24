@@ -240,14 +240,14 @@ namespace Sexy.TodLib
             {
                 num += theArray[i].mWeight;
             }
-            Debug.ASSERT(num > 0f);
+            //Debug.ASSERT(num > 0f);
             float num2 = 1f / num;
             float num3 = 0f;
             for (int j = 0; j < theCount; j++)
             {
                 num3 += TodCommon.TodCalcSmoothWeight(theArray[j].mWeight * num2, theArray[j].mLastPicked, theArray[j].mSecondLastPicked);
             }
-            Debug.ASSERT(num3 > 0f);
+            //Debug.ASSERT(num3 > 0f);
             float num4 = RandomNumbers.NextNumber(num3);
             float num5 = 0f;
             int k;

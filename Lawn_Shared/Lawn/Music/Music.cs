@@ -71,7 +71,7 @@ namespace Lawn
                 MakeSureMusicIsPlaying(MusicTune.MinigameLoonboon);
                 return;
             }
-            if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && (mApp.mPlayerInfo.mLevel == 10 || mApp.mPlayerInfo.mLevel == 20 || mApp.mPlayerInfo.mLevel == 30))
+            if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && (mApp.mPlayerInfo.mLevel == 10 || mApp.mPlayerInfo.mLevel == 20 || mApp.mPlayerInfo.mLevel == 30 || mApp.mPlayerInfo.mLevel == ExtGame.ExtGameLevel.CUSTOM_MINIGAME_55))
             {
                 MakeSureMusicIsPlaying(MusicTune.Conveyer);
                 return;

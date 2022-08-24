@@ -663,7 +663,7 @@ namespace Lawn
 
         public bool SeedNotAllowedToPick(SeedType theSeedType)
         {
-            return mApp.mGameMode == GameMode.ChallengeLastStand && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom);
+            return mBoard.SeedNotAllowedToPick(theSeedType);
         }
 
         public void CloseSeedChooser()
