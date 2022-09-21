@@ -2250,6 +2250,10 @@ namespace Lawn
         {
             return mBoard != null && ((IsAdventureMode() && mPlayerInfo.mLevel == 10) || mGameMode == GameMode.Quickplay10 || ((IsAdventureMode() && mPlayerInfo.mLevel == 20) || mGameMode == GameMode.Quickplay20) || ((IsAdventureMode() && mPlayerInfo.mLevel == 30) || mGameMode == GameMode.Quickplay30));
         }
+        public bool IsCustomXJZYLevel()
+        {
+            return mBoard != null && ((IsAdventureMode() && mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_XJZY));
+        }
 
         public bool IsSlotMachineLevel()
         {
@@ -2263,7 +2267,7 @@ namespace Lawn
 
         public bool IsStormyNightLevel()
         {
-            return mBoard != null && (mGameMode == GameMode.ChallengeStormyNight || ((IsAdventureMode() && mPlayerInfo.mLevel == 40) || mGameMode == GameMode.Quickplay40 || (IsAdventureMode() && mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_XJZY)));
+            return mBoard != null && (mGameMode == GameMode.ChallengeStormyNight || ((IsAdventureMode() && mPlayerInfo.mLevel == 40) || mGameMode == GameMode.Quickplay40 || IsCustomXJZYLevel()));
         }
 
         public bool IsFinalBossLevel()

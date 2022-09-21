@@ -2152,8 +2152,14 @@ namespace Lawn
                                     Die();
                                 }
                             }
-                            if (mSeedType == SeedType.Fumeshroom && zombie.mHasShield && zombie.mShieldType != ShieldType.None)
-                                zombie.TakeDamage(50, 0);
+                            if (zombie.mHasShield && zombie.mShieldType != ShieldType.None)
+                            {
+                                // 忧郁菇只对二级防具80一次
+                                if (mSeedType == SeedType.Fumeshroom)
+                                    zombie.TakeDamage(50, 0);
+                                else if (mSeedType == SeedType.Gloomshroom)
+                                    zombie.TakeDamage(20, 0);
+                            }
                             else if (mSeedType == SeedType.Fumeshroom && zombie.mHasHelm && zombie.mHelmType != HelmType.None)
                                 zombie.TakeDamage(30, 0);
                             else if (mSeedType == SeedType.Spikerock || mSeedType == SeedType.Spikeweed)
@@ -2616,8 +2622,12 @@ namespace Lawn
                     }
                     else
                     {
-                        zombie.TakeDamage(50, 1);
-                        zombie.mPosX = zombie.mPosX + 50 > 850 ? 850 : zombie.mPosX + 50;
+                        if (zombie.mZombieType == ZombieType.Zamboni)
+                            zombie.TakeDamage(30, 1);
+                        else
+                            zombie.TakeDamage(50, 1);
+                        if (!(zombie.mZombieType == ZombieType.JackInTheBox && mApp.IsCustomXJZYLevel()))
+                            zombie.mPosX = zombie.mPosX + 50 > 850 ? 850 : zombie.mPosX + 50;
                         zombie.mChilledCounter = 750;
                         zombie.UpdateAnimSpeed();
                     }

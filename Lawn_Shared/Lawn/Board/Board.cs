@@ -1335,7 +1335,7 @@ namespace Lawn
                 {
                     n = RandomNumbers.NextNumber(mSeedBank.mNumPackets);
                 } while (mSeedBank.mSeedPackets[n].mPacketType == SeedType.Sprout || mSeedBank.mSeedPackets[n].mPacketType == SeedType.Imitater || CanPlantAt(theGridX, theGridY, mSeedBank.mSeedPackets[n].mPacketType) != PlantingReason.Ok);
-                return AddPlant(theGridX, theGridY, mSeedBank.mSeedPackets[n].mPacketType, theImitaterType);
+                return AddPlant(theGridX, theGridY, SeedType.Imitater, mSeedBank.mSeedPackets[n].mPacketType);
             }
             Plant plant = NewPlant(theGridX, theGridY, theSeedType, theImitaterType);
             DoPlantingEffects(theGridX, theGridY, plant, false);
@@ -4267,7 +4267,8 @@ namespace Lawn
                 seedPacket.WasPlanted();
                 if (seedPacket.mPacketType == SeedType.Sprout)
                 {
-                    seedPacket.mRefreshTime = Plant.GetRefreshTime(SeedType.Sprout, SeedType.None) + Plant.GetCost(plant.mSeedType, SeedType.None) * 8;
+                    seedPacket.mRefreshCounter = 0;
+                    seedPacket.mRefreshTime = Plant.GetCost(plant.mImitaterType, SeedType.None) * 10;
                 }
             }
             else
@@ -6984,7 +6985,7 @@ namespace Lawn
 
         public bool SeedNotAllowedToPick(SeedType theSeedType)
         {
-            return (mApp.mGameMode == GameMode.ChallengeLastStand && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern)) || (mApp.mGameMode == GameMode.Adventure && mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom));
+            return (mApp.mGameMode == GameMode.ChallengeLastStand && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern || theSeedType == SeedType.ExplodeONut)) || (mApp.mGameMode == GameMode.Adventure && mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom));
         }
 
         public uint SeedNotRecommendedForLevel(SeedType theSeedType)

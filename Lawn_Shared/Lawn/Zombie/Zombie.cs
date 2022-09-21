@@ -251,6 +251,7 @@ namespace Lawn
             mSummonedDancers = false;
             mSurprised = false;
             mIsSpecialUnit = false;
+            mHelmMaxHealth = 0;
             for (int i = 0; i < GameConstants.MAX_ZOMBIE_FOLLOWERS; i++)
             {
                 mFollowerZombieID[i] = null;
@@ -533,10 +534,13 @@ namespace Lawn
                 if (mApp.IsAdventureMode() && mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY)
                 {
                     // 喜剧之夜
-                    mBodyHealth = 114514;
+                    mBodyHealth = 14514;
                     num3 = 100000;
+                    // 这样不走濒死效果
+                    mBodyMaxHealth = 100000;
                     mZombiePhase = ZombiePhase.ZombieNormal;
-                } else if (RandomNumbers.NextNumber(10) == 0)
+                }
+                else if (!mBoard.HasConveyorBeltSeedBank() && RandomNumbers.NextNumber(10) == 0)
                 {
                     mIsSpecialUnit = true;
                     mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_SUN2);
@@ -675,7 +679,7 @@ namespace Lawn
                 aBodyReanim.SetFramesForLayer(GlobalMembersReanimIds.ReanimTrackId_propeller);
                 aBodyReanim.mLoopType = ReanimLoopType.LoopFullLastFrame;
                 aBodyReanim.AttachToAnotherReanimation(ref reanimation8, GlobalMembersReanimIds.ReanimTrackId_hat);
-                mFlyingHealth = 50;
+                mFlyingHealth = 60;
                 mBodyHealth = 450;
                 mZombieRect = new TRect(36, 30, 42, 115);
                 mZombieAttackRect = new TRect(20, 30, 50, 115);
@@ -1977,7 +1981,7 @@ namespace Lawn
             {
                 num = TakeFlyingDamage(theDamage, theDamageFlags);
             }
-            if (num > 0 && mShieldType != ShieldType.None && !TodCommon.TestBit(theDamageFlags, 0))
+            if (num > 0 && mShieldType != ShieldType.None/* && !TodCommon.TestBit(theDamageFlags, 0)*/)
             {
                 num = TakeShieldDamage(theDamage, theDamageFlags);
                 if (TodCommon.TestBit(theDamageFlags, 1))
@@ -2732,7 +2736,7 @@ namespace Lawn
             {
                 DropArm(theDamageFlags);
             }
-            if (mHasHead && mBodyHealth < mBodyMaxHealth / 3)
+            if (mHasHead && mBodyHealth < (!GlobalStaticVars.gHardMode ? mBodyMaxHealth / 3 : 0))
             {
                 DropHead(theDamageFlags);
                 DropLoot();
@@ -3448,6 +3452,11 @@ namespace Lawn
 
         public void UpdateZombieJackInTheBox()//3update
         {
+            if ((mBodyHealth < 7000 && mHelmMaxHealth == 0) || (mBodyHealth < 200 && mHelmMaxHealth == 1))
+            {
+                SpawnNewZombieAfterDied(ZombieType.Zamboni);
+                mHelmMaxHealth++;
+            }
             if (mZombiePhase == ZombiePhase.JackInTheBoxRunning)
             {
                 if (mIsSpecialUnit && RandomNumbers.NextNumber(10) == 0 && mIceTrapCounter == 0 && mButteredCounter == 0)
@@ -3994,18 +4003,18 @@ namespace Lawn
             {
                 return;
             }
-            float aHeight = 40f;
+            float aHeight = 140f;
             if (mZombiePhase >= ZombiePhase.PogoHighBounce1 && mZombiePhase <= ZombiePhase.PogoHighBounce6)
             {
-                aHeight = 50f + 20f * (mZombiePhase - ZombiePhase.PogoHighBounce1);
+                aHeight = 150f + 20f * (mZombiePhase - ZombiePhase.PogoHighBounce1);
             }
             else if (mZombiePhase == ZombiePhase.PogoForwardBounce2)
             {
-                aHeight = 90f;
+                aHeight = 190f;
             }
             else if (mZombiePhase == ZombiePhase.PogoForwardBounce7)
             {
-                aHeight = 170f;
+                aHeight = 270f;
             }
             float aDeflection = 9f;
             mAltitude = TodCommon.TodAnimateCurveFloat(GameConstants.POGO_BOUNCE_TIME, 0, mPhaseCounter, aDeflection, aHeight + aDeflection, TodCurves.BounceSlowMiddle);
@@ -4063,11 +4072,11 @@ namespace Lawn
                 mZombiePhase = ZombiePhase.PogoBouncing;
                 PickRandomSpeed();
                 mPhaseCounter = GameConstants.POGO_BOUNCE_TIME;
-                if (mApp.mGameScene == GameScenes.Playing)
-                {
-                    mRow = mBoard.PickRowForNewZombie(this.mZombieType);
-                }
                 return;
+            }
+            if (mApp.mGameScene == GameScenes.Playing)
+            {
+                UpdatePogoYuckyFace();
             }
             if (mZombiePhase == ZombiePhase.PogoHighBounce1)
             {
@@ -4536,7 +4545,68 @@ namespace Lawn
                 mRenderOrder = Board.MakeRenderOrder(RenderLayer.Projectile, mRow, 0);
             }
         }
-
+        public void UpdatePogoYuckyFace()//1update
+        {
+            bool aCanGoDown = true;
+            bool aCanGoUp = true;
+            bool aIsThisRowWaterFilled = mBoard.mPlantRow[mRow] == PlantRowType.Pool;
+            if (!mBoard.RowCanHaveZombies(mRow - 1))
+            {
+                aCanGoDown = false;
+            }
+            else if (mBoard.mPlantRow[mRow - 1] == PlantRowType.Pool && !aIsThisRowWaterFilled)
+            {
+                aCanGoDown = false;
+            }
+            else if (mBoard.mPlantRow[mRow - 1] != PlantRowType.Pool && aIsThisRowWaterFilled)
+            {
+                aCanGoDown = false;
+            }
+            if (!mBoard.RowCanHaveZombies(mRow + 1))
+            {
+                aCanGoUp = false;
+            }
+            else if (mBoard.mPlantRow[mRow + 1] == PlantRowType.Pool && !aIsThisRowWaterFilled)
+            {
+                aCanGoUp = false;
+            }
+            else if (mBoard.mPlantRow[mRow + 1] != PlantRowType.Pool && aIsThisRowWaterFilled)
+            {
+                aCanGoUp = false;
+            }
+            if (aCanGoDown && !aCanGoUp)
+            {
+                mBoard.ZombieSwitchRow(this, mRow - 1);
+                SetRow(mRow - 1);
+                return;
+            }
+            if (!aCanGoDown && aCanGoUp)
+            {
+                mBoard.ZombieSwitchRow(this, mRow + 1);
+                mYuckyToRow = mRow + 1;
+                mYuckySwitchRowsLate = true;
+                mRow = mYuckyToRow;
+                return;
+            }
+            if (aCanGoDown && aCanGoUp)
+            {
+                if (RandomNumbers.NextNumber(2) == 0)
+                {
+                    mBoard.ZombieSwitchRow(this, mRow + 1);
+                    mYuckyToRow = mRow + 1;
+                    mYuckySwitchRowsLate = true;
+                    mRow = mYuckyToRow;
+                    return;
+                }
+                mBoard.ZombieSwitchRow(this, mRow - 1);
+                SetRow(mRow - 1);
+                return;
+            }
+            else
+            {
+                Debug.ASSERT(false);
+            }
+        }
         public void UpdateYuckyFace()//1update
         {
             mYuckyFaceCounter++;
