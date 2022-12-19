@@ -2107,7 +2107,7 @@ namespace Lawn
                 WhackAZombieSpawning();
                 return true;
             }
-            return mApp.IsFinalBossLevel() || mApp.mGameMode == GameMode.ChallengeIce || mApp.mGameMode == GameMode.ChallengeZenGarden || mApp.mGameMode == GameMode.TreeOfWisdom || mApp.mGameMode == GameMode.ChallengeZombiquarium || mApp.IsIZombieLevel() || mApp.IsSquirrelLevel() || mApp.IsScaryPotterLevel() || (mApp.mGameMode == GameMode.ChallengeLastStand && mChallengeState != ChallengeState.LastStandOnslaught);
+            return (mApp.IsFinalBossLevel() && mApp.mPlayerInfo.mLevel != ExtGame.ExtGameLevel.CUSTOM_LEVEL_BOSS) || mApp.mGameMode == GameMode.ChallengeIce || mApp.mGameMode == GameMode.ChallengeZenGarden || mApp.mGameMode == GameMode.TreeOfWisdom || mApp.mGameMode == GameMode.ChallengeZombiquarium || mApp.IsIZombieLevel() || mApp.IsSquirrelLevel() || mApp.IsScaryPotterLevel() || (mApp.mGameMode == GameMode.ChallengeLastStand && mChallengeState != ChallengeState.LastStandOnslaught);
         }
 
         public void BeghouledClearCrater(int theCount)

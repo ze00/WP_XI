@@ -1014,6 +1014,11 @@ namespace Lawn
                     }
                 }
             }
+            if (mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
+            {
+                mZombieCountDown = ExtGameDef.CUSTOM_LEVEL_BOSS_ZOMBIES_COUNTDOWN;
+                mZombieCountDownStart = mZombieCountDown;
+            }
         }
         public void InitLevel()
         {
@@ -1078,7 +1083,7 @@ namespace Lawn
             }
             else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
             {
-                mSunMoney = 500;
+                mSunMoney = 1300;
             }
             else
             {
@@ -1314,16 +1319,17 @@ namespace Lawn
             }
             if (mApp.mGameMode != GameMode.ChallengeZenGarden && mApp.mGameMode != GameMode.TreeOfWisdom && mApp.mGameMode != GameMode.Upsell && mApp.mGameMode != GameMode.Intro && mApp.mGameMode != GameMode.Intro)
             {
+                if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
+                {
+                    DisplayAdvice($"YOU HAVE {mZombieCountDown / 100}s TO SET YOUR PLANTS!", MessageStyle.HintLong, AdviceType.None);
+                }
                 if (mApp.IsFinalBossLevel())
                 {
                     return;
                 }
                 mApp.mMusic.StartGameMusic();
             }
-            if (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
-            {
-                DisplayAdvice($"YOU HAVE {ExtGameDef.CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN / 100}s TO SET YOUR PLANTS!", MessageStyle.HintLong, AdviceType.None);
-            }
+
         }
 
         public Plant AddPlant(int theGridX, int theGridY, SeedType theSeedType, SeedType theImitaterType)

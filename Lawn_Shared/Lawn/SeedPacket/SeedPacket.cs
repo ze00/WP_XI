@@ -682,6 +682,14 @@ namespace Lawn
             mRefreshing = true;
             mRefreshTime = Plant.GetRefreshTime(mPacketType, mImitaterType);
             //}
+            // 6-10中寒冰菇 花盆 辣椒cd减少3.5s
+            if (mApp.IsFinalBossLevel() && mApp.IsAdventureMode())
+            {
+                if (Array.IndexOf(new SeedType[] { SeedType.Iceshroom, SeedType.Jalapeno, SeedType.Flowerpot }, mPacketType) != -1 || Array.IndexOf(new SeedType[] { SeedType.Iceshroom, SeedType.Jalapeno, SeedType.Flowerpot }, mImitaterType) != -1)
+                {
+                    mRefreshTime -= 350;
+                }
+            }
         }
 
         public void FlashIfReady()

@@ -399,6 +399,10 @@ namespace Lawn
                 {
                     float num2 = mPosX + celWidth * 0.5f;
                     float num3 = mPosZ + mPosY + celHeight * 0.5f;
+                    if (mProjectileType == ProjectileType.Star && mFromPeaHead)
+                    {
+                        num = 3;
+                    }
                     SexyTransform2D sexyTransform2D = default(SexyTransform2D);
                     TodCommon.TodScaleRotateTransformMatrix(ref sexyTransform2D.mMatrix, num2 * Constants.S + mBoard.mX, num3 * Constants.S + mBoard.mY, mRotation, num, num);
                     TodCommon.TodBltMatrix(g, image, sexyTransform2D.mMatrix, ref g.mClipRect, SexyColor.White, g.mDrawMode, theSrcRect);

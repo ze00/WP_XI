@@ -2305,6 +2305,7 @@ namespace Lawn
 
         public void UpdateZombiePolevaulter()//3update
         {
+            UpdateCustomImp(ZombiePhase.PolevaulterPreVault);
             if (mZombiePhase == ZombiePhase.PolevaulterPreVault && mHasHead && mZombieHeight == ZombieHeight.ZombieNormal)
             {
                 Plant plant = FindPlantTarget(ZombieAttackType.Vault);
@@ -3247,7 +3248,7 @@ namespace Lawn
             }
             if (mApp.IsFinalBossLevel())
             {
-                if (mZombieType != ZombieType.Boss)
+                if (mZombieType != ZombieType.Boss || (mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
                 {
                     return false;
                 }
@@ -7722,8 +7723,7 @@ namespace Lawn
             int num3 = zombieRect.mX + zombieRect.mWidth / 2;
             return num3 - num2;
         }
-
-        public void UpdateZombieImp()//1update
+        public void UpdateCustomImp(ZombiePhase customLandPhase)
         {
             if (mZombiePhase == ZombiePhase.ImpGettingThrown)
             {
@@ -7746,10 +7746,14 @@ namespace Lawn
                 Reanimation reanimation = mApp.ReanimationGet(mBodyReanimID);
                 if (reanimation.mLoopCount > 0)
                 {
-                    mZombiePhase = ZombiePhase.ZombieNormal;
+                    mZombiePhase = customLandPhase;
                     StartWalkAnim(0);
                 }
             }
+        }
+        public void UpdateZombieImp()//1update
+        {
+            UpdateCustomImp(ZombiePhase.ZombieNormal);
         }
 
         public void SquishAllInSquare(int theX, int theY, ZombieAttackType theAttackType)
@@ -8429,6 +8433,7 @@ namespace Lawn
 
         public void UpdateZamboni()//3update
         {
+            UpdateZombieImp();
             if (mPosX > 400f && !mFlatTires)
             {
                 mVelX = TodCommon.TodAnimateCurveFloat(700, 300, (int)mPosX, 0.25f, 0.05f, TodCurves.Linear);
@@ -9802,6 +9807,10 @@ namespace Lawn
             if (mZombieHeight == ZombieHeight.InToChimney)
             {
                 UpdateZombieChimney();
+            }
+            if (mZombieType == ZombieType.Flag)
+            {
+                UpdateZombieImp();
             }
             if (mZombieType == ZombieType.Polevaulter)
             {

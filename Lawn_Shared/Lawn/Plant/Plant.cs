@@ -4411,6 +4411,7 @@ namespace Lawn
                 int theX = mX + 25;
                 int theY = mY + 25;
                 Projectile projectile = mBoard.AddProjectile(theX, theY, mRenderOrder + -1, mRow, ProjectileType.Star);
+                projectile.mFromPeaHead = true;
                 projectile.mDamageRangeFlags = GetDamageRangeFlags(PlantWeapon.Primary);
                 projectile.mMotionType = ProjectileMotion.Star;
                 float velX = (float)Math.Cos(TodCommon.DegToRad(30f)) * 3.33f;
