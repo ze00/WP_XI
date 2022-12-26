@@ -616,10 +616,7 @@ namespace Lawn
                     mApp.AddTodParticle(num3, num4, aRenderOrder, particleEffect);
                 }
             }
-            if (mProjectileType != ProjectileType.Star)
-            {
-                Die();
-            }
+            Die();
         }
 
         public void UpdateMotion()//3update
@@ -705,8 +702,18 @@ namespace Lawn
                     if (rectOverlap >= 0 && mPosY > zombieRect.mY && mPosY < zombieRect.mY + zombieRect.mHeight)
                     {
                         DoImpact(zombie);
+                        if (mProjectileType == ProjectileType.Star && mFromPeaHead)
+                        {
+                            int aRenderOrder2 = Board.MakeRenderOrder(RenderLayer.Ground, mCobTargetRow, 2);
+                            mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, aRenderOrder2, ParticleEffect.Blastmark);
+                            mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, mRenderOrder + 1, ParticleEffect.Popcornsplash);
+                            mApp.PlaySample(Resources.SOUND_DOOMSHROOM);
+                            mBoard.ShakeBoard(3, -4);
+                            mApp.Vibrate();
+                        }
                     }
                 }
+
                 return;
             }
             if (mProjectileType == ProjectileType.Star && (mPosY > 600f || mPosY < 0f))
@@ -915,6 +922,7 @@ namespace Lawn
                     plant.mEatenFlashCountdown = Math.Max(plant.mEatenFlashCountdown, 25);
                     mApp.PlayFoley(FoleyType.Splat);
                 }
+
                 Die();
                 return;
             }
@@ -982,7 +990,7 @@ namespace Lawn
                 }
             }
             int damage = projectileDef.mDamage;
-            int num2 = 3;
+            int num2 = mProjectileType == ProjectileType.Star ? 1 : 3;
             int num3 = projectileDef.mDamage / num2;
             int num4 = damage * 7;
             if (mProjectileType == ProjectileType.Fireball)
@@ -1252,7 +1260,7 @@ namespace Lawn
 
         public bool IsSplashDamage(Zombie theZombie)
         {
-            return (mProjectileType != ProjectileType.Fireball || theZombie == null || !theZombie.IsFireResistant()) && (mProjectileType == ProjectileType.Melon || mProjectileType == ProjectileType.Wintermelon || mProjectileType == ProjectileType.Fireball);
+            return (mProjectileType != ProjectileType.Fireball || theZombie == null || !theZombie.IsFireResistant()) && (mProjectileType == ProjectileType.Melon || mProjectileType == ProjectileType.Wintermelon || mProjectileType == ProjectileType.Fireball || (mProjectileType == ProjectileType.Star && mFromPeaHead));
         }
 
         public void PlayImpactSound(Zombie theZombie)
@@ -1427,6 +1435,7 @@ namespace Lawn
         private int mTargetZombieIDSaved;
 
         public int mLastPortalX;
+        // 复用这个变量，表示fromPeaHead/fromStarFruit。否则用户用户升级存档。
         public bool mFromPeaHead;
         public bool mFromRepeater;
         public int mZombiePeaCollisionCount;

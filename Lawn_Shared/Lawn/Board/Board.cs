@@ -1083,7 +1083,7 @@ namespace Lawn
             }
             else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
             {
-                mSunMoney = 1300;
+                mSunMoney = 2800;
             }
             else
             {
@@ -3655,6 +3655,10 @@ namespace Lawn
             {
                 return 3;
             }
+            if (mApp.IsAdventureMode() && mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
+            {
+                return 11;
+            }
             int num = mApp.mPlayerInfo.mPurchases[21] + 6;
             int seedsAvailable = mApp.GetSeedsAvailable();
             if (seedsAvailable < num)
@@ -4763,6 +4767,9 @@ namespace Lawn
             else if (aNumPackets == 10)
             {
                 num -= (int)Constants.InvertAndScale(5f);
+            } else if (aNumPackets == 11)
+            {
+                num -= (int)Constants.InvertAndScale(7f);
             }
             return theIndex * num;
         }

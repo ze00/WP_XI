@@ -566,7 +566,8 @@ namespace Lawn
                 new PlantDefinition(SeedType.Cherrybomb,    null, ReanimationType.Cherrybomb,   3,  100,5000,PlantSubClass.Normal,  0, "CHERRY_BOMB"),
                 new PlantDefinition(SeedType.Wallnut,       null, ReanimationType.Wallnut,      2,  50, 1500,PlantSubClass.Normal,  0, "WALL_NUT"),
                 new PlantDefinition(SeedType.Potatomine,    null, ReanimationType.Potatomine,   37, 25, 3000,PlantSubClass.Normal,  0, "POTATO_MINE"),
-                new PlantDefinition(SeedType.Snowpea,       null, ReanimationType.Snowpea,      4,  150,3000, PlantSubClass.Shooter, 50, "SNOW_PEA"),
+                // 2999则初始无需冷却
+                new PlantDefinition(SeedType.Snowpea,       null, ReanimationType.Snowpea,      4,  150,2999, PlantSubClass.Shooter, 50, "SNOW_PEA"),
                 new PlantDefinition(SeedType.Chomper,       null, ReanimationType.Chomper,      31, 125,750, PlantSubClass.Normal,  0, "CHOMPER"),
                 new PlantDefinition(SeedType.Repeater,      null, ReanimationType.Repeater,     5,  100,750, PlantSubClass.Shooter, 150, "REPEATER"),
                 new PlantDefinition(SeedType.Puffshroom,    null, ReanimationType.Puffshroom,   6,  0,  750, PlantSubClass.Shooter, 150, "PUFF_SHROOM"),
@@ -581,7 +582,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Squash,        null, ReanimationType.Squash,       21, 50, 3000,PlantSubClass.Normal,  0, "SQUASH"),
                 new PlantDefinition(SeedType.Threepeater,   null, ReanimationType.Threepeater,  12, 375,3000, PlantSubClass.Shooter, 190, "THREEPEATER"),
                 new PlantDefinition(SeedType.Tanglekelp,    null, ReanimationType.Tanglekelp,   17, 25, 3000,PlantSubClass.Normal,  0, "TANGLE_KELP"),
-                new PlantDefinition(SeedType.Jalapeno,      null, ReanimationType.Jalapeno,     11, 175, 5000,PlantSubClass.Normal,  0, "JALAPENO"),
+                new PlantDefinition(SeedType.Jalapeno,      null, ReanimationType.Jalapeno,     11, 175, 4300,PlantSubClass.Normal,  0, "JALAPENO"),
                 new PlantDefinition(SeedType.Spikeweed,     null, ReanimationType.Spikeweed,    22, 100,750, PlantSubClass.Normal,  0, "SPIKEWEED"),
                 new PlantDefinition(SeedType.Torchwood,     null, ReanimationType.Torchwood,    29, 125,750, PlantSubClass.Normal,  0, "TORCHWOOD"),
                 new PlantDefinition(SeedType.Tallnut,       null, ReanimationType.Tallnut,      28, 125,3000,PlantSubClass.Normal,  0, "TALL_NUT"),
@@ -590,7 +591,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Cactus,        null, ReanimationType.Cactus,       15, 75,750, PlantSubClass.Shooter, 150, "CACTUS"),
                 new PlantDefinition(SeedType.Blover,        null, ReanimationType.Blover,       18, 100,1000, PlantSubClass.Normal,  0, "BLOVER"),
                 new PlantDefinition(SeedType.Splitpea,      null, ReanimationType.Splitpea,     32, 75,750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),
-                new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 225,3000, PlantSubClass.Shooter, 150, "STARFRUIT"),
+                new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 225,1500, PlantSubClass.Shooter, 310, "STARFRUIT"),
                 new PlantDefinition(SeedType.Pumpkinshell,  null, ReanimationType.Pumpkin,      25, 125,3000,PlantSubClass.Normal,  0, "PUMPKIN"),
                 new PlantDefinition(SeedType.Magnetshroom,  null, ReanimationType.Magnetshroom, 35, 100,750, PlantSubClass.Normal,  0, "MAGNET_SHROOM"),
                 new PlantDefinition(SeedType.Cabbagepult,   null, ReanimationType.Cabbagepult,  13, 100,750, PlantSubClass.Shooter, 300, "CABBAGE_PULT"),
@@ -602,7 +603,8 @@ namespace Lawn
                 new PlantDefinition(SeedType.Marigold,      null, ReanimationType.Marigold,     24, 350, 25000,PlantSubClass.Normal,  2500, "MARIGOLD"),
                 new PlantDefinition(SeedType.Melonpult,     null, ReanimationType.Melonpult,    14, 250,750, PlantSubClass.Shooter, 300, "MELON_PULT"),
                 new PlantDefinition(SeedType.Gatlingpea,    null, ReanimationType.Gatlingpea,   5,  375,2500,PlantSubClass.Shooter, 150, "GATLING_PEA"),
-                new PlantDefinition(SeedType.Twinsunflower, null, ReanimationType.TwinSunflower,1,  125,4999,PlantSubClass.Normal,  3000, "TWIN_SUNFLOWER"),
+                // 2999则初始无需冷却
+                new PlantDefinition(SeedType.Twinsunflower, null, ReanimationType.TwinSunflower,1,  125,2999,PlantSubClass.Normal,  2500, "TWIN_SUNFLOWER"),
                 new PlantDefinition(SeedType.Gloomshroom,   null, ReanimationType.Gloomshroom,  27, 250,1500,PlantSubClass.Shooter, 200, "GLOOM_SHROOM"),
                 new PlantDefinition(SeedType.Cattail,       null, ReanimationType.Cattail,      27, 225,1500,PlantSubClass.Shooter, 150, "CATTAIL"),
                 new PlantDefinition(SeedType.Wintermelon,   null, ReanimationType.WinterMelon,  27, 400,2999,PlantSubClass.Shooter, 300, "WINTER_MELON"),
@@ -747,7 +749,7 @@ namespace Lawn
                 new ProjectileDefinition(ProjectileType.Puff,           0,  20  ),
                 new ProjectileDefinition(ProjectileType.Wintermelon,    0,  80  ),
                 new ProjectileDefinition(ProjectileType.Fireball,       0,  40  ),
-                new ProjectileDefinition(ProjectileType.Star,           0,  20  ),
+                new ProjectileDefinition(ProjectileType.Star,           0,  60  ),
                 new ProjectileDefinition(ProjectileType.Spike,          0,  20  ),
                 new ProjectileDefinition(ProjectileType.Basketball,     0,  75  ),
                 new ProjectileDefinition(ProjectileType.Kernel,         0,  20  ),
@@ -864,7 +866,7 @@ namespace Lawn
 
         public const int WAKE_UP_TIME = 100;
 
-        public const int SEEDBANK_MAX = 10;
+        public const int SEEDBANK_MAX = 11;
 
         public const int SLOT_MACHINE_TIME = 400;
 

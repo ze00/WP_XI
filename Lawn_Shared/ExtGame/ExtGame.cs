@@ -34,7 +34,7 @@ namespace Lawn.ExtGame
         public const int CUSTOM_LEVEL_START = 51;
         public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_XJZY;
         public const int CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN = 7500;
-        public const int CUSTOM_LEVEL_BOSS_ZOMBIES_COUNTDOWN = 6000;
+        public const int CUSTOM_LEVEL_BOSS_ZOMBIES_COUNTDOWN = 7500;
         public const int ZOMBIE_CATAPULT_LAUNCH_RATE = 150;
 
 

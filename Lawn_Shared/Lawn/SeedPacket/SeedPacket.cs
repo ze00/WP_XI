@@ -793,6 +793,7 @@ namespace Lawn
                     mActive = false;
                     return;
                 }
+                // 此处设置初始冷却值
                 if (Plant.GetRefreshTime(mPacketType, mImitaterType) == 3000)
                 {
                     mRefreshTime = 2000;

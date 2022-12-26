@@ -1404,11 +1404,27 @@ namespace Lawn
                                     num3 = 30;
                                 }
                             }
-                            if ((mSeedType != SeedType.ExplodeONut || theZombieItem.mZombiePhase != ZombiePhase.PolevaulterInVault))
+                            // 找到本行中血量最高的一只僵尸
+                            if (mSeedType == SeedType.Starfruit && theZombieItem.mRow == mRow)
+                            {
+                                if (result != null)
+                                {
+                                    if (theZombieItem.mBodyHealth + theZombieItem.mHelmHealth + theZombieItem.mShieldHealth > result.mBodyHealth + result.mHelmHealth + result.mShieldHealth)
+                                    {
+                                        result = theZombieItem;
+                                    }
+                                } else
+                                {
+                                    result = theZombieItem;
+                                }
+                            }
+                            else if ((mSeedType != SeedType.ExplodeONut || theZombieItem.mZombiePhase != ZombiePhase.PolevaulterInVault))
                             {
                                 TRect zombieRect = theZombieItem.GetZombieRect();
                                 if (!isPortalCheckNeeded)
                                 {
+                                    if (theZombieItem.mZombieType == ZombieType.Digger && theZombieItem.mZombiePhase == ZombiePhase.DiggerTunneling)
+                                        Debug.Log(DebugType.Error, $"{mSeedType} {theZombieItem.GetZombieRect()} {plantAttackRect}");
                                     int theXOverlap = GameConstants.GetRectOverlap(plantAttackRect, zombieRect);
                                     if (theXOverlap < -num3)
                                     {
@@ -2194,7 +2210,7 @@ namespace Lawn
                 {
                     return 127;
                 }
-                if (mSeedType == SeedType.Melonpult || mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Wintermelon)
+                if (mSeedType == SeedType.Melonpult || mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Wintermelon || mSeedType == SeedType.Starfruit)
                 {
                     return 13;
                 }
@@ -2216,7 +2232,9 @@ namespace Lawn
                 }
                 if (mSeedType == SeedType.Tanglekelp)
                 {
-                    return 5;
+                    uint i = 5;
+                    TodCommon.SetBit(ref i, 6, 1);
+                    return (int)i;
                 }
                 if (mSeedType == SeedType.GiantWallnut)
                 {
@@ -4406,14 +4424,21 @@ namespace Lawn
         public void StarFruitFire()
         {
             mApp.PlayFoley(FoleyType.Throw);
-            for (int i = 3; i < 4; i++)
+            for (int i = 1; i < 4; i++)
             {
                 int theX = mX + 25;
                 int theY = mY + 25;
                 Projectile projectile = mBoard.AddProjectile(theX, theY, mRenderOrder + -1, mRow, ProjectileType.Star);
-                projectile.mFromPeaHead = true;
+                if (RandomNumbers.NextNumber(10) == 0)
+                {
+                    projectile.mFromPeaHead = true;
+                    projectile.mMotionType = ProjectileMotion.Homing;
+                    projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
+                } else
+                {
+                    projectile.mMotionType = ProjectileMotion.Star;
+                }
                 projectile.mDamageRangeFlags = GetDamageRangeFlags(PlantWeapon.Primary);
-                projectile.mMotionType = ProjectileMotion.Star;
                 float velX = (float)Math.Cos(TodCommon.DegToRad(30f)) * 3.33f;
                 float velY = (float)Math.Sin(TodCommon.DegToRad(30f)) * 3.33f;
                 switch (i)
@@ -4422,14 +4447,14 @@ namespace Lawn
                 //    projectile.mVelX = -3.33f;
                 //    projectile.mVelY = 0f;
                 //    break;
-                //case 1:
-                //    projectile.mVelX = 0f;
-                //    projectile.mVelY = 3.33f;
-                //    break;
-                //case 2:
-                //    projectile.mVelX = 0f;
-                //    projectile.mVelY = -3.33f;
-                //    break;
+                case 1:
+                    projectile.mVelX = velX;
+                    projectile.mVelY = 1.0f;
+                    break;
+                case 2:
+                    projectile.mVelX = velX;
+                    projectile.mVelY = -1.0f;
+                    break;
                 case 3:
                     projectile.mVelX = velX;
                     projectile.mVelY = 0f;
@@ -4451,7 +4476,7 @@ namespace Lawn
             {
                 Zombie zombie = FindTargetZombie(mRow, PlantWeapon.Primary);
                 ZombieType zombieType = (zombie == null ? ZombieType.Invalid : zombie.mZombieType);
-                if (zombie != null && zombieType != ZombieType.Boss && zombieType != ZombieType.Catapult && zombieType != ZombieType.Gargantuar && zombieType != ZombieType.RedeyeGargantuar && zombieType != ZombieType.Digger && zombieType != ZombieType.Zamboni && zombieType != ZombieType.Bungee)
+                if (zombie != null && zombieType != ZombieType.Boss && zombieType != ZombieType.Catapult && zombieType != ZombieType.Gargantuar && zombieType != ZombieType.RedeyeGargantuar && zombieType != ZombieType.Zamboni && zombieType != ZombieType.Bungee)
                 {
                     mApp.PlayFoley(FoleyType.Floop);
                     mState = PlantState.TanglekelpGrabbing;

@@ -1387,7 +1387,7 @@ namespace Lawn
                     }
                 }
             }
-            else if (mApp.IsFinalBossLevel() && theGridX >= 8)
+            else if (mApp.IsFinalBossLevel() && theGridX >= 9)
             {
                 return PlantingReason.NotHere;
             }
