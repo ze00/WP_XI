@@ -540,7 +540,7 @@ namespace Lawn
                     mBodyMaxHealth = 100000;
                     mZombiePhase = ZombiePhase.ZombieNormal;
                 }
-                else if (!mBoard.HasConveyorBeltSeedBank() && RandomNumbers.NextNumber(10) == 0)
+                else if (mBoard != null && !mBoard.HasConveyorBeltSeedBank() && RandomNumbers.NextNumber(10) == 0)
                 {
                     mIsSpecialUnit = true;
                     mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_SUN2);
@@ -3246,9 +3246,9 @@ namespace Lawn
             {
                 return false;
             }
-            if (mApp.IsFinalBossLevel())
+            if (mApp.IsFinalBossLevel() && !(mApp.IsAdventureMode()))
             {
-                if (mZombieType != ZombieType.Boss || (mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
+                if (mZombieType != ZombieType.Boss)
                 {
                     return false;
                 }
@@ -3460,7 +3460,7 @@ namespace Lawn
             }
             if (mZombiePhase == ZombiePhase.JackInTheBoxRunning)
             {
-                if (mIsSpecialUnit && RandomNumbers.NextNumber(10) == 0 && mIceTrapCounter == 0 && mButteredCounter == 0)
+                if (mIsSpecialUnit && RandomNumbers.NextNumber(20) == 0 && mIceTrapCounter == 0 && mButteredCounter == 0)
                 {
                     if (mChilledCounter != 0 && RandomNumbers.NextNumber(2) == 0)
                         mBoard.AddSunMoney(-1);

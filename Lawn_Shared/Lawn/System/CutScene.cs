@@ -1,4 +1,5 @@
 ﻿using System;
+using Lawn.ExtGame;
 using Sexy;
 using Sexy.TodLib;
 
@@ -934,6 +935,9 @@ namespace Lawn
             else if (mBoard.mLevel >= 43 && mBoard.mLevel <= 50)
             {
                 num = 3;
+            } else if (mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
+            {
+                num = 0;
             }
             else if (mApp.mGameMode == GameMode.ChallengeColumn)
             {

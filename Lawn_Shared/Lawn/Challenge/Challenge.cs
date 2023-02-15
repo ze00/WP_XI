@@ -2370,7 +2370,7 @@ namespace Lawn
                 {
                     mBoard.SpawnZombiesFromGraves();
                 }
-                else if (mBoard.mCurrentWave > 5 && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4)
+                else if (mBoard.mCurrentWave > 5 && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4 && (mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_BOSS || mBoard.mCurrentWave >= 10))
                 {
                     GraveDangerSpawnRandomGrave();
                 }
@@ -2399,8 +2399,11 @@ namespace Lawn
         public void GraveDangerSpawnRandomGrave()
         {
             TodWeightedGridArray[] array = new TodWeightedGridArray[Constants.GRIDSIZEX * Constants.MAX_GRIDSIZEY];
-            int num = 0;
-            for (int i = 3; i < Constants.GRIDSIZEX; i++)
+            // left -- 最左出现墓碑的列
+            int num = 0, left = mBoard.StageHasRoof() ? 4 : 3;
+            if (GlobalStaticVars.gHardMode)
+                left = 1;
+            for (int i = left; i < Constants.GRIDSIZEX; i++)
             {
                 for (int j = 0; j < Constants.MAX_GRIDSIZEY; j++)
                 {

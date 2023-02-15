@@ -565,16 +565,16 @@ namespace Lawn
                 new PlantDefinition(SeedType.Sunflower,     null, ReanimationType.Sunflower,    1,  50, 750, PlantSubClass.Normal,  2500, "SUNFLOWER"),
                 new PlantDefinition(SeedType.Cherrybomb,    null, ReanimationType.Cherrybomb,   3,  100,5000,PlantSubClass.Normal,  0, "CHERRY_BOMB"),
                 new PlantDefinition(SeedType.Wallnut,       null, ReanimationType.Wallnut,      2,  50, 1500,PlantSubClass.Normal,  0, "WALL_NUT"),
-                new PlantDefinition(SeedType.Potatomine,    null, ReanimationType.Potatomine,   37, 25, 3000,PlantSubClass.Normal,  0, "POTATO_MINE"),
+                new PlantDefinition(SeedType.Potatomine,    null, ReanimationType.Potatomine,   37, 50, 3000,PlantSubClass.Normal,  0, "POTATO_MINE"),
                 // 2999则初始无需冷却
                 new PlantDefinition(SeedType.Snowpea,       null, ReanimationType.Snowpea,      4,  150,2999, PlantSubClass.Shooter, 50, "SNOW_PEA"),
-                new PlantDefinition(SeedType.Chomper,       null, ReanimationType.Chomper,      31, 125,750, PlantSubClass.Normal,  0, "CHOMPER"),
+                new PlantDefinition(SeedType.Chomper,       null, ReanimationType.Chomper,      31, 175,750, PlantSubClass.Normal,  0, "CHOMPER"),
                 new PlantDefinition(SeedType.Repeater,      null, ReanimationType.Repeater,     5,  100,750, PlantSubClass.Shooter, 150, "REPEATER"),
                 new PlantDefinition(SeedType.Puffshroom,    null, ReanimationType.Puffshroom,   6,  0,  750, PlantSubClass.Shooter, 150, "PUFF_SHROOM"),
                 new PlantDefinition(SeedType.Sunshroom,     null, ReanimationType.Sunshroom,    7,  25, 750, PlantSubClass.Normal,  2000, "SUN_SHROOM"),
                 new PlantDefinition(SeedType.Fumeshroom,    null, ReanimationType.Fumeshroom,   9,  150, 750, PlantSubClass.Shooter, 90, "FUME_SHROOM"),
                 new PlantDefinition(SeedType.Gravebuster,   null, ReanimationType.GraveBuster,  40, 25, 750, PlantSubClass.Normal,  0, "GRAVE_BUSTER"),
-                new PlantDefinition(SeedType.Hypnoshroom,   null, ReanimationType.Hypnoshroom,  10, 75, 3000,PlantSubClass.Normal,  0, "HYPNO_SHROOM"),
+                new PlantDefinition(SeedType.Hypnoshroom,   null, ReanimationType.Hypnoshroom,  10, 300, 3000,PlantSubClass.Normal,  0, "HYPNO_SHROOM"),
                 new PlantDefinition(SeedType.Scaredyshroom, null, ReanimationType.Scrareyshroom,33, 25, 750, PlantSubClass.Shooter, 150, "SCAREDY_SHROOM"),
                 new PlantDefinition(SeedType.Iceshroom,     null, ReanimationType.Iceshroom,    36, 75, 5000,PlantSubClass.Normal,  0, "ICE_SHROOM"),
                 new PlantDefinition(SeedType.Doomshroom,    null, ReanimationType.Doomshroom,   20, 200,5000,PlantSubClass.Normal,  0, "DOOM_SHROOM"),
@@ -589,14 +589,14 @@ namespace Lawn
                 new PlantDefinition(SeedType.Seashroom,     null, ReanimationType.Seashroom,    39, 0,  750,PlantSubClass.Shooter, 150, "SEA_SHROOM"),
                 new PlantDefinition(SeedType.Plantern,      null, ReanimationType.Plantern,     38, 100, 3000,PlantSubClass.Normal,  2500, "PLANTERN"),
                 new PlantDefinition(SeedType.Cactus,        null, ReanimationType.Cactus,       15, 75,750, PlantSubClass.Shooter, 150, "CACTUS"),
-                new PlantDefinition(SeedType.Blover,        null, ReanimationType.Blover,       18, 100,1000, PlantSubClass.Normal,  0, "BLOVER"),
-                new PlantDefinition(SeedType.Splitpea,      null, ReanimationType.Splitpea,     32, 75,750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),
+                new PlantDefinition(SeedType.Blover,        null, ReanimationType.Blover,       18, 100,1600, PlantSubClass.Normal,  0, "BLOVER"),
+                new PlantDefinition(SeedType.Splitpea,      null, ReanimationType.Splitpea,     32, 100,750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),
                 new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 225,1500, PlantSubClass.Shooter, 310, "STARFRUIT"),
                 new PlantDefinition(SeedType.Pumpkinshell,  null, ReanimationType.Pumpkin,      25, 125,3000,PlantSubClass.Normal,  0, "PUMPKIN"),
                 new PlantDefinition(SeedType.Magnetshroom,  null, ReanimationType.Magnetshroom, 35, 100,750, PlantSubClass.Normal,  0, "MAGNET_SHROOM"),
-                new PlantDefinition(SeedType.Cabbagepult,   null, ReanimationType.Cabbagepult,  13, 100,750, PlantSubClass.Shooter, 300, "CABBAGE_PULT"),
+                new PlantDefinition(SeedType.Cabbagepult,   null, ReanimationType.Cabbagepult,  13, 125,750, PlantSubClass.Shooter, 260, "CABBAGE_PULT"),
                 new PlantDefinition(SeedType.Flowerpot,     null, ReanimationType.FlowerPot,    33, 25, 750, PlantSubClass.Normal,  0, "FLOWER_POT"),
-                new PlantDefinition(SeedType.Kernelpult,    null, ReanimationType.Kernelpult,   13, 175,750, PlantSubClass.Shooter, 300, "KERNEL_PULT"),
+                new PlantDefinition(SeedType.Kernelpult,    null, ReanimationType.Kernelpult,   13, 300,750, PlantSubClass.Shooter, 300, "KERNEL_PULT"),
                 new PlantDefinition(SeedType.InstantCoffee, null, ReanimationType.Coffeebean,   33, 75, 750, PlantSubClass.Normal,  0, "COFFEE_BEAN"),
                 new PlantDefinition(SeedType.Garlic,        null, ReanimationType.Garlic,       8,  50, 750, PlantSubClass.Normal,  0, "GARLIC"),
                 new PlantDefinition(SeedType.Umbrella,      null, ReanimationType.Umbrellaleaf, 23, 100,750, PlantSubClass.Normal,  0, "UMBRELLA_LEAF"),
@@ -778,7 +778,7 @@ namespace Lawn
 
         public const int PRICE_MULTIPLIER = 10;
 
-        public const int MINI_GAME_COUNT = GameMode.ChallengeSquirrel - GameMode.MiniGameStart;
+        public const int MINI_GAME_COUNT = GameMode.ChallengeFinalBoss - GameMode.MiniGameStart;
 
         public const int I_ZOMBIE_LEVEL_COUNT = 10;
 

@@ -1795,7 +1795,7 @@ namespace Lawn
 
         public bool IsContinuousChallenge()
         {
-            return IsArtChallenge() || IsSlotMachineLevel() || IsFinalBossLevel() || mGameMode == GameMode.ChallengeBeghouled || mGameMode == GameMode.Upsell || mGameMode == GameMode.Intro || mGameMode == GameMode.ChallengeBeghouledTwist;
+            return IsArtChallenge() || IsSlotMachineLevel() || (IsFinalBossLevel() && !IsAdventureMode()) || mGameMode == GameMode.ChallengeBeghouled || mGameMode == GameMode.Upsell || mGameMode == GameMode.Intro || mGameMode == GameMode.ChallengeBeghouledTwist;
         }
 
         public bool IsArtChallenge()
@@ -2269,7 +2269,10 @@ namespace Lawn
         {
             return mBoard != null && (mGameMode == GameMode.ChallengeStormyNight || ((IsAdventureMode() && mPlayerInfo.mLevel == 40) || mGameMode == GameMode.Quickplay40 || IsCustomXJZYLevel()));
         }
-
+        public bool IsLastStandLevel()
+        {
+            return mBoard != null && (mGameMode == GameMode.ChallengeLastStand || (IsAdventureMode() && mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_MINIGAME_65));
+        }
         public bool IsFinalBossLevel()
         {
             return mBoard != null && (mGameMode == GameMode.ChallengeFinalBoss || ((IsAdventureMode() && (mPlayerInfo.mLevel == 50 || mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)) || mGameMode == GameMode.Quickplay50));

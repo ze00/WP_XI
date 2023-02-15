@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Lawn.ExtGame;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
@@ -121,7 +122,7 @@ namespace Lawn
                     mY -= Constants.ZenGardenGreenhouseOffset.Y;
                 }
             }
-            mFastLaunchCounter = 0;
+            mCabbageShiftIndex = 0;
             mAnimCounter = 0;
             mAnimPing = true;
             mFrame = 0;
@@ -192,9 +193,13 @@ namespace Lawn
                 mBodyReanimID = mApp.ReanimationGetID(reanimation);
                 mBlinkCountdown = 400 + RandomNumbers.NextNumber(400);
             }
-            if (Plant.IsNocturnal(mSeedType) && mBoard != null && !mBoard.StageIsNight())
+            if (Plant.IsNocturnal(mSeedType) && mBoard != null)
             {
-                SetSleeping(true);
+                // 水草夜晚睡觉判定
+                if (mSeedType != SeedType.Tanglekelp && !mBoard.StageIsNight())
+                    SetSleeping(true);
+                else if (mSeedType == SeedType.Tanglekelp && mBoard.StageIsNight())
+                    SetSleeping(true);
             }
             if (mLaunchRate > 0)
             {
@@ -288,7 +293,7 @@ namespace Lawn
             }
             else if (theSeedType == SeedType.Wallnut)
             {
-                mPlantHealth = 4000;
+                mPlantHealth = 5000;
                 mBlinkCountdown = 1000 + RandomNumbers.NextNumber(1000);
             }
             else if (theSeedType == SeedType.ExplodeONut)
@@ -304,7 +309,7 @@ namespace Lawn
             }
             else if (theSeedType == SeedType.Tallnut)
             {
-                mPlantHealth = 8000;
+                mPlantHealth = 15000;
                 mHeight = 80;
                 mBlinkCountdown = 1000 + RandomNumbers.NextNumber(1000);
             }
@@ -1021,21 +1026,17 @@ namespace Lawn
                     projectileType = ProjectileType.Spike;
                     goto IL_157;
                 case SeedType.Splitpea:
-                    projectileType = new ProjectileType[] { ProjectileType.Pea, ProjectileType.Fireball, ProjectileType.Snowpea }[RandomNumbers.NextNumber(3)];
+                    projectileType = ProjectileType.Pea;
                     goto IL_157;
                 default:
                     switch (seedType)
                     {
                     case SeedType.Cabbagepult:
-                        if (mFastLaunchCounter != 0)
-                        {
-                            projectileType = ProjectileType.Fireball;
-                            mFastLaunchCounter--;
-                        }
+                        projectileType = ExtGameDef.CUSTOM_CABBAGE_PROJECTILES_SHIFT[mCabbageShiftIndex];
+                        if (mCabbageShiftIndex == ExtGameDef.CUSTOM_CABBAGE_PROJECTILES_SHIFT_END)
+                            mCabbageShiftIndex = 0;
                         else
-                        {
-                            projectileType = ProjectileType.Cabbage;
-                        }
+                            mCabbageShiftIndex++;
                         goto IL_157;
                     case SeedType.Kernelpult:
                         projectileType = ProjectileType.Kernel;
@@ -1413,7 +1414,8 @@ namespace Lawn
                                     {
                                         result = theZombieItem;
                                     }
-                                } else
+                                }
+                                else
                                 {
                                     result = theZombieItem;
                                 }
@@ -1904,7 +1906,7 @@ namespace Lawn
 
         public static bool IsNocturnal(SeedType theSeedtype)
         {
-            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
+            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom || theSeedtype == SeedType.Tanglekelp;
         }
 
         public static bool IsAquatic(SeedType theSeedType)
@@ -2292,7 +2294,7 @@ namespace Lawn
                     case SeedType.Sunshroom:
                         goto IL_27E;
                     case SeedType.Chomper:
-                        result = new TRect(mX + 80, mY, 40, mHeight);
+                        result = new TRect(mX + 80, mY, 120, mHeight);
                         return result;
                     case SeedType.Puffshroom:
                         break;
@@ -2628,7 +2630,7 @@ namespace Lawn
             for (int i = 0; i < count; i++)
             {
                 Zombie zombie = mBoard.mZombies[i];
-                if (!zombie.mDead && !zombie.IsDeadOrDying() && zombie.mZombieType != ZombieType.Boss)
+                if (!zombie.mDead && !zombie.IsDeadOrDying() && zombie.mZombieType != ZombieType.Boss && !zombie.mMindControlled)
                 {
                     zombie.GetZombieRect();
                     //在僵尸有铁门时 三叶草效果:只对门造成伤害 且没有击退、减速效果
@@ -2928,7 +2930,8 @@ namespace Lawn
                     if (flag)
                     {
                         mApp.PlayFoley(FoleyType.Splat);
-                        zombie2.TakeDamage(zombie2.mZombieType == ZombieType.Boss ? 40 : 800, 0U);
+                        // 大嘴对巨人的伤害
+                        zombie2.TakeDamage(zombie2.mZombieType == ZombieType.Boss ? 40 : 80, 0U);
                         mState = PlantState.ChomperBitingMissed;
                         return;
                     }
@@ -2953,7 +2956,8 @@ namespace Lawn
                         reanimation.mAnimRate = 0f;
                     }
                     mState = PlantState.ChomperDigesting;
-                    mStateCountdown = 3000;
+                    // 大嘴花消化时间
+                    mStateCountdown = 2700;
                     return;
                 }
             }
@@ -3674,57 +3678,49 @@ namespace Lawn
                     return;
                 }
             }
-            else if (mShootingCounter == 1 && mSeedType != SeedType.Threepeater)
+            else if (mSeedType == SeedType.Splitpea)
             {
-                if (mSeedType == SeedType.Splitpea)
+                reanimation4 = mApp.ReanimationTryToGet(mHeadReanimID);
+                Reanimation reanimation5 = mApp.ReanimationTryToGet(mHeadReanimID2);
+                if (reanimation4.mLoopType == ReanimLoopType.PlayOnceAndHold && mShootingCounter == 1)
                 {
-                    reanimation4 = mApp.ReanimationTryToGet(mHeadReanimID);
-                    Reanimation reanimation5 = mApp.ReanimationTryToGet(mHeadReanimID2);
-                    if (reanimation4.mLoopType == ReanimLoopType.PlayOnceAndHold)
-                    {
-                        Fire(null, mRow, PlantWeapon.Primary);
-                    }
-                    if (reanimation5.mLoopType == ReanimLoopType.PlayOnceAndHold)
-                    {
-                        Fire(null, mRow, PlantWeapon.Secondary);
-                        return;
-                    }
-                }
-                else
-                {
-                    if (mState == PlantState.CactusLow)
-                    {
-                        Fire(null, mRow, PlantWeapon.Secondary);
-                        return;
-                    }
-                    if (mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Melonpult || mSeedType == SeedType.Wintermelon)
-                    {
-                        PlantWeapon thePlantWeapon = PlantWeapon.Primary;
-                        if (mSeedType == SeedType.Kernelpult)
-                        {
-                            reanimation6 = mApp.ReanimationGet(mBodyReanimID);
-                            reanimation6.AssignRenderGroupToPrefix("Cornpult_butter", -1);
-                            reanimation6.AssignRenderGroupToPrefix("Cornpult_kernal", 0);
-                            mState = PlantState.Notready;
-                            thePlantWeapon = PlantWeapon.Secondary;
-                        }
-                        Zombie theTargetZombie = FindTargetZombie(mRow, thePlantWeapon);
-                        if (mFastLaunchCounter == 0)
-                        {
-                            if (mSeedType == SeedType.Cabbagepult && RandomNumbers.NextNumber(20) == 0)
-                            {
-                                mFastLaunchCounter = 5;
-                            }
-                        }
-                        else
-                        {
-                            mShootingCounter = 6;
-                        }
-                        Fire(theTargetZombie, mRow, thePlantWeapon);
-                        return;
-                    }
                     Fire(null, mRow, PlantWeapon.Primary);
                 }
+                if (reanimation5.mLoopType == ReanimLoopType.PlayOnceAndHold && (mShootingCounter == 1 || mShootingCounter == 18 || mShootingCounter == 27 || mShootingCounter == 36))
+                {
+                    Fire(null, mRow, PlantWeapon.Secondary);
+                    return;
+                }
+            }
+            else if (mShootingCounter == 1 && mSeedType != SeedType.Threepeater)
+            {
+
+                if (mState == PlantState.CactusLow)
+                {
+                    Fire(null, mRow, PlantWeapon.Secondary);
+                    return;
+                }
+                if (mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Melonpult || mSeedType == SeedType.Wintermelon)
+                {
+                    PlantWeapon thePlantWeapon = PlantWeapon.Primary;
+                    if (mSeedType == SeedType.Kernelpult)
+                    {
+                        reanimation6 = mApp.ReanimationGet(mBodyReanimID);
+                        reanimation6.AssignRenderGroupToPrefix("Cornpult_butter", -1);
+                        reanimation6.AssignRenderGroupToPrefix("Cornpult_kernal", 0);
+                        mState = PlantState.Notready;
+                        thePlantWeapon = PlantWeapon.Secondary;
+                    }
+                    Zombie theTargetZombie = FindTargetZombie(mRow, thePlantWeapon);
+                    Fire(theTargetZombie, mRow, thePlantWeapon);
+                    // 玉米的三线判定
+                    if (mSeedType == SeedType.Kernelpult && mRow > 0)
+                        Fire(FindTargetZombie(mRow - 1, thePlantWeapon), mRow - 1, thePlantWeapon);
+                    if (mSeedType == SeedType.Kernelpult && mRow < (mBoard.StageHas6Rows() ? 5 : 4))
+                        Fire(FindTargetZombie(mRow + 1, thePlantWeapon), mRow + 1, thePlantWeapon);
+                    return;
+                }
+                Fire(null, mRow, PlantWeapon.Primary);
                 return;
             }
             if (mShootingCounter > 0)
@@ -4434,7 +4430,8 @@ namespace Lawn
                     projectile.mFromPeaHead = true;
                     projectile.mMotionType = ProjectileMotion.Homing;
                     projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
-                } else
+                }
+                else
                 {
                     projectile.mMotionType = ProjectileMotion.Star;
                 }
@@ -5917,7 +5914,7 @@ namespace Lawn
 
         public int mStartRow;
 
-        public int mFastLaunchCounter;
+        public int mCabbageShiftIndex;
 
         public TodParticleSystem mParticleID;
 

@@ -174,7 +174,7 @@ namespace Lawn
             mFromPeaHead = false;
             mFromRepeater = false;
             mZombiePeaCollisionCount = 3;
-            if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround)
+            if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround || (mBoard.PixelToGridX((int)mPosX, (int)mPosY) == 3 && (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball)))
             {
                 mOnHighGround = true;
             }
@@ -945,7 +945,7 @@ namespace Lawn
         public void CheckForHighGround()
         {
             float num = mShadowY - mPosY;
-            if ((mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball || mProjectileType == ProjectileType.Cobbig) && num < 28f)
+            if ((mProjectileType == ProjectileType.Cobbig || mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball) && num < 28f && !mOnHighGround)
             {
                 DoImpact(null);
                 return;
@@ -973,7 +973,7 @@ namespace Lawn
 
         public bool CantHitHighGround()
         {
-            return mMotionType != ProjectileMotion.Backwards && mMotionType != ProjectileMotion.Homing && (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Star || mProjectileType == ProjectileType.Puff || mProjectileType == ProjectileType.Fireball) && !mOnHighGround;
+            return mMotionType != ProjectileMotion.Backwards && mMotionType != ProjectileMotion.Homing && (mProjectileType == ProjectileType.Puff) && !mOnHighGround;
         }
 
         public void DoSplashDamage(Zombie theZombie)
