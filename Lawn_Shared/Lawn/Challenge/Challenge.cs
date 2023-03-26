@@ -1691,6 +1691,29 @@ namespace Lawn
                     ZombieType.Newspaper
                 };
                 InitZombieWavesFromList(array15, array15.Length);
+            } else if (mApp.mBoard.mLevel == ExtGame.ExtGameLevel.CUSTOM_MINIGAME_65)
+            {
+                /*
+                僵尸有0 1 2 3 4 5 6 7 8 12 15 18 21混乱出
+没一轮前三小波没有3 7 8 15 18 21
+                */
+                ZombieType[] array16 = new ZombieType[]
+{
+                    ZombieType.Normal,
+                    ZombieType.Flag,
+                    ZombieType.TrafficCone,
+                    ZombieType.Polevaulter,
+                    ZombieType.Pail,
+                    ZombieType.Newspaper,
+                    ZombieType.Door,
+                    ZombieType.Football,
+                    ZombieType.Dancer,
+                    ZombieType.Zamboni,
+                    ZombieType.JackInTheBox,
+                    ZombieType.Pogo,
+                    ZombieType.Ladder
+};
+                InitZombieWavesFromList(array16, array16.Length);
             }
             else if (mApp.mGameMode == GameMode.ChallengeLastStand)
             {

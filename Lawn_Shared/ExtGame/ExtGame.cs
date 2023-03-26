@@ -38,7 +38,7 @@ namespace Lawn.ExtGame
         没一轮前三小波没有3 7 8 15 18 21
         卡槽五个
         不允许携带生产阳光的植物
-         * 
+         *
          */
         public const int CUSTOM_MINIGAME_65 = 65;
     }
@@ -54,8 +54,8 @@ namespace Lawn.ExtGame
 
 
         public static Dictionary<ZombieType, int> CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE = new Dictionary<ZombieType, int>();
-        public static int[] CUSTOM_MINIGAME_65_ZOMBIES = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 15, 18, 21 };
-        public static int[] CUSTOM_MINIGAME_65_NOT_ALLOWED_EARLY = new int[] { 3, 7, 8, 15, 18, 21 };
+        public static int[] CUSTOM_MINIGAME_65_ZOMBIES = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 15, 18, 21, 16, 26, 31};
+        public static int[] CUSTOM_MINIGAME_65_NOT_ALLOWED_EARLY = new int[] { 3, 7, 8, 15, 18, 21, 16, 26 };
         // 第一次玉米 第二次豌豆第三次星星 第四次冰豆 第五次卷心菜 第六次火豆 第七次黄油 第八次西瓜第九次冰瓜
         public static ProjectileType[] CUSTOM_CABBAGE_PROJECTILES_SHIFT = new ProjectileType[] { ProjectileType.Kernel, ProjectileType.Pea, ProjectileType.Star, ProjectileType.Snowpea, ProjectileType.Cabbage, ProjectileType.Fireball, ProjectileType.Butter, ProjectileType.Melon, ProjectileType.Wintermelon };
         public const int CUSTOM_CABBAGE_PROJECTILES_SHIFT_END = 8;

@@ -842,6 +842,10 @@ namespace Lawn
                 mShieldType = ShieldType.Door;
                 mShieldHealth = 1100;
                 AttachShield();
+                if (RandomNumbers.NextNumber(3) == 0)
+                {
+                    mScaleZombie = 0.5f;
+                }
                 mApp.ReanimationTryToGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_screendoor, AtlasResources.IMAGE_REANIM_TALLNUT_BODY);
                 break;
             }
@@ -1648,6 +1652,11 @@ namespace Lawn
                     SpawnNewZombieAfterDied(ZombieType.Pail);
                     break;
                 }
+            }
+            if (mZombieType == ZombieType.TallnutHead && mScaleZombie == 0.5f)
+            {
+                DoDaisies();
+                mBoard.AddCoin(mX, mY, CoinType.Largesun, CoinMotion.FromPlant);
             }
             StopZombieSound();
             GlobalMembersAttachment.AttachmentDie(ref mAttachmentID);

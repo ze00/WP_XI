@@ -4,6 +4,8 @@ using System.Linq;
 using Sexy;
 using Sexy.TodLib;
 using Lawn.ExtGame;
+using System.Collections;
+using System.Transactions;
 
 namespace Lawn
 {
@@ -6031,6 +6033,10 @@ namespace Lawn
             {
                 mNumWaves = 10;
             }
+            else if (mApp.IsSurvivalMode() || mApp.IsLastStandLevel())
+            {
+                mNumWaves = GetNumWavesPerSurvivalStage();
+            }
             else if (mApp.IsAdventureMode() || mApp.IsQuickPlayMode())
             {
                 int num = TodCommon.ClampInt(mLevel - 1, 0, 49);
@@ -6046,10 +6052,6 @@ namespace Lawn
                         mNumWaves += 10;
                     }
                 }
-            }
-            else if (mApp.IsSurvivalMode() || mApp.IsLastStandLevel())
-            {
-                mNumWaves = GetNumWavesPerSurvivalStage();
             }
             else if (mApp.mGameMode == GameMode.ChallengeZenGarden || mApp.mGameMode == GameMode.TreeOfWisdom || mApp.IsSquirrelLevel())
             {
@@ -6076,42 +6078,42 @@ namespace Lawn
             ZombieType introducedZombieType = GetIntroducedZombieType();
             Debug.ASSERT(mNumWaves <= GameConstants.MAX_ZOMBIE_WAVES);
 
-            for (int i = 0; i < mNumWaves; i++)
+            for (int wave = 0; wave < mNumWaves; wave++)
             {
                 Board.ZombiePickerInitForWave(zombiePicker);
-                mZombiesInWave[i, 0] = ZombieType.Invalid;
-                bool isFlagWave = IsFlagWave(i);
-                bool isBeforeLastWave = i == mNumWaves - 1;
+                mZombiesInWave[wave, 0] = ZombieType.Invalid;
+                bool isFlagWave = IsFlagWave(wave);
+                bool isBeforeLastWave = wave == mNumWaves - 1;
                 if (mApp.IsBungeeBlitzLevel() && isFlagWave)
                 {
                     for (int j = 0; j < 5; j++)
                     {
-                        PutZombieInWave(ZombieType.Bungee, i, zombiePicker);
+                        PutZombieInWave(ZombieType.Bungee, wave, zombiePicker);
                     }
                     if (!isBeforeLastWave)
                     {
                         if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && isBeforeLastWave && mLevel != ExtGameLevel.CUSTOM_MINIGAME_55)
                         {
-                            PutInMissingZombies(i, zombiePicker);
+                            PutInMissingZombies(wave, zombiePicker);
                         }
                         continue;
                     }
                 }
                 if (mApp.IsLastStandLevel())
                 {
-                    zombiePicker.mZombiePoints = (mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + i + 10) * 2 / 5 + 1;
+                    zombiePicker.mZombiePoints = 5 * ((mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + wave + 10) * 2 / 5 + 1);
                 }
                 else if (mApp.IsSurvivalMode() && mChallenge.mSurvivalStage > 0)
                 {
-                    zombiePicker.mZombiePoints = (mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + i) * 2 / 5 + 1;
+                    zombiePicker.mZombiePoints = (mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + wave) * 2 / 5 + 1;
                 }
                 else if (mApp.IsAdventureMode() && mApp.HasFinishedAdventure() && mLevel != 5)
                 {
-                    zombiePicker.mZombiePoints = i + 2;
+                    zombiePicker.mZombiePoints = wave + 2;
                 }
                 else
                 {
-                    zombiePicker.mZombiePoints = i / 2 + 2;
+                    zombiePicker.mZombiePoints = wave / 2 + 2;
                 }
                 if (mLevel == ExtGameLevel.CUSTOM_MINIGAME_55)
                 {
@@ -6125,9 +6127,9 @@ namespace Lawn
                     {
                         for (int k = 0; k < num2; k++)
                         {
-                            PutZombieInWave(ZombieType.Normal, i, zombiePicker);
+                            PutZombieInWave(ZombieType.Normal, wave, zombiePicker);
                         }
-                        PutZombieInWave(ZombieType.Flag, i, zombiePicker);
+                        PutZombieInWave(ZombieType.Flag, wave, zombiePicker);
                     }
                 }
                 if (mApp.mGameMode == GameMode.ChallengeColumn)
@@ -6155,70 +6157,73 @@ namespace Lawn
                     bool flag3 = false;
                     if (introducedZombieType == ZombieType.Digger || introducedZombieType == ZombieType.Balloon)
                     {
-                        if (i + 1 == 7 || isBeforeLastWave)
+                        if (wave + 1 == 7 || isBeforeLastWave)
                         {
                             flag3 = true;
                         }
                     }
                     else if (introducedZombieType == ZombieType.Yeti)
                     {
-                        if (i == mNumWaves / 2 && !mApp.mKilledYetiAndRestarted && !mApp.IsQuickPlayMode())
+                        if (wave == mNumWaves / 2 && !mApp.mKilledYetiAndRestarted && !mApp.IsQuickPlayMode())
                         {
                             flag3 = true;
                         }
                     }
-                    else if (i == mNumWaves / 2 || isBeforeLastWave)
+                    else if (wave == mNumWaves / 2 || isBeforeLastWave)
                     {
                         flag3 = true;
                     }
                     if (flag3)
                     {
-                        PutZombieInWave(introducedZombieType, i, zombiePicker);
+                        PutZombieInWave(introducedZombieType, wave, zombiePicker);
                     }
                 }
                 if (mLevel == 50 && isBeforeLastWave)
                 {
-                    PutZombieInWave(ZombieType.Gargantuar, i, zombiePicker);
+                    PutZombieInWave(ZombieType.Gargantuar, wave, zombiePicker);
                 }
+                // XXX 先给7-5绕过这个PutInMissingZombies？？？
+                // && mLevel != ExtGameLevel.CUSTOM_MINIGAME_65
                 if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && isBeforeLastWave)
                 {
-                    PutInMissingZombies(i, zombiePicker);
+                    PutInMissingZombies(wave, zombiePicker);
                 }
                 if (mApp.mGameMode == GameMode.ChallengeColumn)
                 {
-                    if (i % 10 == 5)
+                    if (wave % 10 == 5)
                     {
                         for (int l = 0; l < 10; l++)
                         {
-                            PutZombieInWave(ZombieType.Ladder, i, zombiePicker);
+                            PutZombieInWave(ZombieType.Ladder, wave, zombiePicker);
                         }
                     }
-                    if (i % 10 == 8)
+                    if (wave % 10 == 8)
                     {
                         for (int m = 0; m < 10; m++)
                         {
-                            PutZombieInWave(ZombieType.JackInTheBox, i, zombiePicker);
+                            PutZombieInWave(ZombieType.JackInTheBox, wave, zombiePicker);
                         }
                     }
-                    if (i == 19)
+                    if (wave == 19)
                     {
                         for (int n = 0; n < 3; n++)
                         {
-                            PutZombieInWave(ZombieType.Gargantuar, i, zombiePicker);
+                            PutZombieInWave(ZombieType.Gargantuar, wave, zombiePicker);
                         }
                     }
-                    if (i == 29)
+                    if (wave == 29)
                     {
                         for (int num3 = 0; num3 < 5; num3++)
                         {
-                            PutZombieInWave(ZombieType.Gargantuar, i, zombiePicker);
+                            PutZombieInWave(ZombieType.Gargantuar, wave, zombiePicker);
                         }
                     }
                 }
+                InitAllowedZombieWavesForLevel65(wave);
                 while (zombiePicker.mZombiePoints > 0 && zombiePicker.mZombieCount < 50)
                 {
-                    ZombieType theZombieType = PickZombieType(zombiePicker.mZombiePoints, i, zombiePicker);
-                    PutZombieInWave(theZombieType, i, zombiePicker);
+                    ZombieType theZombieType = PickZombieType(zombiePicker.mZombiePoints, wave, zombiePicker);
+                    PutZombieInWave(theZombieType, wave, zombiePicker);
                 }
                 int aZombiePoints = zombiePicker.mZombiePoints;
                 continue;
@@ -6867,7 +6872,7 @@ namespace Lawn
         public void InitZombieWaves()
         {
             Debug.ASSERT(true);
-            if (mApp.IsAdventureMode() || mApp.IsQuickPlayMode())
+            if ((mApp.IsAdventureMode() || mApp.IsQuickPlayMode()) && !mApp.IsLastStandLevel())
             {
                 InitZombieWavesForLevel(mLevel);
             }
@@ -6997,7 +7002,21 @@ namespace Lawn
             }
             UpdateProgressMeter();
         }
-
+        public void InitAllowedZombieWavesForLevel65(int wave)
+        {
+            if (mLevel == ExtGameLevel.CUSTOM_MINIGAME_65)
+            {
+                IEnumerable<int> aZombiesAllowed = ExtGameDef.CUSTOM_MINIGAME_65_ZOMBIES;
+                if (wave < 3)
+                {
+                    aZombiesAllowed = aZombiesAllowed.Except(ExtGameDef.CUSTOM_MINIGAME_65_NOT_ALLOWED_EARLY);
+                }
+                for (int i = 0; i < (int)ZombieType.ZombieTypesCount; i++)
+                {
+                    mZombieAllowed[i] = aZombiesAllowed.Contains(i) ? true : false;
+                }
+            }
+        }
         public void InitZombieWavesForLevel(int aForLevel)
         {
             if (mApp.IsWhackAZombieLevel())
@@ -7014,6 +7033,7 @@ namespace Lawn
             {
                 mZombieAllowed[(int)i] = Board.CanZombieSpawnOnLevel((ZombieType)i, aForLevel);
             }
+            InitAllowedZombieWavesForLevel65(10);
             if (mLevel == ExtGameLevel.CUSTOM_MINIGAME_55)
             {
                 for (ZombieType i = 0; i < ZombieType.ZombieTypesCount; i++)

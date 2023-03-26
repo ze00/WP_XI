@@ -989,7 +989,7 @@ namespace Lawn
                     num++;
                 }
             }
-            int damage = projectileDef.mDamage;
+            int damage = (mProjectileType == ProjectileType.Star && mFromPeaHead) ? projectileDef.mDamage * 4 : projectileDef.mDamage;
             int num2 = mProjectileType == ProjectileType.Star ? 1 : 3;
             int num3 = projectileDef.mDamage / num2;
             int num4 = damage * 7;
@@ -1001,6 +1001,10 @@ namespace Lawn
             if (num5 > num4)
             {
                 num3 = Math.Max(1, projectileDef.mDamage * num4 / (num5 * num2));
+            }
+            if (mProjectileType == ProjectileType.Melon || mProjectileType == ProjectileType.Wintermelon)
+            {
+                num3 = projectileDef.mDamage;
             }
             for (int j = 0; j < count; j++)
             {

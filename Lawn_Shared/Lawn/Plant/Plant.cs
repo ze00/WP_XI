@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Lawn.ExtGame;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Xna.Framework;
 using Sexy;
 using Sexy.TodLib;
@@ -293,7 +294,7 @@ namespace Lawn
             }
             else if (theSeedType == SeedType.Wallnut)
             {
-                mPlantHealth = 5000;
+                mPlantHealth = 4000;
                 mBlinkCountdown = 1000 + RandomNumbers.NextNumber(1000);
             }
             else if (theSeedType == SeedType.ExplodeONut)
@@ -309,7 +310,7 @@ namespace Lawn
             }
             else if (theSeedType == SeedType.Tallnut)
             {
-                mPlantHealth = 15000;
+                mPlantHealth = 8000;
                 mHeight = 80;
                 mBlinkCountdown = 1000 + RandomNumbers.NextNumber(1000);
             }
@@ -2838,8 +2839,6 @@ namespace Lawn
                         {
                             return true;
                         }
-                        // 星星的判定
-                        /*
                         else
                         {
                             if (zombie.mZombieType == ZombieType.Digger)
@@ -2878,7 +2877,6 @@ namespace Lawn
                                 }
                             }
                         }
-                        */
 
                     }
                 }
@@ -4420,46 +4418,56 @@ namespace Lawn
         public void StarFruitFire()
         {
             mApp.PlayFoley(FoleyType.Throw);
-            for (int i = 1; i < 4; i++)
+            for (int i = 7; i < 8; i++)
             {
                 int theX = mX + 25;
                 int theY = mY + 25;
                 Projectile projectile = mBoard.AddProjectile(theX, theY, mRenderOrder + -1, mRow, ProjectileType.Star);
-                if (RandomNumbers.NextNumber(10) == 0)
-                {
-                    projectile.mFromPeaHead = true;
-                    projectile.mMotionType = ProjectileMotion.Homing;
-                    projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
-                }
-                else
-                {
-                    projectile.mMotionType = ProjectileMotion.Star;
-                }
+                projectile.mMotionType = ProjectileMotion.Star;
+                float velFactor = 3.33f;
                 projectile.mDamageRangeFlags = GetDamageRangeFlags(PlantWeapon.Primary);
-                float velX = (float)Math.Cos(TodCommon.DegToRad(30f)) * 3.33f;
-                float velY = (float)Math.Sin(TodCommon.DegToRad(30f)) * 3.33f;
+                float velX = (float)Math.Cos(TodCommon.DegToRad(30f)) * velFactor;
+                float velY = (float)Math.Sin(TodCommon.DegToRad(30f)) * velFactor;
                 switch (i)
                 {
-                //case 0:
-                //    projectile.mVelX = -3.33f;
-                //    projectile.mVelY = 0f;
-                //    break;
+                case 0:
+                    projectile.mVelX = -velFactor;
+                    projectile.mVelY = 0f;
+                    break;
                 case 1:
-                    projectile.mVelX = velX;
-                    projectile.mVelY = 1.0f;
+                    projectile.mVelX = 0f;
+                    projectile.mVelY = velFactor;
                     break;
                 case 2:
-                    projectile.mVelX = velX;
-                    projectile.mVelY = -1.0f;
+                    projectile.mVelX = 0f;
+                    projectile.mVelY = -velFactor;
                     break;
                 case 3:
                     projectile.mVelX = velX;
-                    projectile.mVelY = 0f;
+                    projectile.mVelY = velY;
                     break;
-                //case 4:
-                //    projectile.mVelX = velX;
-                //    projectile.mVelY = -velY;
-                //    break;
+                case 4:
+                    projectile.mVelX = velX;
+                    projectile.mVelY = -velY;
+                    break;
+                case 5:
+                    projectile.mVelX = -velX;
+                    projectile.mVelY = -velY;
+                    break;
+                case 6:
+                    projectile.mVelX = -velX;
+                    projectile.mVelY = velY;
+                    break;
+                case 7:
+                    projectile.mVelX = velFactor;
+                    projectile.mVelY = 0f;
+                    if (RandomNumbers.NextNumber(2) == 0)
+                    {
+                        projectile.mFromPeaHead = true;
+                        projectile.mMotionType = ProjectileMotion.Homing;
+                        projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
+                    }
+                   break;
                 default:
                     //Debug.ASSERT(false);
                     break;
