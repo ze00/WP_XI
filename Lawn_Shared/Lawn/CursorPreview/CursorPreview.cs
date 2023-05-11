@@ -71,7 +71,7 @@ namespace Lawn
             }
             else if (cursorType == CursorType.PlantFromGlove)
             {
-                v9 = mApp.GetPottedPlantByIndex(mBoard.mCursorObject.mGlovePlantID.mPottedPlantIndex);
+                v9 = null;
             }
             if (v9 != null)
             {

@@ -310,7 +310,7 @@ namespace Lawn
             }
             else if (theSeedType == SeedType.Tallnut)
             {
-                mPlantHealth = 8000;
+                mPlantHealth = 15000;
                 mHeight = 80;
                 mBlinkCountdown = 1000 + RandomNumbers.NextNumber(1000);
             }
@@ -1907,7 +1907,7 @@ namespace Lawn
 
         public static bool IsNocturnal(SeedType theSeedtype)
         {
-            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom || theSeedtype == SeedType.Tanglekelp;
+            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
         }
 
         public static bool IsAquatic(SeedType theSeedType)
@@ -2213,9 +2213,13 @@ namespace Lawn
                 {
                     return 127;
                 }
-                if (mSeedType == SeedType.Melonpult || mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Wintermelon || mSeedType == SeedType.Starfruit)
+                if (mSeedType == SeedType.Melonpult || mSeedType == SeedType.Cabbagepult || mSeedType == SeedType.Kernelpult || mSeedType == SeedType.Wintermelon)
                 {
                     return 13;
+                }
+                if (mSeedType == SeedType.Starfruit)
+                {
+                    return 13 | 11;
                 }
                 if (mSeedType == SeedType.Potatomine)
                 {
@@ -4418,7 +4422,7 @@ namespace Lawn
         public void StarFruitFire()
         {
             mApp.PlayFoley(FoleyType.Throw);
-            for (int i = 7; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 int theX = mX + 25;
                 int theY = mY + 25;
@@ -4461,11 +4465,11 @@ namespace Lawn
                 case 7:
                     projectile.mVelX = velFactor;
                     projectile.mVelY = 0f;
-                    if (RandomNumbers.NextNumber(2) == 0)
+                    if (RandomNumbers.NextNumber(5) == 0)
                     {
                         projectile.mFromPeaHead = true;
-                        projectile.mMotionType = ProjectileMotion.Homing;
-                        projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
+                        //projectile.mMotionType = ProjectileMotion.Homing;
+                        //projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
                     }
                    break;
                 default:

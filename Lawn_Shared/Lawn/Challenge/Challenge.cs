@@ -2393,7 +2393,7 @@ namespace Lawn
                 {
                     mBoard.SpawnZombiesFromGraves();
                 }
-                else if (mBoard.mCurrentWave > 5 && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4 && (mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_BOSS || mBoard.mCurrentWave >= 10))
+                else if (mBoard.mCurrentWave > 5 && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_T3W4 && (mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_BOSS || mBoard.mCurrentWave >= 10) && (mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_MYPD && mBoard.mLevel != ExtGameLevel.CUSTOM_LEVEL_JJDCG))
                 {
                     GraveDangerSpawnRandomGrave();
                 }

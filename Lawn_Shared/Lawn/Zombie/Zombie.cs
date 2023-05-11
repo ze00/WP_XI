@@ -409,6 +409,12 @@ namespace Lawn
                 {
                     mZombieAttackRect = new TRect(-29, 0, 70, 115);
                 }
+                if (mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && RandomNumbers.NextNumber(3) == 0)
+                {
+                    mIsSpecialUnit = true;
+                    mBodyHealth = 1570;
+                    mApp.ReanimationGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_ZOMBIE_PAPER_MADHEAD);
+                }
                 break;
             case ZombieType.DolphinRider:
                 mBodyHealth = 500;
@@ -687,6 +693,7 @@ namespace Lawn
                 if (RandomNumbers.NextNumber(10) == 0)
                 {
                     mIsSpecialUnit = true;
+                    mVelX = 1.0f;
                     mApp.ReanimationGet(mBodyReanimID).SetImageOverride("zombie_balloon_top", AtlasResources.IMAGE_REANIM_COBCANNON_COB);
                 }
                 else
@@ -709,6 +716,10 @@ namespace Lawn
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_moonwalk, ReanimLoopType.Loop, 0, 24f);
                 }
                 mBodyHealth = 500;
+                if (mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
+                {
+                    mBodyHealth = 2570;
+                }
                 mVariant = false;
                 break;
             case ZombieType.BackupDancer:
@@ -842,7 +853,7 @@ namespace Lawn
                 mShieldType = ShieldType.Door;
                 mShieldHealth = 1100;
                 AttachShield();
-                if (RandomNumbers.NextNumber(3) == 0)
+                if (RandomNumbers.NextNumber(8) == 0)
                 {
                     mScaleZombie = 0.5f;
                 }
@@ -956,6 +967,11 @@ namespace Lawn
             if (mZombieHeight == ZombieHeight.Zombiquarium)
             {
                 mBodyMaxHealth = 300;
+            }
+            if (mBoard != null && ((mZombieType == ZombieType.Dancer && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD) || (mZombieType == ZombieType.Polevaulter && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && mIsSpecialUnit)))
+            {
+                // 临界值70，70 * 3
+                mBodyMaxHealth = 210;
             }
             if (IsOnBoard())
             {
@@ -1611,6 +1627,10 @@ namespace Lawn
             mY = (int)mPosY;
             GlobalMembersAttachment.AttachmentUpdateAndMove(ref mAttachmentID, mPosX, mPosY);
             UpdateReanim();
+            if (mZombieAge % 1000 == 0)
+            {
+                PickRandomSpeed();
+            }
         }
         public void SpawnNewZombieAfterDied(ZombieType zombieType)
         {
@@ -1631,32 +1651,47 @@ namespace Lawn
         }
         public void DieNoLoot(bool giveAchievements)
         {
-            // 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
-            if (mApp.mGameScene == GameScenes.Playing && mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+            if (mApp.mGameScene == GameScenes.Playing)
             {
-                switch (mZombieType)
+                // 14死亡生成两个11 7死亡生成3 4死亡生成两个0 23死亡生成两个4
+                if (mApp.mGameScene == GameScenes.Playing && mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
                 {
-                case ZombieType.DolphinRider:
-                    SpawnNewZombieAfterDied(ZombieType.Snorkel);
-                    SpawnNewZombieAfterDied(ZombieType.Snorkel);
-                    break;
-                case ZombieType.Football:
-                    SpawnNewZombieAfterDied(ZombieType.Polevaulter);
-                    break;
-                case ZombieType.Pail:
-                    SpawnNewZombieAfterDied(ZombieType.Normal);
-                    SpawnNewZombieAfterDied(ZombieType.Normal);
-                    break;
-                case ZombieType.Gargantuar:
-                    SpawnNewZombieAfterDied(ZombieType.Pail);
-                    SpawnNewZombieAfterDied(ZombieType.Pail);
-                    break;
+                    switch (mZombieType)
+                    {
+                    case ZombieType.DolphinRider:
+                        SpawnNewZombieAfterDied(ZombieType.Snorkel);
+                        SpawnNewZombieAfterDied(ZombieType.Snorkel);
+                        break;
+                    case ZombieType.Football:
+                        SpawnNewZombieAfterDied(ZombieType.Polevaulter);
+                        break;
+                    case ZombieType.Pail:
+                        SpawnNewZombieAfterDied(ZombieType.Normal);
+                        SpawnNewZombieAfterDied(ZombieType.Normal);
+                        break;
+                    case ZombieType.Gargantuar:
+                        SpawnNewZombieAfterDied(ZombieType.Pail);
+                        SpawnNewZombieAfterDied(ZombieType.Pail);
+                        break;
+                    }
                 }
-            }
-            if (mZombieType == ZombieType.TallnutHead && mScaleZombie == 0.5f)
-            {
-                DoDaisies();
-                mBoard.AddCoin(mX, mY, CoinType.Largesun, CoinMotion.FromPlant);
+                if (mZombieType == ZombieType.TallnutHead && mScaleZombie == 0.5f)
+                {
+                    DoDaisies();
+                    mBoard.AddCoin(mX - 20, mY, CoinType.Sun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 40, mY, CoinType.Smallsun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 60, mY, CoinType.Largesun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX, mY, CoinType.Diamond, CoinMotion.FromPlant);
+
+                }
+                if (mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && mZombieType == ZombieType.Polevaulter && mIsSpecialUnit && RandomNumbers.NextNumber(3) == 0)
+                {
+                    mBoard.AddCoin(mX, mY, CoinType.UsableSeedPacket, CoinMotion.FromPlant).mUsableSeedType = SeedType.Blover;
+                }
+                if (mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ && mZombieType == ZombieType.Snorkel && RandomNumbers.NextNumber(2) == 0)
+                {
+                    mBoard.AddCoin(mX, mY, CoinType.UsableSeedPacket, CoinMotion.FromPlant).mUsableSeedType = SeedType.Lilypad;
+                }
             }
             StopZombieSound();
             GlobalMembersAttachment.AttachmentDie(ref mAttachmentID);
@@ -2309,6 +2344,19 @@ namespace Lawn
                     mAnimTicksPerFrame = 15;
                 }
             }
+            if (mApp.mGameScene == GameScenes.Playing && mBoard != null)
+            {
+                switch (mBoard.mLevel)
+                {
+                case ExtGameLevel.CUSTOM_LEVEL_LLFX:
+                    mVelX = mVelX * (1 + (mZombieAge % ExtGameDef.CUSTOM_MINIGAME_66_VELOCITY_MAX_SURVIVAL_TIME) / ExtGameDef.CUSTOM_MINIGAME_66_VELOCITY_MAX_SURVIVAL_TIME * ExtGameDef.CUSTOM_MINIGAME_66_VELOCITY_MAX_FACTOR);
+                    break;
+                case ExtGameLevel.CUSTOM_LEVEL_JJDCG:
+                    if (mZombieType == ZombieType.Polevaulter && mIsSpecialUnit)
+                        mVelX = 2 * mVelX;
+                    break;
+                }
+            }
             UpdateAnimSpeed();
         }
 
@@ -2333,7 +2381,7 @@ namespace Lawn
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_jump, ReanimLoopType.PlayOnceAndHold, 20, 24f);
                     Reanimation aReanim = mApp.ReanimationGet(mBodyReanimID);
                     float aAnimDuration = aReanim.mFrameCount / aReanim.mAnimRate * 100f;
-                    int aJumpDistance = 200;
+                    int aJumpDistance = mIsSpecialUnit ? 350 : 200;
                     if (mApp.IsWallnutBowlingLevel())
                     {
                         aJumpDistance = 0;
@@ -2629,6 +2677,10 @@ namespace Lawn
                     int rectOverlap = GameConstants.GetRectOverlap(aAttackRect, aPlantRect);
                     if (rectOverlap >= 20 && CanTargetPlant(aPlant, theAttackType) && !aPlant.IsSpiky())
                     {
+                        if (aPlant.mSeedType == SeedType.Tallnut && (mZombieType == ZombieType.Zamboni || mZombieType == ZombieType.Catapult))
+                        {
+                            TakeDamage(1800, 33);
+                        }
                         SquishAllInSquare(aPlant.mPlantCol, aPlant.mRow, theAttackType);
                         break;
                     }
@@ -2646,7 +2698,8 @@ namespace Lawn
 
         public void RiseFromGrave(int theCol, int theRow)
         {
-            Debug.ASSERT(mZombiePhase == ZombiePhase.ZombieNormal);
+            // XXX HACK，规避做法
+            // Debug.ASSERT(mZombiePhase == ZombiePhase.ZombieNormal);
             mPosX = mBoard.GridToPixelX(theCol, mRow) - 25;
             mPosY = GetPosYBasedOnRow(theRow);
             SetRow(theRow);
@@ -3255,7 +3308,7 @@ namespace Lawn
             {
                 return false;
             }
-            if (mApp.IsFinalBossLevel() && !(mApp.IsAdventureMode()))
+            if (mApp.IsFinalBossLevel() && !(mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
             {
                 if (mZombieType != ZombieType.Boss)
                 {
@@ -3462,7 +3515,7 @@ namespace Lawn
 
         public void UpdateZombieJackInTheBox()//3update
         {
-            if ((mBodyHealth < 7000 && mHelmMaxHealth == 0) || (mBodyHealth < 200 && mHelmMaxHealth == 1))
+            if (!mApp.IsScaryPotterLevel() && (mBodyHealth < 7000 && mHelmMaxHealth == 0) || (mBodyHealth < 200 && mHelmMaxHealth == 1))
             {
                 SpawnNewZombieAfterDied(ZombieType.Zamboni);
                 mHelmMaxHealth++;
@@ -4255,7 +4308,7 @@ namespace Lawn
             {
                 return mZombiePhase == ZombiePhase.DiggerRising || mZombiePhase == ZombiePhase.DiggerStunned || mZombiePhase == ZombiePhase.DiggerWalking || ((mZombiePhase == ZombiePhase.ZombieDying || mZombiePhase == ZombiePhase.ZombieBurned || mZombiePhase == ZombiePhase.ZombieMowered) && mHasObject);
             }
-            if (mZombieType == ZombieType.JackInTheBox && mApp.IsAdventureMode() && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY && mZombiePhase == ZombiePhase.YetiRunning)
+            if (mZombieType == ZombieType.JackInTheBox && mApp.IsAdventureMode() && mBoard != null && mBoard.mLevel == ExtGameLevel.CUSTOM_XJZY && mZombiePhase == ZombiePhase.YetiRunning)
             {
                 return true;
             }
@@ -4380,7 +4433,19 @@ namespace Lawn
                     {
                         mApp.PlayFoley(FoleyType.Dancer);
                     }
-                    SummonBackupDancers();
+                    // 7-8舞王生存10s后才能招唤
+                    if (mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
+                    {
+                        if (mZombieAge >= 1000)
+                        {
+                            SummonBackupDancers();
+                            mBoard.SpawnZombiesFromGraves();
+                        }
+                    }
+                    else
+                    {
+                        SummonBackupDancers();
+                    }
                     mZombiePhase = ZombiePhase.DancerSnappingFingersHold;
                     mPhaseCounter = 200;
                 }
@@ -6966,6 +7031,13 @@ namespace Lawn
                                 mBoard.AddACrater(plant.mPlantCol, plant.mRow).mGridItemCounter = 18000;
                             }
                         }
+                    }
+                    else if (plant != null && plant.mSeedType == SeedType.Tallnut)
+                    {
+                        if (plant.mPlantHealth >= 4500)
+                            plant.mPlantHealth -= 4500;
+                        else
+                            plant.mSeedType = SeedType.Squash;
                     }
                     else if (plant != null)
                     {

@@ -393,7 +393,7 @@ namespace Lawn
         {
             GameMode aGameMode = mApp.mGameMode;
             int index = -1;
-            switch (mMode) 
+            switch (mMode)
             {
             case MiniGameMode.Games:
                 index = (int)aGameMode + 1 - (int)GameMode.MiniGameStart;

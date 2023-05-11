@@ -3609,7 +3609,8 @@ namespace Lawn
                 DrawDebugInfo(gameTime);
             GlobalStaticVars.g.EndFrame();
 #if DEBUG
-            Console.WriteLine(perfTimer.Elapsed.TotalMilliseconds);
+            // CMD中ElapsedTime打印
+            // Console.WriteLine(perfTimer.Elapsed.TotalMilliseconds);
 #endif
         }
         public void DrawDebugInfo(GameTime gameTime)

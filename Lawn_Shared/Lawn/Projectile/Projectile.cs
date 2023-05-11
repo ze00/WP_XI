@@ -174,7 +174,7 @@ namespace Lawn
             mFromPeaHead = false;
             mFromRepeater = false;
             mZombiePeaCollisionCount = 3;
-            if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround || (mBoard.PixelToGridX((int)mPosX, (int)mPosY) == 3 && (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball)))
+            if (mBoard.mGridSquareType[num, mRow] == GridSquareType.HighGround || ((mBoard.PixelToGridX((int)mPosX, (int)mPosY) == 3 && (mProjectileType == ProjectileType.Pea || mProjectileType == ProjectileType.Snowpea || mProjectileType == ProjectileType.Fireball)) && mMotionType != ProjectileMotion.Backwards))
             {
                 mOnHighGround = true;
             }
@@ -702,15 +702,6 @@ namespace Lawn
                     if (rectOverlap >= 0 && mPosY > zombieRect.mY && mPosY < zombieRect.mY + zombieRect.mHeight)
                     {
                         DoImpact(zombie);
-                        if (mProjectileType == ProjectileType.Star && mFromPeaHead)
-                        {
-                            int aRenderOrder2 = Board.MakeRenderOrder(RenderLayer.Ground, mCobTargetRow, 2);
-                            mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, aRenderOrder2, ParticleEffect.Blastmark);
-                            mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, mRenderOrder + 1, ParticleEffect.Popcornsplash);
-                            mApp.PlaySample(Resources.SOUND_DOOMSHROOM);
-                            mBoard.ShakeBoard(3, -4);
-                            mApp.Vibrate();
-                        }
                     }
                 }
 
@@ -775,6 +766,15 @@ namespace Lawn
                     return;
                 }
                 DoImpact(zombie);
+                if (mProjectileType == ProjectileType.Star && mFromPeaHead)
+                {
+                    int aRenderOrder2 = Board.MakeRenderOrder(RenderLayer.Ground, mCobTargetRow, 2);
+                    mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, aRenderOrder2, ParticleEffect.Blastmark);
+                    mApp.AddTodParticle(mPosX + 80f, mPosY + 40f, mRenderOrder + 1, ParticleEffect.Popcornsplash);
+                    mApp.PlaySample(Resources.SOUND_DOOMSHROOM);
+                    mBoard.ShakeBoard(3, -4);
+                    mApp.Vibrate();
+                }
             }
         }
 
@@ -989,7 +989,7 @@ namespace Lawn
                     num++;
                 }
             }
-            int damage = (mProjectileType == ProjectileType.Star && mFromPeaHead) ? projectileDef.mDamage * 4 : projectileDef.mDamage;
+            int damage = (mProjectileType == ProjectileType.Star && mFromPeaHead) ? 100 : projectileDef.mDamage;
             int num2 = mProjectileType == ProjectileType.Star ? 1 : 3;
             int num3 = projectileDef.mDamage / num2;
             int num4 = damage * 7;

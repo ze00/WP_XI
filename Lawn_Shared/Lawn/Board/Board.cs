@@ -6,6 +6,7 @@ using Sexy.TodLib;
 using Lawn.ExtGame;
 using System.Collections;
 using System.Transactions;
+using static IronPython.Modules._ast;
 
 namespace Lawn
 {
@@ -1025,6 +1026,11 @@ namespace Lawn
                 AddPlant(1, 4, SeedType.Flowerpot, SeedType.None);
                 AddPlant(1, 4, SeedType.Umbrella, SeedType.None);
             }
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ)
+            {
+                AddPlant(0, 2, SeedType.Lilypad, SeedType.None);
+                AddPlant(0, 3, SeedType.Lilypad, SeedType.None);
+            }
         }
         public void InitLevel()
         {
@@ -1061,7 +1067,7 @@ namespace Lawn
             {
                 mSunMoney = 0;
             }
-            else if (mApp.IsLastStandLevel())
+            else if (mApp.IsLastStandLevel() && !mApp.IsAdventureMode())
             {
                 mSunMoney = 5000;
             }
@@ -1077,22 +1083,35 @@ namespace Lawn
             {
                 mSunMoney = 150;
             }
-            else if (mLevel == (int)ExtGameLevel.CUSTOM_LEVEL_T3W4)
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ)
+            {
+                mSunMoney = 175;
+            }
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_T3W4 || mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG)
             {
                 mSunMoney = 100;
             }
             // 第六大关开局75阳光，4列花盆
-            else if (mLevel >= 51 && mLevel < 60)
+            else if (mLevel >= 51 && mLevel < 60 || mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
             {
                 mSunMoney = 125;
                 // 6-10作为自选卡的僵王关
             }
+            else if (mLevel == ExtGameLevel.CUSTOM_MINIGAME_65)
+            {
+                mSunMoney = 4000;
+            }
             else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
             {
                 mSunMoney = 2800;
-            } else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
+            }
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
             {
                 mSunMoney = 325;
+            }
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
+            {
+                mSunMoney = 400;
             }
             else
             {
@@ -1331,6 +1350,9 @@ namespace Lawn
                 if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
                 {
                     DisplayAdvice($"YOU HAVE {mZombieCountDown / 100}s TO SET YOUR PLANTS!", MessageStyle.HintLong, AdviceType.None);
+                } else if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD))
+                {
+                    DisplayAdvice($"DANCER ZOMBIE IS VERY DANGEROUS!!!", MessageStyle.HintLong, AdviceType.None);
                 }
                 if (mApp.IsFinalBossLevel())
                 {
@@ -1428,8 +1450,8 @@ namespace Lawn
             if (theSeedType == SeedType.Potatomine && theImitaterType == SeedType.None)
             {
                 AddPlantOriginal(theGridX, theGridY, theSeedType, theImitaterType);
-                int[] rows = new int[]{ 0, 1, -1 };
-                int[] cols = new int[]{ 0, 1, -1 };
+                int[] rows = new int[] { 0, 1, -1 };
+                int[] cols = new int[] { 0, 1, -1 };
                 foreach (int row in rows)
                 {
                     foreach (int col in cols)
@@ -1531,6 +1553,26 @@ namespace Lawn
                 {
                     Board.aZombieWeightArray[j].mWeight = zombieDefinition.mPickWeight;
                 }
+            }
+            //7-8特殊判定
+            //从墓碑有百分之20召唤普僵，百分之20路障，百分之20铁桶,百分之10三爷,百分之10撑杆,百分之10冰车,百分之10二爷
+            if (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
+            {
+                num = 7;
+                aZombieWeightArray[0].mItem = ZombieType.Normal;
+                aZombieWeightArray[0].mWeight = 20;
+                aZombieWeightArray[1].mItem = ZombieType.TrafficCone;
+                aZombieWeightArray[1].mWeight = 20;
+                aZombieWeightArray[2].mItem = ZombieType.Pail;
+                aZombieWeightArray[2].mWeight = 20;
+                aZombieWeightArray[3].mItem = ZombieType.Newspaper;
+                aZombieWeightArray[3].mWeight = 10;
+                aZombieWeightArray[4].mItem = ZombieType.Door;
+                aZombieWeightArray[4].mWeight = 10;
+                aZombieWeightArray[5].mItem = ZombieType.Football;
+                aZombieWeightArray[5].mWeight = 10;
+                aZombieWeightArray[6].mItem = ZombieType.Zamboni;
+                aZombieWeightArray[6].mWeight = 10;
             }
             return (ZombieType)TodCommon.TodPickFromWeightedArray(Board.aZombieWeightArray, num);
         }
@@ -1889,10 +1931,10 @@ namespace Lawn
                         if (theType == SeedType.Lilypad || theType == SeedType.Tanglekelp || theType == SeedType.Seashroom)
                         {
                             // 水草种在屋顶的判定
-                            //if (theType == SeedType.Tanglekelp && StageHasRoof() && plantsOnLawn.mNormalPlant == null)
-                            //{
-                            //    return PlantingReason.Ok;
-                            //}
+                            if (theType == SeedType.Tanglekelp && StageHasRoof() && plantsOnLawn.mNormalPlant == null)
+                            {
+                                return PlantingReason.Ok;
+                            }
                             if (!IsPoolSquare(theGridX, theGridY))
                             {
                                 return PlantingReason.OnlyInPool;
@@ -3689,6 +3731,10 @@ namespace Lawn
             {
                 return 11;
             }
+            if (mApp.IsAdventureMode() && mLevel == ExtGameLevel.CUSTOM_MINIGAME_65)
+            {
+                return 5;
+            }
             int num = mApp.mPlayerInfo.mPurchases[21] + 6;
             int seedsAvailable = mApp.GetSeedsAvailable();
             if (seedsAvailable < num)
@@ -3926,9 +3972,11 @@ namespace Lawn
                     return true;
                 }
             }
+            // 7-6手套WORKAROUND
             if (mShowShovel && shovelButtonRect.Contains(x, y) && CanInteractWithBoardButtons())
             {
-                theHitResult.mObjectType = GameObjectType.Shovel;
+                theHitResult.mObjectType = mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX ? GameObjectType.Glove : GameObjectType.Shovel;
+
                 return true;
             }
             Coin coin = null;
@@ -4065,15 +4113,15 @@ namespace Lawn
                 return;
             }
             SeedType seedTypeInCursor = GetSeedTypeInCursor();
-            int num = PlantingPixelToGridX((int)(x * Constants.IS), (int)(y * Constants.IS), seedTypeInCursor);
-            int num2 = PlantingPixelToGridY((int)(x * Constants.IS), (int)(y * Constants.IS), seedTypeInCursor);
-            if (num < 0 || num >= Constants.GRIDSIZEX || num2 < 0 || num2 >= Constants.MAX_GRIDSIZEY)
+            int theGridX = PlantingPixelToGridX((int)(x * Constants.IS), (int)(y * Constants.IS), seedTypeInCursor);
+            int theGridY = PlantingPixelToGridY((int)(x * Constants.IS), (int)(y * Constants.IS), seedTypeInCursor);
+            if (theGridX < 0 || theGridX >= Constants.GRIDSIZEX || theGridY < 0 || theGridY >= Constants.MAX_GRIDSIZEY)
             {
                 RefreshSeedPacketFromCursor();
                 mApp.PlayFoley(FoleyType.Drop);
                 return;
             }
-            PlantingReason plantingReason = CanPlantAt(num, num2, seedTypeInCursor);
+            PlantingReason plantingReason = CanPlantAt(theGridX, theGridY, seedTypeInCursor);
             if (plantingReason != PlantingReason.Ok)
             {
                 if (plantingReason == PlantingReason.OnlyOnGraves)
@@ -4134,7 +4182,7 @@ namespace Lawn
                 }
                 else if (plantingReason == PlantingReason.NotOnArt)
                 {
-                    SeedType artChallengeSeed = mChallenge.GetArtChallengeSeed(num, num2);
+                    SeedType artChallengeSeed = mChallenge.GetArtChallengeSeed(theGridX, theGridY);
                     string nameString = Plant.GetNameString(artChallengeSeed, SeedType.None);
                     string theAdvice = TodCommon.TodReplaceString("[ADVICE_WRONG_ART_TYPE]", "{SEED}", nameString);
                     DisplayAdvice(theAdvice, MessageStyle.HintFast, AdviceType.PlantWrongArtType);
@@ -4156,7 +4204,7 @@ namespace Lawn
                 }
                 else if (plantingReason == PlantingReason.NotOnCrater)
                 {
-                    if (IsPoolSquare(num, num2))
+                    if (IsPoolSquare(theGridX, theGridY))
                     {
                         DisplayAdvice("[ADVICE_CANT_PLANT_THERE]", MessageStyle.HintFast, AdviceType.CantPlantThere);
                     }
@@ -4226,7 +4274,7 @@ namespace Lawn
                     return;
                 }
             }
-            Plant topPlantAt = GetTopPlantAt(num, num2, TopPlant.OnlyNormalPosition);
+            Plant topPlantAt = GetTopPlantAt(theGridX, theGridY, TopPlant.OnlyNormalPosition);
             bool flag = false;
             int aWakeUpCounter = 0;
             if (topPlantAt != null && topPlantAt.IsUpgradableTo(seedTypeInCursor))
@@ -4250,7 +4298,7 @@ namespace Lawn
             }
             if (seedTypeInCursor == SeedType.Pumpkinshell)
             {
-                Plant topPlantAt2 = GetTopPlantAt(num, num2, TopPlant.OnlyPumpkin);
+                Plant topPlantAt2 = GetTopPlantAt(theGridX, theGridY, TopPlant.OnlyPumpkin);
                 if (topPlantAt2 != null && topPlantAt2.mSeedType == seedTypeInCursor)
                 {
                     topPlantAt2.Die();
@@ -4258,7 +4306,7 @@ namespace Lawn
             }
             if (seedTypeInCursor == SeedType.Cobcannon)
             {
-                Plant topPlantAt3 = GetTopPlantAt(num + 1, num2, TopPlant.OnlyNormalPosition);
+                Plant topPlantAt3 = GetTopPlantAt(theGridX + 1, theGridY, TopPlant.OnlyNormalPosition);
                 if (topPlantAt3 != null)
                 {
                     topPlantAt3.Die();
@@ -4267,7 +4315,7 @@ namespace Lawn
             if (seedTypeInCursor == SeedType.Cattail || seedTypeInCursor == SeedType.Spikeweed || seedTypeInCursor == SeedType.Spikerock)
             {
                 PlantsOnLawn plantsOnLawn = default(PlantsOnLawn);
-                GetPlantsOnLawn(num, num2, ref plantsOnLawn);
+                GetPlantsOnLawn(theGridX, theGridY, ref plantsOnLawn);
                 if (plantsOnLawn.mUnderPlant != null)
                 {
                     plantsOnLawn.mUnderPlant.Die();
@@ -4279,9 +4327,47 @@ namespace Lawn
             }
             if (mCursorObject.mCursorType == CursorType.PlantFromGlove)
             {
-                Plant aGlovePlantID = mCursorObject.mGlovePlantID;
-                aGlovePlantID.mGloveGrabbed = false;
-                mApp.mZenGarden.MovePlant(aGlovePlantID, num, num2);
+                Plant thePlant = mCursorObject.mGlovePlantID;
+                thePlant.mGloveGrabbed = false;
+                // 7-6手套WORKAROUND
+                if (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
+                {
+                    int aPosX = GridToPixelX(theGridX, theGridY);
+                    int aPosY = GridToPixelY(theGridX, theGridY);
+                    Debug.ASSERT(GetTopPlantAt(theGridX, theGridY, TopPlant.Any) == null);
+                    Plant aTopPlantAtGrid = GetTopPlantAt(thePlant.mPlantCol, thePlant.mRow, TopPlant.OnlyUnderPlant);
+                    if (aTopPlantAtGrid != null)
+                    {
+                        aTopPlantAtGrid.mX = aPosX;
+                        aTopPlantAtGrid.mY = aPosY;
+                        aTopPlantAtGrid.mPlantCol = theGridX;
+                        aTopPlantAtGrid.mRow = theGridY;
+                        aTopPlantAtGrid.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Plant, 0, aTopPlantAtGrid.mY);
+                    }
+                    float aDeltaX = aPosX - thePlant.mX;
+                    float aDeltaY = aPosY - thePlant.mY;
+                    thePlant.mX = aPosX;
+                    thePlant.mY = aPosY;
+                    thePlant.mPlantCol = theGridX;
+                    thePlant.mRow = theGridY;
+                    thePlant.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Plant, 0, thePlant.mY + 1);
+                    TodParticleSystem aTodParticleSystem = mApp.ParticleTryToGet(thePlant.mParticleID);
+                    if (aTodParticleSystem != null && aTodParticleSystem.mEmitterList.Count != 0)
+                    {
+                        TodParticleEmitter todParticleEmitter = aTodParticleSystem.mParticleHolder.mEmitters[0];
+                        aTodParticleSystem.SystemMove(todParticleEmitter.mSystemCenter.x + aDeltaX, todParticleEmitter.mSystemCenter.y + aDeltaY);
+                    }
+                    if (aTopPlantAtGrid != null)
+                    {
+                        DoPlantingEffects(theGridX, theGridY, aTopPlantAtGrid, false);
+                        return;
+                    }
+                    DoPlantingEffects(theGridX, theGridY, thePlant, false);
+                }
+                else
+                {
+                    mApp.mZenGarden.MovePlant(thePlant, theGridX, theGridY);
+                }
             }
             else if (mCursorObject.mCursorType == CursorType.PlantFromWheelBarrow)
             {
@@ -4289,14 +4375,14 @@ namespace Lawn
             }
             else if (mCursorObject.mCursorType == CursorType.PlantFromUsableCoin)
             {
-                AddPlant(num, num2, mCursorObject.mType, mCursorObject.mImitaterType);
+                AddPlant(theGridX, theGridY, mCursorObject.mType, mCursorObject.mImitaterType);
                 Coin coin = mCoins[mCoins.IndexOf(mCursorObject.mCoinID)];
                 mCursorObject.mCoinID = null;
                 coin.Die();
             }
             else if (mCursorObject.mCursorType == CursorType.PlantFromBank)
             {
-                Plant plant = AddPlant(num, num2, mCursorObject.mType, mCursorObject.mImitaterType);
+                Plant plant = AddPlant(theGridX, theGridY, mCursorObject.mType, mCursorObject.mImitaterType);
                 if (flag)
                 {
                     plant.SetSleeping(false);
@@ -4319,11 +4405,11 @@ namespace Lawn
             {
                 for (int i = 0; i < Constants.MAX_GRIDSIZEY; i++)
                 {
-                    if (i != num2 && CanPlantAt(num, i, seedTypeInCursor) == PlantingReason.Ok)
+                    if (i != theGridY && CanPlantAt(theGridX, i, seedTypeInCursor) == PlantingReason.Ok)
                     {
                         if (seedTypeInCursor == SeedType.Wallnut || seedTypeInCursor == SeedType.Tallnut)
                         {
-                            Plant topPlantAt4 = GetTopPlantAt(num, i, TopPlant.OnlyNormalPosition);
+                            Plant topPlantAt4 = GetTopPlantAt(theGridX, i, TopPlant.OnlyNormalPosition);
                             if (topPlantAt4 != null && topPlantAt4.mSeedType == seedTypeInCursor)
                             {
                                 topPlantAt4.Die();
@@ -4331,13 +4417,13 @@ namespace Lawn
                         }
                         if (seedTypeInCursor == SeedType.Pumpkinshell)
                         {
-                            Plant topPlantAt5 = GetTopPlantAt(num, i, TopPlant.OnlyPumpkin);
+                            Plant topPlantAt5 = GetTopPlantAt(theGridX, i, TopPlant.OnlyPumpkin);
                             if (topPlantAt5 != null && topPlantAt5.mSeedType == seedTypeInCursor)
                             {
                                 topPlantAt5.Die();
                             }
                         }
-                        AddPlant(num, i, mCursorObject.mType, mCursorObject.mImitaterType);
+                        AddPlant(theGridX, i, mCursorObject.mType, mCursorObject.mImitaterType);
                     }
                 }
             }
@@ -4464,6 +4550,26 @@ namespace Lawn
                         }
                     }
                 }
+                // 7-6手套WORKAROUND
+                if (theCursorType == CursorType.Glove)
+                {
+                    mCursorObject.mType = plant.mSeedType;
+                    mCursorObject.mImitaterType = plant.mImitaterType;
+                    mCursorObject.mCursorType = CursorType.PlantFromGlove;
+                    mCursorObject.mGlovePlantID = plant;
+                    plant.mGloveGrabbed = true;
+                    mIgnoreMouseUp = true;
+                    mApp.PlaySample(Resources.SOUND_TAP);
+                }
+                else
+                {
+                    ClearCursor();
+                }
+                return;
+            }
+            if (plant == null || plant.mPottedPlantIndex == -1)
+            {
+                mApp.PlayFoley(FoleyType.Drop);
                 ClearCursor();
                 return;
             }
@@ -4799,7 +4905,8 @@ namespace Lawn
             else if (aNumPackets == 10)
             {
                 num -= (int)Constants.InvertAndScale(5f);
-            } else if (aNumPackets == 11)
+            }
+            else if (aNumPackets == 11)
             {
                 num -= (int)Constants.InvertAndScale(7f);
             }
@@ -6101,7 +6208,7 @@ namespace Lawn
                 }
                 if (mApp.IsLastStandLevel())
                 {
-                    zombiePicker.mZombiePoints = 5 * ((mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + wave + 10) * 2 / 5 + 1);
+                    zombiePicker.mZombiePoints = 4 * ((mChallenge.mSurvivalStage * GetNumWavesPerSurvivalStage() + wave + 10) * 2 / 5 + 1);
                 }
                 else if (mApp.IsSurvivalMode() && mChallenge.mSurvivalStage > 0)
                 {
@@ -6564,15 +6671,15 @@ namespace Lawn
             case GameMode.Quickplay48:
             case GameMode.Quickplay49:
             case GameMode.Quickplay50:
-                if (mLevel <= 1 * GameConstants.LEVELS_PER_AREA)
+                if (mLevel <= 1 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
                 {
                     mBackground = BackgroundType.Num1Day;
                 }
-                else if (mLevel <= 2 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_XJZY || mLevel == ExtGameLevel.CUSTOM_MINIGAME_65)
+                else if (mLevel <= 2 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_XJZY || mLevel == ExtGameLevel.CUSTOM_MINIGAME_65 || mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
                 {
                     mBackground = BackgroundType.Num2Night;
                 }
-                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH)
+                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ)
                 {
                     mBackground = BackgroundType.Num3Pool;
                 }
@@ -6588,7 +6695,7 @@ namespace Lawn
                 {
                     mBackground = BackgroundType.Num5Roof;
                 }
-                else if (mLevel <= 60)
+                else if (mLevel <= 60 || mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG)
                 {
                     mBackground = BackgroundType.Num6Boss;
                 }
@@ -6781,6 +6888,7 @@ namespace Lawn
             }
             int levelRandSeed = GetLevelRandSeed();
             RandomNumbers.Seed(levelRandSeed);
+            // 开局墓碑放置
             if (StageHasGraveStones())
             {
                 if (mApp.mGameMode == GameMode.ChallengeGraveDanger)
@@ -6831,9 +6939,10 @@ namespace Lawn
                         AddGraveStones(7, 3);
                         AddGraveStones(8, 3);
                     }
-                    else if (mLevel == ExtGameLevel.CUSTOM_MINIGAME_65)
+                    else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
                     {
-
+                        AddGraveStones(7, 5);
+                        AddGraveStones(8, 5);
                     }
                     else if (mLevel >= 20)
                     {
@@ -7052,7 +7161,7 @@ namespace Lawn
 
         public bool SeedNotAllowedToPick(SeedType theSeedType)
         {
-            return (mApp.IsLastStandLevel() && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern || theSeedType == SeedType.ExplodeONut)) || (mApp.mGameMode == GameMode.Adventure && mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom));
+            return (mApp.IsLastStandLevel() && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern || theSeedType == SeedType.ExplodeONut)) || (mApp.IsAdventureMode() && ((mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom)) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX && theSeedType == SeedType.Blover) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ && theSeedType == SeedType.Lilypad) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD && theSeedType == SeedType.Gravebuster) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && theSeedType == SeedType.Blover)));
         }
 
         public uint SeedNotRecommendedForLevel(SeedType theSeedType)
@@ -9346,6 +9455,10 @@ namespace Lawn
             if (mApp.mGameMode == GameMode.TreeOfWisdom)
             {
                 return theGameObject == GameObjectType.TreeFood || theGameObject == GameObjectType.NextGarden;
+            }
+            if (theGameObject == GameObjectType.Glove && mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
+            {
+                return true;
             }
             if (mApp.mGameMode != GameMode.ChallengeZenGarden)
             {
