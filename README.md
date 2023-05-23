@@ -1,5 +1,9 @@
 # WP_XI
 
+[→English Version←](./README.en.md)
+
+[中文Wiki](https://github.com/Mewnojs/PlantsVsZombies.NET/wiki)
+
 #### 介绍
 基于WP移植版制作的改版
 
@@ -23,3 +27,4 @@
 
 - 移植作者：2508大帝
 - 项目交流群：884792079
+- Discord Link：[discord.gg/uXz6g6Adnm](https://discord.gg/uXz6g6Adnm) 
