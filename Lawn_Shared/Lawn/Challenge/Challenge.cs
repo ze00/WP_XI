@@ -1494,19 +1494,48 @@ namespace Lawn
             int downcount = 10000;
             while (i > 0)
             {
-                ZombieType zombieType = (ZombieType)RandomNumbers.NextNumber(33f);
-                if (!mBoard.mZombieAllowed[(int)zombieType] && (!Board.IsZombieTypePoolOnly(zombieType) || mBoard.StageHasPool()) && (!mBoard.StageHasRoof() || (zombieType != ZombieType.Digger && zombieType != ZombieType.Dancer)) && (!mBoard.StageHasGraveStones() || zombieType != ZombieType.Zamboni) && (mBoard.StageHasRoof() || mApp.IsSurvivalEndless(mApp.mGameMode) || zombieType != ZombieType.Bungee) && (mBoard.GetSurvivalFlagsCompleted() >= 4 || (zombieType != ZombieType.Gargantuar && zombieType != ZombieType.Zamboni)) && (mBoard.GetSurvivalFlagsCompleted() >= 10 || zombieType != ZombieType.RedeyeGargantuar) && ((mApp.mGameMode != GameMode.SurvivalNormalStage1 && mApp.mGameMode != GameMode.SurvivalNormalStage2 && mApp.mGameMode != GameMode.SurvivalNormalStage3) || zombieType != ZombieType.Snorkel) && zombieType != ZombieType.Bobsled && zombieType != ZombieType.BackupDancer && zombieType != ZombieType.Imp && zombieType != ZombieType.DuckyTube && zombieType != ZombieType.PeaHead && zombieType != ZombieType.WallnutHead && zombieType != ZombieType.TallnutHead && zombieType != ZombieType.JalapenoHead && zombieType != ZombieType.GatlingHead && zombieType != ZombieType.SquashHead && zombieType != ZombieType.Yeti)
+                ZombieType zombieType = (ZombieType)RandomNumbers.NextNumber((int)ZombieType.ZombieTypesCount);
+                if (mBoard.mZombieAllowed[(int)zombieType])
                 {
-                    mBoard.mZombieAllowed[(int)zombieType] = true;
-                    i--;
-                } else
-                {
-                    downcount--;
-                    if (downcount == 0 && mBoard.mZombieAllowed.Count(x => x) >= j)
-                    {
-                        i = 0;
-                    }
+                    continue;
                 }
+
+                if (Board.IsZombieTypePoolOnly(zombieType) && !mBoard.StageHasPool())
+                {
+                    continue;
+                }
+
+                if (mBoard.StageHasRoof() && (zombieType == ZombieType.Digger || zombieType == ZombieType.Dancer) || mBoard.StageHasGraveStones() && zombieType == ZombieType.Zamboni)
+                {
+                    continue;
+                }
+
+                if (!mBoard.StageHasRoof() && !mApp.IsSurvivalEndless(mApp.mGameMode) && zombieType == ZombieType.Bungee)
+                {
+                    continue;
+                }
+
+                if (mBoard.GetSurvivalFlagsCompleted() < 4 && (zombieType == ZombieType.Gargantuar || zombieType == ZombieType.Zamboni))
+                {
+                    continue;
+                }
+
+                if (mBoard.GetSurvivalFlagsCompleted() < 10 && zombieType == ZombieType.RedeyeGargantuar)
+                {
+                    continue;
+                }
+
+                if ((mApp.mGameMode == GameMode.SurvivalNormalStage1 || mApp.mGameMode == GameMode.SurvivalNormalStage2 || mApp.mGameMode == GameMode.SurvivalNormalStage3) && zombieType > ZombieType.Snorkel)
+                {
+                    continue;
+                }
+
+                if (zombieType == ZombieType.Bobsled || zombieType == ZombieType.BackupDancer || zombieType == ZombieType.Imp || zombieType == ZombieType.DuckyTube || zombieType == ZombieType.PeaHead || zombieType == ZombieType.WallnutHead || zombieType == ZombieType.TallnutHead || zombieType == ZombieType.JalapenoHead || zombieType == ZombieType.GatlingHead || zombieType == ZombieType.SquashHead || zombieType == ZombieType.Yeti)
+                {
+                    continue;
+                }
+                mBoard.mZombieAllowed[(int)zombieType] = true;
+                i--;
             }
         }
 
@@ -2422,11 +2451,12 @@ namespace Lawn
         public void GraveDangerSpawnRandomGrave()
         {
             TodWeightedGridArray[] array = new TodWeightedGridArray[Constants.GRIDSIZEX * Constants.MAX_GRIDSIZEY];
-            // left -- 最左出现墓碑的列
-            int num = 0, left = mBoard.StageHasRoof() ? 4 : 3;
-            if (GlobalStaticVars.gHardMode)
-                left = 1;
-            for (int i = left; i < Constants.GRIDSIZEX; i++)
+            for (int i = 0; i < array.Length; i++)  // fixed 2023-4-8
+            {
+                array[i] = TodWeightedGridArray.GetNewTodWeightedGridArray();
+            }
+            int num = 0;
+            for (int i = 4; i < Constants.GRIDSIZEX; i++)
             {
                 for (int j = 0; j < Constants.MAX_GRIDSIZEY; j++)
                 {
