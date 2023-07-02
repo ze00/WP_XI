@@ -9,11 +9,13 @@
     <Import_RootNamespace>Lawn_Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ExtGame\ExtGame.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtGame\OldZombieSeeds_LEGACY.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lawn\**" />
-	<Compile Remove="$(MSBuildThisFileDirectory)Lawn\Strings.resources" />
+    <Compile Remove="$(MSBuildThisFileDirectory)Lawn\Strings.resources" />
     <Compile Include="$(MSBuildThisFileDirectory)Sexy\**" />
     <Compile Include="$(MSBuildThisFileDirectory)Sexy.TodLib\**" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExtGame\**" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtGame\OldZombieSeeds_HD.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Lawn\Strings.resources" />

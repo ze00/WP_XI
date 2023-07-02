@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 //using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework;
@@ -245,7 +246,8 @@ namespace Lawn
         public override void LoadingThreadProc()
         {
             GameConstants.Init();
-            OldZombieSeeds.LoadOldZombieSeeds();
+            OldZombieSeedsHD.LoadOldZombieSeeds();
+            OldZombieSeedsLEGACY.LoadOldZombieSeeds();
             ExtGameDef.InitExtGameDef();
             if (!TodCommon.TodLoadResources("LoaderBar") || !TodCommon.TodLoadResources("LoaderBarFont"))
             {
@@ -3657,7 +3659,7 @@ namespace Lawn
 
         private const string PLACEHOLDER_CRAZYDAVE_0 = "[CRAZY_DAVE_{0}]";
 
-        public static string AppVersionNumber = "0.13.0";
+        public static string AppVersionNumber = "0.13.1";
 
         public Board mBoard;
 
@@ -3835,7 +3837,7 @@ namespace Lawn
 
         private bool pileLoaded;
 
-        public Stack<Texture2D> mTexturesToBePremultiplied = new Stack<Texture2D>(); 
+        public Stack<Texture2D> mTexturesToBePremultiplied = new Stack<Texture2D>();
 
         private class TableTmp
         {

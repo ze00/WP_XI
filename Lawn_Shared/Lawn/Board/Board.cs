@@ -6997,9 +6997,10 @@ namespace Lawn
         }
         public void ReuseOldZombieSeeds()
         {
+            Dictionary<int, int[][]> OldZombieSeedsDict = GlobalStaticVars.gLegacy ? OldZombieSeedsLEGACY.OldZombieSeedsDict : OldZombieSeedsHD.OldZombieSeedsDict;
             if (mApp.IsAdventureMode())
             {
-                if (OldZombieSeeds.OldZombieSeedsDict.TryGetValue(mLevel, out int[][] zombies))
+                if (OldZombieSeedsDict.TryGetValue(mLevel, out int[][] zombies))
                 {
                     mNumWaves = zombies.Length;
                     for (int i = 0; i < zombies.Length; i++)

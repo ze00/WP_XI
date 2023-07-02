@@ -127,7 +127,7 @@ namespace Sexy
 
         public static bool gUseSun = false;
 
-        public static bool gHardMode = false;
+        public static bool gLegacy = false;
 
         public static bool gLowFramerate = false;
 

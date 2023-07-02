@@ -17,7 +17,7 @@ namespace Lawn
             mBackToMainButton = GameButton.MakeButton(1, this, "[MAIN_MENU_BUTTON]");
             mBackToGameButton = GameButton.MakeButton(1000, this, "[BACK_TO_GAME]");
             mHelpButton = GameButton.MakeButton(6, this, "[HELP]");
-            mLoadExtGameButton = GameButton.MakeButton(7, this, "Hard Mode");
+            mLoadExtGameButton = GameButton.MakeButton(7, this, "EZ Mode");
             mMusicVolumeSlider = new Slider(AtlasResources.IMAGE_OPTIONS_SLIDERSLOT, AtlasResources.IMAGE_OPTIONS_SLIDERKNOB2, 4, this);
             double num = theApp.GetMusicVolume();
             num = Math.Max(0.0, Math.Min(1.0, num));
@@ -186,7 +186,7 @@ namespace Lawn
             TodCommon.TodDrawString(g, "[OPTIONS_VABRATION]", Constants.NewOptionsDialog_VibrationLabel_X, Constants.NewOptionsDialog_VibrationLabel_Y + newOptionsDialog_FullScreenOffset, Resources.FONT_DWARVENTODCRAFT18, theColor, Constants.NewOptionsDialog_VibrationLabel_MaxWidth, DrawStringJustification.Right);
             //TodCommon.TodDrawString(g, "[OPTIONS_RUN_LOCKED]", Constants.NewOptionsDialog_VibrationLabel_X, Constants.NewOptionsDialog_LockedLabel_Y + newOptionsDialog_FullScreenOffset, Resources.FONT_DWARVENTODCRAFT18, theColor, Constants.NewOptionsDialog_VibrationLabel_MaxWidth, DrawStringJustification.Right);
             TodCommon.TodDrawString(g, "Enable Cheat", Constants.NewOptionsDialog_VibrationLabel_X, Constants.NewOptionsDialog_LockedLabel_Y + newOptionsDialog_FullScreenOffset, Resources.FONT_DWARVENTODCRAFT18, theColor, Constants.NewOptionsDialog_VibrationLabel_MaxWidth, DrawStringJustification.Right);
-            TodCommon.TodDrawString(g, LawnApp.AppVersionNumber + ", Hard Mode " + (GlobalStaticVars.gHardMode ? "ON" : "OFF"), mWidth / 2, mVersionY, Resources.FONT_PICO129, theColor, DrawStringJustification.Center);
+            TodCommon.TodDrawString(g, LawnApp.AppVersionNumber + ", EZ Mode " + (GlobalStaticVars.gLegacy ? "ON" : "OFF"), mWidth / 2, mVersionY, Resources.FONT_PICO129, theColor, DrawStringJustification.Center);
         }
 
         public virtual void SliderVal(int theId, double theVal)
@@ -340,7 +340,7 @@ namespace Lawn
                 lawnDialog2.mLawnYesButton.mLabel = TodStringFile.TodStringTranslate("[BACK]");
                 lawnDialog2.CalcSize(0, 0);
                 */
-                GlobalStaticVars.gHardMode = !GlobalStaticVars.gHardMode;
+                GlobalStaticVars.gLegacy = !GlobalStaticVars.gLegacy;
                 return;
             }
             case 10:

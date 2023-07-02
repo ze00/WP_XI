@@ -2799,7 +2799,7 @@ namespace Lawn
             {
                 DropArm(theDamageFlags);
             }
-            if (mHasHead && mBodyHealth < (!GlobalStaticVars.gHardMode ? mBodyMaxHealth / 3 : 0))
+            if (mHasHead && mBodyHealth < (mBodyMaxHealth / 3))
             {
                 DropHead(theDamageFlags);
                 DropLoot();
