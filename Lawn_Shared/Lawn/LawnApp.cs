@@ -247,7 +247,6 @@ namespace Lawn
         {
             GameConstants.Init();
             OldZombieSeedsHD.LoadOldZombieSeeds();
-            OldZombieSeedsLEGACY.LoadOldZombieSeeds();
             ExtGameDef.InitExtGameDef();
             if (!TodCommon.TodLoadResources("LoaderBar") || !TodCommon.TodLoadResources("LoaderBarFont"))
             {
@@ -2252,6 +2251,12 @@ namespace Lawn
         {
             return mBoard != null && ((IsAdventureMode() && mPlayerInfo.mLevel == 10) || mGameMode == GameMode.Quickplay10 || ((IsAdventureMode() && mPlayerInfo.mLevel == 20) || mGameMode == GameMode.Quickplay20) || ((IsAdventureMode() && mPlayerInfo.mLevel == 30) || mGameMode == GameMode.Quickplay30));
         }
+
+        public bool IsCustomWLKHLevel()
+        {
+            return mBoard != null && ((IsAdventureMode() && (mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH || mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH_DAY)));
+        }
+
         public bool IsCustomXJZYLevel()
         {
             return mBoard != null && ((IsAdventureMode() && mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_XJZY));

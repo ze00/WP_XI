@@ -70,10 +70,6 @@
   <Import Project="..\IronPyInteractiveDef_Shared\IronPyInteractiveDef_Shared.projitems" Label="Shared" />
     <Import Project="..\LawnModExtension\LawnModExtension.projitems" Label="Shared" />
   <Import Project=".\XI_BUILD.targets" />
-  <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release' ">
-    <Exec WorkingDirectory="$(MonoAndroidIntermediateAssetsDir)" Command="$(Obfuscar) $(ProjectDir)obfuscar.xml" />
-    <!-- <Copy SourceFiles="$(TargetDir)LAWN.dll" DestinationFolder="$(MonoAndroidIntermediateAssetsDir)" /> -->
-  </Target>
   <Target Name="SignApkPreparation">
     <Message Text="Retrieving AutoSign properties, if you don't have it then just ignore any errors below..." Importance="High" />
     <Exec Command="python AutoSign/autosignprops.py AndroidKeyStore" ContinueOnError="true" ConsoleToMSBuild="true">

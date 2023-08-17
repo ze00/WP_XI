@@ -53,16 +53,18 @@ namespace Lawn.ExtGame
         //BAN三叶草
         //叫激进の撑杆
         public const int CUSTOM_LEVEL_JJDCG = 69;
+        public const int CUSTOM_LEVEL_WLKH = 71;
+        public const int CUSTOM_LEVEL_WLKH_DAY = 70;
         public const int CUSTOM_LEVEL_BOSS = 60;
         public const int CUSTOM_MINIGAME_55 = 55;
     }
     public class ExtGameDef
     {
         public const int NUM_OF_SEEDPACKETS_ROW = 14;
-        public const int NUM_BIG_STAGE = 7;
+        public const int NUM_BIG_STAGE = 8;
         public const int CUSTOM_LEVEL_START = 51;
         // 冒险模式终结
-        public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_LEVEL_JJDCG;
+        public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_LEVEL_WLKH;
         public const int CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN = 7500;
         public const int CUSTOM_LEVEL_BOSS_ZOMBIES_COUNTDOWN = 7500;
         public const int ZOMBIE_CATAPULT_LAUNCH_RATE = 150;
@@ -77,6 +79,7 @@ namespace Lawn.ExtGame
         // 30 * 100cs
         public const float CUSTOM_MINIGAME_66_VELOCITY_MAX_SURVIVAL_TIME = 90 * 100;
         public const int CUSTOM_CABBAGE_PROJECTILES_SHIFT_END = 8;
+        public const int CUSTOM_WLKH_SUNFLOWER_MASTER_COUNTDOWN = 2400;
         public static void InitExtGameDef()
         {
             CUSTOM_MINIGAME_55_ZOMBIE_WEIGHTS_OVERRIDE.Add(ZombieType.GatlingHead, 5);

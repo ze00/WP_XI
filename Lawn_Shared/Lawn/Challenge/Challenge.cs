@@ -3129,20 +3129,23 @@ namespace Lawn
             newGridItem2.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem2.mGridY, 0);
             newGridItem2.OpenPortal();
             mBoard.mGridItems.Add(newGridItem2);
-            GridItem newGridItem3 = GridItem.GetNewGridItem();
-            newGridItem3.mGridItemType = GridItemType.PortalCircle;
-            newGridItem3.mGridX = 9;
-            newGridItem3.mGridY = 3;
-            newGridItem3.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem3.mGridY, 0);
-            newGridItem3.OpenPortal();
-            mBoard.mGridItems.Add(newGridItem3);
-            GridItem newGridItem4 = GridItem.GetNewGridItem();
-            newGridItem4.mGridItemType = GridItemType.PortalCircle;
-            newGridItem4.mGridX = 4;
-            newGridItem4.mGridY = 4;
-            newGridItem4.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem4.mGridY, 0);
-            newGridItem4.OpenPortal();
-            mBoard.mGridItems.Add(newGridItem4);
+            if (mApp.mGameMode == GameMode.ChallengePortalCombat)
+            {
+                GridItem newGridItem3 = GridItem.GetNewGridItem();
+                newGridItem3.mGridItemType = GridItemType.PortalCircle;
+                newGridItem3.mGridX = 9;
+                newGridItem3.mGridY = 3;
+                newGridItem3.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem3.mGridY, 0);
+                newGridItem3.OpenPortal();
+                mBoard.mGridItems.Add(newGridItem3);
+                GridItem newGridItem4 = GridItem.GetNewGridItem();
+                newGridItem4.mGridItemType = GridItemType.PortalCircle;
+                newGridItem4.mGridX = 4;
+                newGridItem4.mGridY = 4;
+                newGridItem4.mRenderOrder = Board.MakeRenderOrder(RenderLayer.Particle, newGridItem4.mGridY, 0);
+                newGridItem4.OpenPortal();
+                mBoard.mGridItems.Add(newGridItem4);
+            }
             mBoard.mZombieCountDown = 200;
             mBoard.mZombieCountDownStart = mBoard.mZombieCountDown;
             mConveyorBeltCounter = 200;

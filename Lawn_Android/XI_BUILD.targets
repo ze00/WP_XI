@@ -8,4 +8,10 @@
   <Target Name="PackIntoZip" AfterTargets="SignAndroidPackage" Condition=" '$(Configuration)' == 'Release' ">
     <Exec WorkingDirectory="$(OutDir)" Command="C:/Users/yu/AppData/Local/Microsoft/WindowsApps/pwsh.exe -NoProfile ../../../XI_BUILD.ps1 -SIGNED_APK $(ApkFIleSigned) -BEFORE_BUILD 0" />
   </Target>
+  <!--
+  <Target Name="ObfuscarBuild" AfterTargets="CoreCompile" Condition=" '$(Configuration)' == 'Release' ">
+    <Exec WorkingDirectory="$(MonoAndroidIntermediateAssetsDir)" Command="obfuscar.console $(ProjectDir)obfuscar.xml" />
+     <Copy SourceFiles="$(TargetDir)LAWN.dll" DestinationFolder="$(MonoAndroidIntermediateAssetsDir)" />
+  </Target>
+  -->
 </Project>

@@ -585,7 +585,7 @@ namespace Lawn
                 num3 = num - 20f;
                 num4 = num2 + 63f;
                 particleEffect = ParticleEffect.ButterSplat;
-                if (theZombie != null)
+                if (theZombie != null && theZombie.mZombieType != ZombieType.Football)
                 {
                     theZombie.ApplyButter();
                 }

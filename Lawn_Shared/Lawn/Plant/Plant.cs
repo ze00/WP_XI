@@ -1541,12 +1541,21 @@ namespace Lawn
                 }
                 else if (mSeedType == SeedType.Sunflower)
                 {
+
                     mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.FromPlant);
                 }
                 else if (mSeedType == SeedType.Twinsunflower)
                 {
-                    mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.FromPlant);
-                    mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.FromPlant);
+                    // 7-10产双子的向日葵
+                    if (mApp.IsCustomWLKHLevel() && mLaunchRate == ExtGameDef.CUSTOM_WLKH_SUNFLOWER_MASTER_COUNTDOWN)
+                    {
+                        mBoard.AddCoin(mX, mY, CoinType.UsableSeedPacket, CoinMotion.FromPlant).mUsableSeedType = SeedType.Twinsunflower;
+                    }
+                    else
+                    {
+                        mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.FromPlant);
+                        mBoard.AddCoin(mX, mY, CoinType.Sun, CoinMotion.FromPlant);
+                    }
                 }
                 else if (mSeedType == SeedType.Marigold)
                 {
@@ -1906,7 +1915,7 @@ namespace Lawn
 
         public static bool IsNocturnal(SeedType theSeedtype)
         {
-            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Magnetshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
+            return theSeedtype == SeedType.Puffshroom || theSeedtype == SeedType.Sunshroom || theSeedtype == SeedType.Fumeshroom || theSeedtype == SeedType.Hypnoshroom || theSeedtype == SeedType.Doomshroom || theSeedtype == SeedType.Iceshroom || theSeedtype == SeedType.Scaredyshroom || theSeedtype == SeedType.Gloomshroom;
         }
 
         public static bool IsAquatic(SeedType theSeedType)
@@ -3131,15 +3140,17 @@ namespace Lawn
                                 goto IL_322;
                             }
                         }
+                        else if (zombie2.mZombieType == ZombieType.Polevaulter && zombie2.mZombiePhase != ZombiePhase.PolevaulterPostVault)
+                        {
+                        }
+                        else if (zombie2.mZombieType == ZombieType.DolphinRider && zombie2.mZombiePhase != ZombiePhase.DolphinWalkingWithoutDolphin)
+                        {
+                        }
                         else if (zombie2.mHelmType != HelmType.Pail && zombie2.mHelmType != HelmType.Football && zombie2.mShieldType != ShieldType.Door && zombie2.mShieldType != ShieldType.Ladder && zombie2.mZombiePhase != ZombiePhase.JackInTheBoxRunning)
                         {
                             goto IL_322;
                         }
-                        int theRadius = 270;
-                        if (zombie2.mIsEating)
-                        {
-                            theRadius = 320;
-                        }
+                        int theRadius = 320;
                         if (GameConstants.GetCircleRectOverlap(mX, mY + 20, theRadius, zombieRect))
                         {
                             float num4 = TodCommon.Distance2D(mX, mY, zombieRect.mX, zombieRect.mY);
@@ -4030,7 +4041,7 @@ namespace Lawn
         public void MagnetShroomAttactItem(Zombie theZombie)
         {
             mState = PlantState.MagnetshroomSucking;
-            mStateCountdown = 1500;
+            mStateCountdown = 300;
             PlayBodyReanim(GlobalMembersReanimIds.ReanimTrackId_anim_shooting, ReanimLoopType.PlayOnceAndHold, 20, 12f);
             mApp.PlayFoley(FoleyType.Magnetshroom);
             MagnetItem freeMagnetItem = GetFreeMagnetItem();
@@ -4130,6 +4141,29 @@ namespace Lawn
             {
                 theZombie.DiggerLoseAxe();
                 theZombie.GetTrackPosition(ref GlobalMembersReanimIds.ReanimTrackId_zombie_digger_pickaxe, ref freeMagnetItem.mPosX, ref freeMagnetItem.mPosY);
+                freeMagnetItem.mPosX -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mWidth / 2;
+                freeMagnetItem.mPosY -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mHeight / 2;
+                freeMagnetItem.mDestOffsetX = TodCommon.RandRangeFloat(-10f, 10f) + 45f;
+                freeMagnetItem.mDestOffsetY = TodCommon.RandRangeFloat(-10f, 10f) + 15f;
+                freeMagnetItem.mItemType = MagnetItemType.PickAxe;
+            }
+            else if (theZombie.mZombieType == ZombieType.Polevaulter)
+            {
+                theZombie.mZombiePhase = ZombiePhase.PolevaulterPostVault;
+                theZombie.StartWalkAnim(0);
+                freeMagnetItem.mPosX -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mWidth / 2;
+                freeMagnetItem.mPosY -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mHeight / 2;
+                freeMagnetItem.mDestOffsetX = TodCommon.RandRangeFloat(-10f, 10f) + 45f;
+                freeMagnetItem.mDestOffsetY = TodCommon.RandRangeFloat(-10f, 10f) + 15f;
+                freeMagnetItem.mItemType = MagnetItemType.PickAxe;
+            }
+            else if (theZombie.mZombieType == ZombieType.DolphinRider)
+            {
+                theZombie.mZombiePhase = ZombiePhase.DolphinWalkingWithoutDolphin;
+                theZombie.mAltitude = -40f;
+                theZombie.PoolSplash(false);
+                theZombie.PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_walkdolphin, ReanimLoopType.Loop, 0, 0f);
+                theZombie.PickRandomSpeed();
                 freeMagnetItem.mPosX -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mWidth / 2;
                 freeMagnetItem.mPosY -= AtlasResources.IMAGE_REANIM_ZOMBIE_DIGGER_PICKAXE.mHeight / 2;
                 freeMagnetItem.mDestOffsetX = TodCommon.RandRangeFloat(-10f, 10f) + 45f;
@@ -4470,7 +4504,7 @@ namespace Lawn
                         //projectile.mMotionType = ProjectileMotion.Homing;
                         //projectile.mTargetZombieID = mBoard.ZombieGetID(FindTargetZombie(mRow, PlantWeapon.Primary));
                     }
-                   break;
+                    break;
                 default:
                     //Debug.ASSERT(false);
                     break;

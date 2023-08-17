@@ -593,7 +593,7 @@ namespace Lawn
                 new PlantDefinition(SeedType.Splitpea,      null, ReanimationType.Splitpea,     32, 100,750, PlantSubClass.Shooter, 150, "SPLIT_PEA"),
                 new PlantDefinition(SeedType.Starfruit,     null, ReanimationType.Starfruit,    30, 225,1500, PlantSubClass.Shooter, 150, "STARFRUIT"),
                 new PlantDefinition(SeedType.Pumpkinshell,  null, ReanimationType.Pumpkin,      25, 125,3000,PlantSubClass.Normal,  0, "PUMPKIN"),
-                new PlantDefinition(SeedType.Magnetshroom,  null, ReanimationType.Magnetshroom, 35, 100,750, PlantSubClass.Normal,  0, "MAGNET_SHROOM"),
+                new PlantDefinition(SeedType.Magnetshroom,  null, ReanimationType.Magnetshroom, 35, 50,750, PlantSubClass.Normal,  0, "MAGNET_SHROOM"),
                 new PlantDefinition(SeedType.Cabbagepult,   null, ReanimationType.Cabbagepult,  13, 125,750, PlantSubClass.Shooter, 260, "CABBAGE_PULT"),
                 new PlantDefinition(SeedType.Flowerpot,     null, ReanimationType.FlowerPot,    33, 25, 750, PlantSubClass.Normal,  0, "FLOWER_POT"),
                 new PlantDefinition(SeedType.Kernelpult,    null, ReanimationType.Kernelpult,   13, 300,750, PlantSubClass.Shooter, 300, "KERNEL_PULT"),

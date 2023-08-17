@@ -1031,6 +1031,11 @@ namespace Lawn
                 AddPlant(0, 2, SeedType.Lilypad, SeedType.None);
                 AddPlant(0, 3, SeedType.Lilypad, SeedType.None);
             }
+            else if (mApp.IsCustomWLKHLevel())
+            {
+                Plant SunFlower = AddPlant(1, 4, SeedType.Twinsunflower, SeedType.None);
+                SunFlower.mLaunchRate = ExtGameDef.CUSTOM_WLKH_SUNFLOWER_MASTER_COUNTDOWN;
+            }
         }
         public void InitLevel()
         {
@@ -1350,7 +1355,8 @@ namespace Lawn
                 if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS))
                 {
                     DisplayAdvice($"YOU HAVE {mZombieCountDown / 100}s TO SET YOUR PLANTS!", MessageStyle.HintLong, AdviceType.None);
-                } else if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD))
+                }
+                else if (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD))
                 {
                     DisplayAdvice($"DANCER ZOMBIE IS VERY DANGEROUS!!!", MessageStyle.HintLong, AdviceType.None);
                 }
@@ -3727,7 +3733,7 @@ namespace Lawn
             {
                 return 3;
             }
-            if (mApp.IsAdventureMode() && mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
+            if (mApp.IsAdventureMode() && mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS || mApp.IsCustomWLKHLevel())
             {
                 return 11;
             }
@@ -6713,7 +6719,7 @@ namespace Lawn
                 {
                     mBackground = BackgroundType.Num2Night;
                 }
-                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ)
+                else if (mLevel <= 3 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_QYGH || mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ || mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH_DAY)
                 {
                     mBackground = BackgroundType.Num3Pool;
                 }
@@ -6721,7 +6727,7 @@ namespace Lawn
                 {
                     mBackground = BackgroundType.Num2Night;
                 }
-                else if (mLevel <= 4 * GameConstants.LEVELS_PER_AREA)
+                else if (mLevel <= 4 * GameConstants.LEVELS_PER_AREA || mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH)
                 {
                     mBackground = BackgroundType.Num4Fog;
                 }
@@ -7372,7 +7378,7 @@ namespace Lawn
             {
                 return 5;
             }
-            if (mLevel >= 37 && mLevel <= 40)
+            if (mLevel >= 37 && mLevel <= 40 || mApp.IsCustomWLKHLevel())
             {
                 return 4;
             }
