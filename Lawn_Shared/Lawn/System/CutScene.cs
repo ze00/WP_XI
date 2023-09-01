@@ -938,6 +938,9 @@ namespace Lawn
             } else if (mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
             {
                 num = 0;
+            } else if (mBoard.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+            {
+                num = 2;
             }
             else if (mApp.mGameMode == GameMode.ChallengeColumn)
             {

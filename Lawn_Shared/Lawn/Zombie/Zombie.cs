@@ -177,6 +177,15 @@ namespace Lawn
         }
         public void ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Zombie theParentZombie, int theFromWave)
         {
+            ZombieInitializeOriginal(theRow, theType, theVariant, theParentZombie, theFromWave);
+            if (mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+            {
+                mBodyHealth += 200;
+                mBodyMaxHealth += 200;
+            }
+        }
+        public void ZombieInitializeOriginal(int theRow, ZombieType theType, bool theVariant, Zombie theParentZombie, int theFromWave)
+        {
             Debug.ASSERT(theType >= ZombieType.Normal && theType < ZombieType.ZombieTypesCount);
             mRow = theRow;
             mFromWave = theFromWave;
@@ -288,6 +297,10 @@ namespace Lawn
             case ZombieType.Pail:
                 LoadPlainZombieReanim();
                 AddBucket();
+                if (mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+                {
+                    mHelmMaxHealth = mHelmHealth = 9999999;
+                }
                 break;
             case ZombieType.Door:
                 mShieldType = ShieldType.Door;
@@ -358,6 +371,11 @@ namespace Lawn
                 mHelmHealth = 1400;
                 mAnimTicksPerFrame = 6;
                 mVariant = false;
+                if (mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+                {
+                    mBodyHealth = mBodyMaxHealth = 1870;
+                }
+                mVelX *= 2;
                 break;
             case ZombieType.Digger:
             {
@@ -380,7 +398,7 @@ namespace Lawn
                     PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_dig, ReanimLoopType.LoopFullLastFrame, 0, 12f);
                     PickRandomSpeed();
                 }
-                if (RandomNumbers.NextNumber(10) == 0)
+                if (RandomNumbers.NextNumber(mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB ? 4 : 10) == 0)
                 {
                     // mLastPortalX记录第几格出土
                     mLastPortalX = 1 + RandomNumbers.NextNumber(3);
@@ -488,16 +506,7 @@ namespace Lawn
                 }
                 if (mApp.IsCustomWLKHLevel())
                 {
-                    if (mZombieType == ZombieType.Gargantuar)
-                    {
-                        aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_WALLNUT_BODY);
-                        mBodyHealth = mBodyMaxHealth = 4000;
-                    }
-                    else if (mZombieType == ZombieType.RedeyeGargantuar)
-                    {
-                        aBodyReanim.SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_head1, AtlasResources.IMAGE_REANIM_TALLNUT_BODY);
-                        mBodyHealth = mBodyMaxHealth = 4000;
-                    }
+                    mBodyHealth = mBodyMaxHealth = 4000;
                 }
 
                 break;
@@ -900,7 +909,7 @@ namespace Lawn
                 TodCommon.TodScaleRotateTransformMatrix(ref aAttachEffect.mOffset.mMatrix, 55f * Constants.S, -5f * Constants.S, 0.2f, -1f, 1f);
                 mVariant = false;
                 mBodyHealth = 500;
-                int num5 = 275 + RandomNumbers.NextNumber(175);
+                int num5 = (mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB ? 300 : 275 + RandomNumbers.NextNumber(175));
                 mPhaseCounter = (int)(num5 / mVelX) * GameConstants.ZOMBIE_LIMP_SPEED_FACTOR;
                 AddTrafficCone();
                 break;
@@ -972,7 +981,7 @@ namespace Lawn
                 mShieldType = ShieldType.Door;
                 mShieldHealth = 1100;
                 AttachShield();
-                if (RandomNumbers.NextNumber(8) == 0)
+                if (RandomNumbers.NextNumber(4) == 0)
                 {
                     mIsSpecialUnit = true;
                     mApp.ReanimationTryToGet(mBodyReanimID).SetImageOverride(GlobalMembersReanimIds.ReanimTrackId_anim_screendoor, AtlasResources.IMAGE_REANIM_PORTAL_SQUARE_CENTER);
@@ -1712,6 +1721,12 @@ namespace Lawn
                         break;
                     }
                 }
+                if (mZombieType == ZombieType.Pail && mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+                {
+                    mBoard.AddCoin(mX - 20, mY, CoinType.Largesun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 40, mY, CoinType.Largesun, CoinMotion.Coin);
+                    mBoard.AddCoin(mX - 60, mY, CoinType.Largesun, CoinMotion.Coin);
+                }
                 if (mZombieType == ZombieType.TallnutHead && mScaleZombie == 0.5f)
                 {
                     DoDaisies();
@@ -2065,14 +2080,10 @@ namespace Lawn
             if (num > 0 && mShieldType != ShieldType.None/* && !TodCommon.TestBit(theDamageFlags, 0)*/)
             {
                 num = TakeShieldDamage(theDamage, theDamageFlags);
-                if (TodCommon.TestBit(theDamageFlags, 1))
-                {
-                    num = theDamage;
-                }
             }
             if (num > 0 && mHelmType != HelmType.None)
             {
-                num = TakeHelmDamage(theDamage, theDamageFlags);
+                num = TakeHelmDamage(num, theDamageFlags);
             }
             if (num > 0)
             {
@@ -3563,6 +3574,7 @@ namespace Lawn
 
         public void UpdateZombieJackInTheBox()//3update
         {
+            UpdateCustomImp(ZombiePhase.JackInTheBoxRunning);
             if (!mApp.IsScaryPotterLevel() && (mBodyHealth < 7000 && mHelmMaxHealth == 0) || (mBodyHealth < 200 && mHelmMaxHealth == 1))
             {
                 SpawnNewZombieAfterDied(ZombieType.Zamboni);
@@ -7147,8 +7159,21 @@ namespace Lawn
                     ReanimShowPrefix("Zombie_imp", -1);
                     ReanimShowTrack(ref GlobalMembersReanimIds.ReanimTrackId_zombie_gargantuar_whiterope, -1);
                     mApp.PlayFoley(FoleyType.Swing);
+                    ZombieType aZombieType = ZombieType.Imp;
+                    if (mApp.IsCustomWLKHLevel())
+                    {
+                        switch (mZombieType)
+                        {
+                        case ZombieType.Gargantuar:
+                            aZombieType = ZombieType.Zamboni;
+                            break;
+                        case ZombieType.RedeyeGargantuar:
+                            aZombieType = ZombieType.JackInTheBox;
+                            break;
 
-                    Zombie aZombieImp = mBoard.AddZombie(mApp.IsCustomWLKHLevel() ? ZombieType.Zamboni : ZombieType.Imp, mFromWave);
+                        }
+                    }
+                    Zombie aZombieImp = mBoard.AddZombie(aZombieType, mFromWave);
                     if (aZombieImp == null)
                     {
                         return;
@@ -7177,8 +7202,18 @@ namespace Lawn
                     aZombieImp.mVelX = 3f;
                     aZombieImp.mChilledCounter = mChilledCounter;
                     aZombieImp.mVelZ = 0.5f * (aThrowingDistance / aZombieImp.mVelX) * GameConstants.THOWN_ZOMBIE_GRAVITY;
-                    if (mApp.IsCustomWLKHLevel() && aZombieImp.mZombieType == ZombieType.Zamboni) {
-                        aZombieImp.mBodyHealth = aZombieImp.mBodyMaxHealth = 300;
+                    if (mApp.IsCustomWLKHLevel())
+                    {
+                        switch (aZombieImp.mZombieType)
+                        {
+                        case ZombieType.Zamboni:
+                            aZombieImp.mBodyHealth = aZombieImp.mBodyMaxHealth = 300;
+                            break;
+                        case ZombieType.JackInTheBox:
+                            aZombieImp.mBodyHealth = aZombieImp.mBodyMaxHealth = 100;
+                            aZombieImp.mPhaseCounter = 100;
+                            break;
+                        }
                     }
                     aZombieImp.PlayZombieReanim(ref GlobalMembersReanimIds.ReanimTrackId_anim_thrown, ReanimLoopType.PlayOnceAndHold, 0, 18f);
                     aZombieImp.UpdateReanim();
@@ -7261,7 +7296,7 @@ namespace Lawn
             {
                 return;
             }
-            int BurnHp = mApp.IsCustomWLKHLevel() ? mBodyHealth + mShieldHealth + mHelmHealth : mBodyHealth;
+            int BurnHp = mBodyHealth + mShieldHealth + mHelmHealth;
             if (BurnHp >= 1800 || mZombieType == ZombieType.Boss)
             {
                 TakeDamage(1800, 18U);
@@ -10547,7 +10582,6 @@ namespace Lawn
                 if (mMindControlled)
                 {
                     BurnRow(mRow);
-                    return;
                 }
                 int count = mBoard.mPlants.Count;
                 for (int i = 0; i < count; i++)

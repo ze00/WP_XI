@@ -1106,6 +1106,10 @@ namespace Lawn
             {
                 mSunMoney = 4000;
             }
+            else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
+            {
+                mSunMoney = 1000;
+            }
             else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_BOSS)
             {
                 mSunMoney = 2800;
@@ -2039,6 +2043,10 @@ namespace Lawn
                                         if (!mApp.mEasyPlantingCheat)
                                         {
                                             if (Plant.IsUpgrade(theType))
+                                            {
+                                                return PlantingReason.NeedsUpgrade;
+                                            }
+                                            if (theType == SeedType.Cobcannon && !IsValidCobCannonSpot(theGridX, theGridY))
                                             {
                                                 return PlantingReason.NeedsUpgrade;
                                             }
@@ -3981,7 +3989,7 @@ namespace Lawn
             // 7-6手套WORKAROUND
             if (mShowShovel && shovelButtonRect.Contains(x, y) && CanInteractWithBoardButtons())
             {
-                theHitResult.mObjectType = mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX ? GameObjectType.Glove : GameObjectType.Shovel;
+                theHitResult.mObjectType = mApp.IsGloveLevel() ? GameObjectType.Glove : GameObjectType.Shovel;
 
                 return true;
             }
@@ -4336,11 +4344,11 @@ namespace Lawn
                 Plant thePlant = mCursorObject.mGlovePlantID;
                 thePlant.mGloveGrabbed = false;
                 // 7-6手套WORKAROUND
-                if (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
+                if (mApp.IsGloveLevel())
                 {
                     int aPosX = GridToPixelX(theGridX, theGridY);
                     int aPosY = GridToPixelY(theGridX, theGridY);
-                    Debug.ASSERT(GetTopPlantAt(theGridX, theGridY, TopPlant.Any) == null);
+                    Debug.ASSERT(GetTopPlantAt(theGridX, theGridY, TopPlant.OnlyNormalPosition) == null);
                     Plant aTopPlantAtGrid = GetTopPlantAt(thePlant.mPlantCol, thePlant.mRow, TopPlant.OnlyUnderPlant);
                     if (aTopPlantAtGrid != null)
                     {
@@ -4846,7 +4854,7 @@ namespace Lawn
                         }
                         else if (seedType == SeedType.Flowerpot)
                         {
-                            Debug.ASSERT(thePlantOnLawn.mUnderPlant == null);
+                            Debug.ASSERT(thePlantOnLawn.mUnderPlant == null || thePlantOnLawn.mUnderPlant.mSeedType == SeedType.Flowerpot);
                             thePlantOnLawn.mUnderPlant = plant;
                         }
                         else if (seedType == SeedType.Lilypad)
@@ -6731,7 +6739,7 @@ namespace Lawn
                 {
                     mBackground = BackgroundType.Num4Fog;
                 }
-                else if (mLevel <= 49 || mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
+                else if (mLevel <= 49 || mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ || mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)
                 {
                     mBackground = BackgroundType.Num5Roof;
                 }
@@ -6981,6 +6989,7 @@ namespace Lawn
                     }
                     else if (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD)
                     {
+                        AddGraveStones(6, 5);
                         AddGraveStones(7, 5);
                         AddGraveStones(8, 5);
                     }
@@ -7203,7 +7212,7 @@ namespace Lawn
 
         public bool SeedNotAllowedToPick(SeedType theSeedType)
         {
-            return (mApp.IsLastStandLevel() && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern || theSeedType == SeedType.ExplodeONut)) || (mApp.IsAdventureMode() && ((mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom)) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX && theSeedType == SeedType.Blover) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ && theSeedType == SeedType.Lilypad) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD && theSeedType == SeedType.Gravebuster) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && theSeedType == SeedType.Blover)));
+            return (mApp.IsLastStandLevel() && (theSeedType == SeedType.Sunflower || theSeedType == SeedType.Sunshroom || theSeedType == SeedType.Twinsunflower || theSeedType == SeedType.Seashroom || theSeedType == SeedType.Puffshroom || theSeedType == SeedType.Tanglekelp)) || ((mApp.IsMiniBossLevel() || mApp.IsFinalBossLevel()) && (theSeedType == SeedType.Hypnoshroom || theSeedType == SeedType.Plantern || theSeedType == SeedType.ExplodeONut)) || (mApp.IsAdventureMode() && ((mLevel == ExtGameLevel.CUSTOM_XJZY && (theSeedType == SeedType.Chomper || theSeedType == SeedType.Hypnoshroom)) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX && theSeedType == SeedType.Blover) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_ZHZJ && theSeedType == SeedType.Lilypad) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_MYPD && theSeedType == SeedType.Gravebuster) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_JJDCG && theSeedType == SeedType.Blover))) || (mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB && (theSeedType == SeedType.Tanglekelp || theSeedType == SeedType.Chomper));
         }
 
         public uint SeedNotRecommendedForLevel(SeedType theSeedType)
@@ -8288,15 +8297,7 @@ namespace Lawn
         {
             PlantsOnLawn plantsOnLawn = default(PlantsOnLawn);
             GetPlantsOnLawn(theGridX, theGridY, ref plantsOnLawn);
-            if (plantsOnLawn.mPumpkinPlant != null)
-            {
-                return false;
-            }
-            if (!mApp.mEasyPlantingCheat)
-            {
-                return plantsOnLawn.mNormalPlant != null && plantsOnLawn.mNormalPlant.mSeedType == SeedType.Kernelpult;
-            }
-            return (plantsOnLawn.mNormalPlant != null && plantsOnLawn.mNormalPlant.mSeedType == SeedType.Kernelpult) || CanPlantAt(theGridX, theGridY, SeedType.Kernelpult) == PlantingReason.Ok;
+            return plantsOnLawn.mNormalPlant == null && plantsOnLawn.mPumpkinPlant == null;
         }
 
         public void MouseDownCobcannonFire(int x, int y, int theClickCount)
@@ -9378,18 +9379,27 @@ namespace Lawn
             {
                 int num2 = Math.Max(CountPlantByType(theSeedType), CountPlantByType(theImitaterType));
                 if (theSeedType == SeedType.Scaredyshroom || theImitaterType == SeedType.Scaredyshroom)
+                {
                     num = Math.Max(0, num + num2 * -5);
+                }
                 else if (theSeedType == SeedType.Flowerpot || theImitaterType == SeedType.Flowerpot)
-                    num += num2 * 10;
+                {
+                    if (mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ)
+                        num += num2 * 10;
+                    else
+                        num = 500;
+                }
                 else
+                {
                     num += num2 * 50;
+                }
             }
             return num;
         }
 
         public bool PlantUsesAcceleratedPricing(SeedType theSeedType)
         {
-            return theSeedType == SeedType.Threepeater || theSeedType == SeedType.Scaredyshroom || (mApp.IsAdventureMode() && mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ && theSeedType == SeedType.Flowerpot) || (Plant.IsUpgrade(theSeedType) && mApp.IsSurvivalEndless(mApp.mGameMode));
+            return theSeedType == SeedType.Threepeater || theSeedType == SeedType.Scaredyshroom || (mApp.IsAdventureMode() && (mLevel == ExtGameLevel.CUSTOM_LEVEL_CTCJ || mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB) && theSeedType == SeedType.Flowerpot) || (Plant.IsUpgrade(theSeedType) && mApp.IsSurvivalEndless(mApp.mGameMode));
         }
 
         public void FreezeEffectsForCutscene(bool theFreeze)
@@ -9498,7 +9508,7 @@ namespace Lawn
             {
                 return theGameObject == GameObjectType.TreeFood || theGameObject == GameObjectType.NextGarden;
             }
-            if (theGameObject == GameObjectType.Glove && mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX)
+            if (theGameObject == GameObjectType.Glove && mApp.IsGloveLevel())
             {
                 return true;
             }

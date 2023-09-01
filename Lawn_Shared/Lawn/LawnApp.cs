@@ -2256,6 +2256,10 @@ namespace Lawn
         {
             return mBoard != null && ((IsAdventureMode() && (mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH || mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_WLKH_DAY)));
         }
+        public bool IsGloveLevel()
+        {
+            return mBoard != null && ((IsAdventureMode() && (mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_LLFX || mPlayerInfo.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB)));
+        }
 
         public bool IsCustomXJZYLevel()
         {

@@ -53,8 +53,15 @@ namespace Lawn.ExtGame
         //BAN三叶草
         //叫激进の撑杆
         public const int CUSTOM_LEVEL_JJDCG = 69;
-        public const int CUSTOM_LEVEL_WLKH = 71;
         public const int CUSTOM_LEVEL_WLKH_DAY = 70;
+        public const int CUSTOM_LEVEL_WLKH = 71;
+        // 场景：屋顶
+        // 增益：花盆和全部僵尸生命值＋200（橄榄另算）
+        // 初始阳光：1000
+        // 开局赠送10个花盆，花盆价格上调至500，禁止使用水草,铁桶在拥有防具的状态下无敌，每击败一个铁桶获得150阳光
+        // 矿工提前出土的概率上升为25%，辣椒固定走在第三格炸，橄榄血量为1800+70，移速为原先两倍
+        // 铁桶在有防具的情况下免疫灰烬伤害
+        public const int CUSTOM_LEVEL_SJYB = 72;
         public const int CUSTOM_LEVEL_BOSS = 60;
         public const int CUSTOM_MINIGAME_55 = 55;
     }
@@ -64,7 +71,7 @@ namespace Lawn.ExtGame
         public const int NUM_BIG_STAGE = 8;
         public const int CUSTOM_LEVEL_START = 51;
         // 冒险模式终结
-        public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_LEVEL_WLKH;
+        public const int CUSTOM_LEVEL_END = ExtGameLevel.CUSTOM_LEVEL_SJYB;
         public const int CUSTOM_LEVEL_QYGH_ZOMBIES_COUNTDOWN = 7500;
         public const int CUSTOM_LEVEL_BOSS_ZOMBIES_COUNTDOWN = 7500;
         public const int ZOMBIE_CATAPULT_LAUNCH_RATE = 150;

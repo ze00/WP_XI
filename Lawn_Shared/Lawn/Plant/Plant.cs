@@ -504,6 +504,11 @@ namespace Lawn
                 mPlantHealth *= 2;
             }
             mPlantMaxHealth = mPlantHealth;
+            if (mBoard?.mLevel == ExtGameLevel.CUSTOM_LEVEL_SJYB && mSeedType == SeedType.Flowerpot)
+            {
+                mPlantMaxHealth += 200;
+                mPlantHealth += 200;
+            }
             if (mSeedType != SeedType.Flowerpot && IsOnBoard())
             {
                 Plant flowerPotAt = mBoard.GetFlowerPotAt(mPlantCol, mRow);

@@ -1305,6 +1305,7 @@ new []{23,23,23,20,20,20,20,20,14,14,14,14,14,7,7,7,7,4,4,4,4,4,3,3,3,3,3,2,2,2,
  new[] { 32, 32, 32, 31, 31, 31, 31, 20, 20, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, -1 } });
             OldZombieSeedsDict.Add(70, OldZombieSeedsLEGACY.OldZombieSeedsDict[70]);
             OldZombieSeedsDict.Add(71, OldZombieSeedsLEGACY.OldZombieSeedsDict[71]);
+            OldZombieSeedsDict.Add(72, OldZombieSeedsLEGACY.OldZombieSeedsDict[72]);
         }
         public static void Main(String[] args)
         {
